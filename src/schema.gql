@@ -265,6 +265,11 @@ enum DeliveryStatus {
   WAITING_COURIER
 }
 
+enum Dough {
+  THICK
+  THIN
+}
+
 type Film {
   actors: [FilmPerson!]!
   ageRating: Rating!
@@ -361,6 +366,47 @@ type FilmsResponse {
   success: Boolean!
 }
 
+enum Ingredient {
+  AVOCADO
+  BACON
+  BANANA
+  BASIL
+  BBQ_SAUCE
+  BEEF
+  BLACK_OLIVE
+  CHEDDAR
+  CHICKEN_FILLET
+  CHILE
+  CORN
+  CREAM_SAUCE
+  EGG
+  FETA
+  GARLIC
+  GREEN_PEPPER
+  HAM
+  JALAPENO
+  MOZARELLA
+  MUSHROOMS
+  MUSSELS
+  OLIVES
+  ONION
+  OREGANO
+  PARMESAN
+  PEACH
+  PEPERONI
+  PHILADELPHIA_CHEESE
+  PINEAPPLE
+  RED_ONION
+  SALAMI
+  SALMON
+  SAUSAGE
+  SHRIMPS
+  SPINACH
+  SQUID
+  TOMATO
+  TOMATO_SAUCE
+}
+
 type Mutation {
   calculateDelivery(package: CalculateDeliveryPackageDto!, receiverPoint: CalculateDeliveryPointDto!, senderPoint: CalculateDeliveryPointDto!): CalculateDeliveryResponse!
   cancelCinemaOrder(orderId: String!): BaseResponse!
@@ -403,6 +449,126 @@ type PaymentResponse {
   order: String!
   reason: String
   success: Boolean!
+}
+
+type PersonAddress {
+  apartment: String!
+  comment: String
+  house: String!
+  street: String!
+}
+
+input PersonAddressInput {
+  apartment: String!
+  comment: String
+  house: String!
+  street: String!
+}
+
+type Pizza {
+  allergens: [String!]!
+  calories: Float!
+  carbohydrates: String!
+  description: String!
+  doughs: [PizzaDough!]!
+  id: String!
+  ingredients: [PizzaIngredient!]!
+  isGlutenFree: Boolean!
+  isHit: Boolean!
+  isNew: Boolean!
+  isVegetarian: Boolean!
+  name: String!
+  protein: String!
+  sizes: [PizzaSize!]!
+  sodium: String!
+  totalFat: String!
+}
+
+type PizzaDough {
+  name: Dough!
+  price: Float!
+}
+
+input PizzaDoughInput {
+  name: Dough!
+  price: Float!
+}
+
+type PizzaIngredient {
+  cost: Float!
+  name: Ingredient!
+}
+
+input PizzaIngredientInput {
+  cost: Float!
+  name: Ingredient!
+}
+
+input PizzaInput {
+  allergens: [String!]!
+  calories: Float!
+  carbohydrates: String!
+  description: String!
+  doughs: [PizzaDoughInput!]!
+  id: String!
+  ingredients: [PizzaIngredientInput!]!
+  isGlutenFree: Boolean!
+  isHit: Boolean!
+  isNew: Boolean!
+  isVegetarian: Boolean!
+  name: String!
+  protein: String!
+  sizes: [PizzaSizeInput!]!
+  sodium: String!
+  totalFat: String!
+}
+
+type PizzaOrder {
+  _id: String!
+  cancellable: Boolean!
+  person: PizzaPerson!
+  receiverAddress: PersonAddress!
+  status: PizzaStatus!
+}
+
+input PizzaOrderInput {
+  _id: String!
+  cancellable: Boolean!
+  person: PizzaPersonInput!
+  receiverAddress: PersonAddressInput!
+  status: PizzaStatus!
+}
+
+type PizzaPerson {
+  firstname: String!
+  lastname: String!
+  middlename: String
+  phone: String!
+}
+
+input PizzaPersonInput {
+  firstname: String!
+  lastname: String!
+  middlename: String
+  phone: String!
+}
+
+type PizzaSize {
+  name: Size!
+  price: Float!
+}
+
+input PizzaSizeInput {
+  name: Size!
+  price: Float!
+}
+
+enum PizzaStatus {
+  CANCELED
+  IN_PROCESSING
+  ON_MY_WAY
+  SUCCESS
+  WAITING_COURIER
 }
 
 enum Profession {
@@ -458,6 +624,12 @@ type SignInResponse {
   success: Boolean!
   token: String!
   user: User!
+}
+
+enum Size {
+  LARGE
+  MEDIUM
+  SMALL
 }
 
 type Ticket {

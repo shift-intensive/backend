@@ -11,6 +11,7 @@ import * as path from 'path';
 import { CinemaModule } from '@/modules/cinema/cinema.module';
 import { DeliveryModule } from '@/modules/delivery/delivery.module';
 import { OtpsModule } from '@/modules/otps/otps.module';
+import { PizzaModule } from '@/modules/pizza/pizza.module';
 import { UsersModule } from '@/modules/users/users.module';
 import { WakeUpModule } from '@/modules/wakeup/wakeup.module';
 
@@ -56,6 +57,7 @@ import { AppController } from './app.controller';
     UsersModule,
     CinemaModule,
     DeliveryModule,
+    PizzaModule,
     WakeUpModule
   ],
   providers: []
