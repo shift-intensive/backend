@@ -11,6 +11,15 @@ export class FilmHall {
   name: string;
 
   @Field(() => [[FilmHallCell]])
-  @ApiProperty({ description: 'Места в зале', type: [[FilmHallCell]] })
+  @ApiProperty({
+    description: 'Места в зале',
+    type: 'array',
+    items: {
+      type: 'array',
+      items: {
+        type: typeof FilmHallCell
+      }
+    }
+  })
   places: FilmHallCell[][];
 }
