@@ -35,7 +35,8 @@ export const pizzas: Pizza[] = [
     isVegetarian: false,
     isGlutenFree: false,
     isNew: false,
-    isHit: true
+    isHit: true,
+    img: '/static/images/pizza/1.jpeg'
   },
   {
     id: '2',
@@ -64,7 +65,8 @@ export const pizzas: Pizza[] = [
     isVegetarian: true,
     isGlutenFree: false,
     isNew: false,
-    isHit: false
+    isHit: false,
+    img: '/static/images/pizza/2.jpeg'
   },
   {
     id: '3',
@@ -95,7 +97,8 @@ export const pizzas: Pizza[] = [
     isVegetarian: true,
     isGlutenFree: false,
     isNew: true,
-    isHit: false
+    isHit: false,
+    img: '/static/images/pizza/3.jpeg'
   },
   {
     id: '4',
@@ -125,11 +128,12 @@ export const pizzas: Pizza[] = [
     isVegetarian: false,
     isGlutenFree: false,
     isNew: false,
-    isHit: false
+    isHit: false,
+    img: '/static/images/pizza/4.jpeg'
   },
   {
     id: '5',
-    name: Ingredient.PEPERONI,
+    name: 'Пепперони',
     ingredients: [
       { name: Ingredient.TOMATO_SAUCE, cost: 50 },
       { name: Ingredient.MOZARELLA, cost: 70 },
@@ -154,7 +158,8 @@ export const pizzas: Pizza[] = [
     isVegetarian: false,
     isGlutenFree: false,
     isNew: false,
-    isHit: false
+    isHit: false,
+    img: '/static/images/pizza/5.jpeg'
   },
   {
     id: '6',
@@ -186,7 +191,8 @@ export const pizzas: Pizza[] = [
     isVegetarian: true,
     isGlutenFree: false,
     isNew: false,
-    isHit: false
+    isHit: false,
+    img: '/static/images/pizza/6.jpeg'
   },
   {
     id: '7',
@@ -217,7 +223,8 @@ export const pizzas: Pizza[] = [
     isVegetarian: false,
     isGlutenFree: false,
     isNew: false,
-    isHit: false
+    isHit: false,
+    img: '/static/images/pizza/7.jpeg'
   },
   {
     id: '8',
@@ -251,7 +258,8 @@ export const pizzas: Pizza[] = [
     isVegetarian: false,
     isGlutenFree: false,
     isNew: false,
-    isHit: false
+    isHit: false,
+    img: '/static/images/pizza/8.jpeg'
   },
   {
     id: '9',
@@ -282,7 +290,8 @@ export const pizzas: Pizza[] = [
     isVegetarian: false,
     isGlutenFree: false,
     isNew: false,
-    isHit: false
+    isHit: false,
+    img: '/static/images/pizza/9.jpeg'
   },
   {
     id: '10',
@@ -313,7 +322,8 @@ export const pizzas: Pizza[] = [
     isVegetarian: false,
     isGlutenFree: false,
     isNew: false,
-    isHit: false
+    isHit: false,
+    img: '/static/images/pizza/10.jpeg'
   },
   {
     id: '11',
@@ -345,7 +355,8 @@ export const pizzas: Pizza[] = [
     isVegetarian: false,
     isGlutenFree: false,
     isNew: false,
-    isHit: false
+    isHit: false,
+    img: '/static/images/pizza/11.jpeg'
   },
   {
     id: '12',
@@ -377,7 +388,8 @@ export const pizzas: Pizza[] = [
     isVegetarian: true,
     isGlutenFree: false,
     isNew: false,
-    isHit: false
+    isHit: false,
+    img: '/static/images/pizza/12.jpeg'
   },
   {
     id: '13',
@@ -407,7 +419,8 @@ export const pizzas: Pizza[] = [
     isVegetarian: true,
     isGlutenFree: false,
     isNew: false,
-    isHit: false
+    isHit: false,
+    img: '/static/images/pizza/13.jpeg'
   },
   {
     id: '14',
@@ -438,7 +451,8 @@ export const pizzas: Pizza[] = [
     isVegetarian: true,
     isGlutenFree: false,
     isNew: false,
-    isHit: false
+    isHit: false,
+    img: '/static/images/pizza/14.jpeg'
   },
   {
     id: '15',
@@ -469,7 +483,8 @@ export const pizzas: Pizza[] = [
     isVegetarian: false,
     isGlutenFree: false,
     isNew: false,
-    isHit: false
+    isHit: false,
+    img: '/static/images/pizza/15.jpeg'
   },
   {
     id: '16',
@@ -501,7 +516,8 @@ export const pizzas: Pizza[] = [
     isVegetarian: false,
     isGlutenFree: false,
     isNew: false,
-    isHit: false
+    isHit: false,
+    img: '/static/images/pizza/16.jpeg'
   },
   {
     id: '17',
@@ -536,7 +552,8 @@ export const pizzas: Pizza[] = [
     isVegetarian: false,
     isGlutenFree: false,
     isNew: false,
-    isHit: false
+    isHit: false,
+    img: '/static/images/pizza/17.jpeg'
   },
   {
     id: '18',
@@ -567,7 +584,8 @@ export const pizzas: Pizza[] = [
     isVegetarian: false,
     isGlutenFree: false,
     isNew: false,
-    isHit: false
+    isHit: false,
+    img: '/static/images/pizza/18.jpeg'
   },
   {
     id: '19',
@@ -601,7 +619,8 @@ export const pizzas: Pizza[] = [
     isVegetarian: true,
     isGlutenFree: false,
     isNew: false,
-    isHit: false
+    isHit: false,
+    img: '/static/images/pizza/19.jpeg'
   },
   {
     id: '20',
@@ -633,6 +652,7 @@ export const pizzas: Pizza[] = [
     isVegetarian: true,
     isGlutenFree: false,
     isNew: false,
-    isHit: false
+    isHit: false,
+    img: '/static/images/pizza/20.jpeg'
   }
 ];

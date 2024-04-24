@@ -1,14 +1,22 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Param, Post, Put, Req } from '@nestjs/common';
 import { Args } from '@nestjs/graphql';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiHeader, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Request } from 'express';
 
-import { pizzas } from '@/modules/pizza/constants/pizzas';
-import { CreatePizzaPaymentDto } from '@/modules/pizza/dto/create-pizza-payment.dto';
-import { PizzaStatus } from '@/modules/pizza/modules/pizza-order/pizza-order.entity';
-import { PizzaOrderService } from '@/modules/pizza/modules/pizza-order/pizza-order.service';
-import { CatalogResponse, PaymentResponse } from '@/modules/pizza/pizza.model';
+import { CancelPizzaOrderDto, CreatePizzaPaymentDto, GetPizzaOrderDto } from '@/modules/pizza/dto';
+import { PizzaOrderService, PizzaStatus } from '@/modules/pizza/modules/pizza-order';
+import {
+  CatalogResponse,
+  PaymentResponse,
+  PizzaOrderResponse,
+  PizzaOrdersResponse
+} from '@/modules/pizza/pizza.model';
+import type { User } from '@/modules/users';
 import { UsersService } from '@/modules/users';
-import { AuthService, BaseResolver } from '@/utils/services';
+import { ApiAuthorizedOnly } from '@/utils/guards';
+import { AuthService, BaseResolver, BaseResponse } from '@/utils/services';
+
+import { pizzas } from './constants/pizzas';
 
 @ApiTags('🍕 pizza')
 @Controller('/pizza')
@@ -68,5 +76,100 @@ export class PizzaController extends BaseResolver {
     );
 
     return this.wrapSuccess({ order });
+  }
+
+  @ApiAuthorizedOnly()
+  @Get('/orders')
+  @ApiOperation({ summary: 'Получить все заказы' })
+  @ApiResponse({
+    status: 200,
+    description: 'orders',
+    type: PizzaOrdersResponse
+  })
+  @ApiHeader({
+    name: 'authorization'
+  })
+  @ApiBearerAuth()
+  async getDeliveries(@Req() request: Request): Promise<PizzaOrdersResponse> {
+    const token = request.headers.authorization.split(' ')[1];
+    const decodedJwtAccessToken = (await this.authService.decode(token)) as User;
+
+    if (!decodedJwtAccessToken) {
+      throw new BadRequestException(this.wrapFail('Некорректный токен авторизации'));
+    }
+
+    const orders = await this.pizzaOrderService.find({
+      $or: [{ 'person.phone': decodedJwtAccessToken.phone }]
+    });
+
+    return this.wrapSuccess({ orders });
+  }
+
+  @ApiAuthorizedOnly()
+  @Get('/orders/:orderId')
+  @ApiOperation({ summary: 'Получить заказ' })
+  @ApiResponse({
+    status: 200,
+    description: 'order',
+    type: PizzaOrderResponse
+  })
+  @ApiHeader({
+    name: 'authorization'
+  })
+  @ApiBearerAuth()
+  async getDelivery(
+    @Param() getPizzaOrderDto: GetPizzaOrderDto,
+    @Req() request: Request
+  ): Promise<PizzaOrderResponse> {
+    const token = request.headers.authorization.split(' ')[1];
+    const decodedJwtAccessToken = (await this.authService.decode(token)) as User;
+
+    if (!decodedJwtAccessToken) {
+      throw new BadRequestException(this.wrapFail('Некорректный токен авторизации'));
+    }
+
+    const order = await this.pizzaOrderService.findOne({
+      _id: getPizzaOrderDto.orderId,
+      $or: [{ 'person.phone': decodedJwtAccessToken.phone }]
+    });
+
+    if (!order) {
+      throw new BadRequestException(this.wrapFail('Заказ не найден'));
+    }
+
+    return this.wrapSuccess({ order });
+  }
+
+  @ApiAuthorizedOnly()
+  @Put('/orders/cancel')
+  @ApiOperation({ summary: 'Отменить заказ' })
+  @ApiResponse({
+    status: 200,
+    description: 'order cancel',
+    type: BaseResponse
+  })
+  @ApiHeader({
+    name: 'authorization'
+  })
+  @ApiBearerAuth()
+  async cancelDeliveryOrder(
+    @Body() cancelPizzaOrderDto: CancelPizzaOrderDto
+  ): Promise<BaseResponse> {
+    const order = await this.pizzaOrderService.findOne({ _id: cancelPizzaOrderDto.orderId });
+
+    if (!order) {
+      throw new BadRequestException(this.wrapFail('Заказ не найден'));
+    }
+
+    if (order.status > PizzaStatus.IN_PROCESSING) {
+      throw new BadRequestException(this.wrapFail('Заказ нельзя отменить'));
+    }
+
+    await this.pizzaOrderService.updateOne(
+      { _id: cancelPizzaOrderDto.orderId },
+      { $set: { status: PizzaStatus.CANCELED } }
+    );
+
+    return this.wrapSuccess();
   }
 }

@@ -18,3 +18,17 @@ export class PaymentResponse extends BaseResponse {
   @ApiProperty({ description: 'Доставка', type: PizzaOrder })
   order: PizzaOrder;
 }
+
+@ObjectType()
+export class PizzaOrdersResponse extends BaseResponse {
+  @Field(() => [PizzaOrder])
+  @ApiProperty({ description: 'Доставки', type: [PizzaOrder] })
+  orders: PizzaOrder[];
+}
+
+@ObjectType()
+export class PizzaOrderResponse extends BaseResponse {
+  @Field(() => PizzaOrder)
+  @ApiProperty({ description: 'Доставки', type: PizzaOrder })
+  order: PizzaOrder;
+}

@@ -71,4 +71,8 @@ export class Pizza {
   @Field(() => Boolean)
   @ApiProperty({ description: 'Хит' })
   isHit: boolean;
+
+  @Field(() => String)
+  @ApiProperty({ description: 'Изображение пиццы' })
+  img: string;
 }

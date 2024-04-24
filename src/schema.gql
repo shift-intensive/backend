@@ -472,6 +472,7 @@ type Pizza {
   description: String!
   doughs: [PizzaDough!]!
   id: String!
+  img: String!
   ingredients: [PizzaIngredient!]!
   isGlutenFree: Boolean!
   isHit: Boolean!
@@ -511,6 +512,7 @@ input PizzaInput {
   description: String!
   doughs: [PizzaDoughInput!]!
   id: String!
+  img: String!
   ingredients: [PizzaIngredientInput!]!
   isGlutenFree: Boolean!
   isHit: Boolean!
