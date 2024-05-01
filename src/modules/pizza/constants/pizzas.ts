@@ -4,7 +4,7 @@ import { Dough, Ingredient, Size } from '../entities';
 export const pizzas: Pizza[] = [
   {
     id: '1',
-    name: 'Додо Суприм',
+    name: 'ШИФТ Суприм',
     ingredients: [
       { name: Ingredient.TOMATO_SAUCE, cost: 50 },
       { name: Ingredient.MOZARELLA, cost: 70 },
@@ -16,7 +16,7 @@ export const pizzas: Pizza[] = [
       { name: Ingredient.MUSHROOMS, cost: 80 }
     ],
     description:
-      'Наш сигнатурный пицца с пепперони, колбасой, зеленым перцем, луком, оливками и шампиньонами.',
+      'Наша пицца с пепперони, колбасой, зеленым перцем, луком, оливками и шампиньонами.',
     sizes: [
       { name: Size.SMALL, price: 499 },
       { name: Size.MEDIUM, price: 799 },

@@ -53,8 +53,8 @@ export class CreatePizzaPaymentAddressDto {
   comment?: string;
 }
 
-@InputType('CreatePaymentDebitCardDto')
-export class CreatePaymentDebitCardDto {
+@InputType('CreatePizzaPaymentDebitCardDto')
+export class CreatePizzaPaymentDebitCardDto {
   @IsString()
   @IsNotEmpty()
   @Field(() => String)
@@ -87,7 +87,7 @@ export class CreatePizzaPaymentDto {
   person: CreatePizzaPaymentPersonDto;
 
   @ValidateNested()
-  @Field(() => CreatePaymentDebitCardDto)
-  @ApiProperty({ description: 'Банковская карта', type: CreatePaymentDebitCardDto })
-  debitCard: CreatePaymentDebitCardDto;
+  @Field(() => CreatePizzaPaymentDebitCardDto)
+  @ApiProperty({ description: 'Банковская карта', type: CreatePizzaPaymentDebitCardDto })
+  debitCard: CreatePizzaPaymentDebitCardDto;
 }

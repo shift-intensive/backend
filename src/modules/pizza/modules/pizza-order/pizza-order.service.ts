@@ -26,7 +26,7 @@ export class PizzaOrderService extends BaseService<PizzaOrderDocument, PizzaOrde
 
     await this.updateMany(
       { _id: { $in: randomDeliveries.map((delivery) => delivery._id) } },
-      { $inc: { status: 1, cancellable: false } }
+      { $inc: { status: 1 }, $set: { cancellable: false } }
     );
   }
 }

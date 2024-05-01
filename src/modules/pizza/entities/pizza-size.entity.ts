@@ -2,9 +2,9 @@ import { Field, InputType, ObjectType, registerEnumType } from '@nestjs/graphql'
 import { ApiProperty } from '@nestjs/swagger';
 
 export enum Size {
-  SMALL = 'Маленькая',
-  MEDIUM = 'Средняя',
-  LARGE = 'Большая'
+  SMALL = 'SMALL',
+  MEDIUM = 'MEDIUM',
+  LARGE = 'LARGE'
 }
 
 registerEnumType(Size, {

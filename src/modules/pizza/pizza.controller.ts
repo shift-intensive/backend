@@ -3,20 +3,20 @@ import { Args } from '@nestjs/graphql';
 import { ApiBearerAuth, ApiHeader, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 
-import { CancelPizzaOrderDto, CreatePizzaPaymentDto, GetPizzaOrderDto } from '@/modules/pizza/dto';
-import { PizzaOrderService, PizzaStatus } from '@/modules/pizza/modules/pizza-order';
-import {
-  CatalogResponse,
-  PaymentResponse,
-  PizzaOrderResponse,
-  PizzaOrdersResponse
-} from '@/modules/pizza/pizza.model';
 import type { User } from '@/modules/users';
 import { UsersService } from '@/modules/users';
 import { ApiAuthorizedOnly } from '@/utils/guards';
 import { AuthService, BaseResolver, BaseResponse } from '@/utils/services';
 
 import { pizzas } from './constants/pizzas';
+import { PizzaOrderService, PizzaStatus } from './modules/pizza-order';
+import { CancelPizzaOrderDto, CreatePizzaPaymentDto, GetPizzaOrderDto } from './dto';
+import {
+  CatalogResponse,
+  PizzaOrderResponse,
+  PizzaOrdersResponse,
+  PizzaPaymentResponse
+} from './pizza.model';
 
 @ApiTags('🍕 pizza')
 @Controller('/pizza')
@@ -45,11 +45,11 @@ export class PizzaController extends BaseResolver {
   @ApiResponse({
     status: 200,
     description: 'payment',
-    type: PaymentResponse
+    type: PizzaPaymentResponse
   })
   async createPizzaPayment(
     @Args() createPizzaPaymentDto: CreatePizzaPaymentDto
-  ): Promise<PaymentResponse> {
+  ): Promise<PizzaPaymentResponse> {
     const { person } = createPizzaPaymentDto;
 
     const order = await this.pizzaOrderService.create({
@@ -152,9 +152,7 @@ export class PizzaController extends BaseResolver {
     name: 'authorization'
   })
   @ApiBearerAuth()
-  async cancelDeliveryOrder(
-    @Body() cancelPizzaOrderDto: CancelPizzaOrderDto
-  ): Promise<BaseResponse> {
+  async cancelPizzaOrder(@Body() cancelPizzaOrderDto: CancelPizzaOrderDto): Promise<BaseResponse> {
     const order = await this.pizzaOrderService.findOne({ _id: cancelPizzaOrderDto.orderId });
 
     if (!order) {

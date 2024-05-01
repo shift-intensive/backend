@@ -39,6 +39,12 @@ type CalculateDeliveryResponse {
   success: Boolean!
 }
 
+type CatalogResponse {
+  catalog: [Pizza!]!
+  reason: String
+  success: Boolean!
+}
+
 type CinemaOrder {
   _id: String!
   filmName: String!
@@ -132,6 +138,26 @@ input CreatePaymentSeanceDto {
 input CreatePaymentTicketsDto {
   column: Float!
   row: Float!
+}
+
+input CreatePizzaPaymentAddressDto {
+  apartment: String!
+  comment: String
+  house: String!
+  street: String!
+}
+
+input CreatePizzaPaymentDebitCardDto {
+  cvv: String!
+  expireDate: String!
+  pan: String!
+}
+
+input CreatePizzaPaymentPersonDto {
+  firstname: String!
+  lastname: String!
+  middlename: String
+  phone: String!
 }
 
 type DeliverResponse {
@@ -411,9 +437,11 @@ type Mutation {
   calculateDelivery(package: CalculateDeliveryPackageDto!, receiverPoint: CalculateDeliveryPointDto!, senderPoint: CalculateDeliveryPointDto!): CalculateDeliveryResponse!
   cancelCinemaOrder(orderId: String!): BaseResponse!
   cancelDeliveryOrder(orderId: String!): BaseResponse!
+  cancelPizzaOrder(orderId: String!): BaseResponse!
   createCinemaPayment(debitCard: CreatePaymentDebitCardDto!, filmId: String!, person: CreatePaymentPersonDto!, seance: CreatePaymentSeanceDto!, tickets: [CreatePaymentTicketsDto!]!): PaymentResponse!
   createDeliveryOrder(option: CreateDeliveryOrderDeliveryOptionDto!, payer: Payer!, receiver: CreateDeliveryOrderPersonDto!, receiverAddress: CreateDeliveryOrderAddressDto!, receiverPoint: CreateDeliveryOrderPointDto!, sender: CreateDeliveryOrderPersonDto!, senderAddress: CreateDeliveryOrderAddressDto!, senderPoint: CreateDeliveryOrderPointDto!): DeliverResponse!
   createOtp(phone: String!): OtpResponse!
+  createPizzaPayment(debitCard: CreatePizzaPaymentDebitCardDto!, person: CreatePizzaPaymentPersonDto!, receiverAddress: CreatePizzaPaymentAddressDto!): PizzaPaymentResponse!
   signin(code: Float!, phone: String!): SignInResponse!
   updateProfile(phone: String!, profile: UpdateProfileProfileDto!): UpdateProfileResponse!
 }
@@ -541,6 +569,24 @@ input PizzaOrderInput {
   status: PizzaStatus!
 }
 
+type PizzaOrderResponse {
+  order: PizzaOrder!
+  reason: String
+  success: Boolean!
+}
+
+type PizzaOrdersResponse {
+  orders: [PizzaOrder!]!
+  reason: String
+  success: Boolean!
+}
+
+type PizzaPaymentResponse {
+  order: PizzaOrder!
+  reason: String
+  success: Boolean!
+}
+
 type PizzaPerson {
   firstname: String!
   lastname: String!
@@ -581,12 +627,15 @@ enum Profession {
 type Query {
   getCinemaOrders: TicketsResponse!
   getCinemaToday: FilmsResponse!
+  getDeliveries: PizzaOrdersResponse!
+  getDelivery(orderId: String!): PizzaOrderResponse!
   getDeliveryOrder(orderId: String!): DeliveryOrderResponse!
   getDeliveryOrders: DeliveryOrdersResponse!
   getDeliveryPackageTypes: DeliveryPackageTypesResponse!
   getDeliveryPoints: DeliveryPointsResponse!
   getFilm(filmId: String!): FilmResponse!
   getFilmSchedule(filmId: String!): ScheduleResponse!
+  getPizzas: CatalogResponse!
   session: SessionResponse!
 }
 

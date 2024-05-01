@@ -6,12 +6,13 @@ import { UsersModule } from '@/modules/users';
 import { AuthModule } from '@/utils/services';
 
 import { PizzaController } from './pizza.controller';
+import { PizzaMutation } from './pizza.mutation';
+import { PizzaQuery } from './pizza.query';
 
 @Module({
   controllers: [PizzaController],
   imports: [AuthModule, PizzaOrderModule, UsersModule, ScheduleModule.forRoot()],
-  // providers: [DeliveryQuery, DeliveryMutation],
-  providers: [],
+  providers: [PizzaQuery, PizzaMutation],
   exports: []
 })
 export class PizzaModule {}

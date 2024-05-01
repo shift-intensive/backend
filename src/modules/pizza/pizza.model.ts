@@ -13,7 +13,7 @@ export class CatalogResponse extends BaseResponse {
 }
 
 @ObjectType()
-export class PaymentResponse extends BaseResponse {
+export class PizzaPaymentResponse extends BaseResponse {
   @Field(() => PizzaOrder)
   @ApiProperty({ description: 'Доставка', type: PizzaOrder })
   order: PizzaOrder;
