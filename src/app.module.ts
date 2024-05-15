@@ -11,6 +11,7 @@ import * as path from 'path';
 import { CinemaModule } from '@/modules/cinema/cinema.module';
 import { DeliveryModule } from '@/modules/delivery/delivery.module';
 import { OtpsModule } from '@/modules/otps/otps.module';
+import { TesterModule } from '@/modules/tester/tester.module';
 import { UsersModule } from '@/modules/users/users.module';
 import { WakeUpModule } from '@/modules/wakeup/wakeup.module';
 
@@ -52,6 +53,7 @@ import { AppController } from './app.controller';
       serveRoot: '/static',
       rootPath: path.join(__dirname, '..', 'static')
     }),
+    TesterModule,
     OtpsModule,
     UsersModule,
     CinemaModule,
