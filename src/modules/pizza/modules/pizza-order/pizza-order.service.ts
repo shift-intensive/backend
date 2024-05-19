@@ -16,16 +16,16 @@ export class PizzaOrderService extends BaseService<PizzaOrderDocument, PizzaOrde
 
   @Cron('*/20 * * * *')
   async handleCron() {
-    const deliveries = await this.find({
+    const orders = await this.find({
       $and: [{ status: { $ne: PizzaStatus.SUCCESS } }, { status: { $ne: PizzaStatus.CANCELED } }]
     });
 
-    const randomDeliveries = deliveries.filter(() => Math.random() < 0.3);
+    const randomOrders = orders.filter(() => Math.random() < 0.3);
 
-    if (!randomDeliveries.length) return;
+    if (!randomOrders.length) return;
 
     await this.updateMany(
-      { _id: { $in: randomDeliveries.map((delivery) => delivery._id) } },
+      { _id: { $in: randomOrders.map((order) => order._id) } },
       { $inc: { status: 1 }, $set: { cancellable: false } }
     );
   }

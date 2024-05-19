@@ -6,7 +6,7 @@ import { PizzaOrder } from '@/modules/pizza/modules/pizza-order/pizza-order.enti
 import { BaseResponse } from '@/utils/services';
 
 @ObjectType()
-export class CatalogResponse extends BaseResponse {
+export class PizzasResponse extends BaseResponse {
   @Field(() => [Pizza])
   @ApiProperty({ description: 'Пиццы', type: [Pizza] })
   catalog: Pizza[];

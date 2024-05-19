@@ -12,10 +12,10 @@ import { pizzas } from './constants/pizzas';
 import { PizzaOrderService, PizzaStatus } from './modules/pizza-order';
 import { CancelPizzaOrderDto, CreatePizzaPaymentDto, GetPizzaOrderDto } from './dto';
 import {
-  CatalogResponse,
   PizzaOrderResponse,
   PizzaOrdersResponse,
-  PizzaPaymentResponse
+  PizzaPaymentResponse,
+  PizzasResponse
 } from './pizza.model';
 
 @ApiTags('🍕 pizza')
@@ -34,9 +34,9 @@ export class PizzaController extends BaseResolver {
   @ApiResponse({
     status: 200,
     description: 'catalog',
-    type: CatalogResponse
+    type: PizzasResponse
   })
-  getPizzas(): CatalogResponse {
+  getPizzasCatalog(): PizzasResponse {
     return this.wrapSuccess({ catalog: pizzas });
   }
 
@@ -90,7 +90,7 @@ export class PizzaController extends BaseResolver {
     name: 'authorization'
   })
   @ApiBearerAuth()
-  async getDeliveries(@Req() request: Request): Promise<PizzaOrdersResponse> {
+  async getPizzaOrders(@Req() request: Request): Promise<PizzaOrdersResponse> {
     const token = request.headers.authorization.split(' ')[1];
     const decodedJwtAccessToken = (await this.authService.decode(token)) as User;
 
@@ -117,7 +117,7 @@ export class PizzaController extends BaseResolver {
     name: 'authorization'
   })
   @ApiBearerAuth()
-  async getDelivery(
+  async getPizzaOrder(
     @Param() getPizzaOrderDto: GetPizzaOrderDto,
     @Req() request: Request
   ): Promise<PizzaOrderResponse> {

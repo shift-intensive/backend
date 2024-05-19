@@ -11,7 +11,7 @@ import type { User } from '../users';
 
 import { PizzaOrderService } from './modules/pizza-order';
 import { GetPizzaOrderDto } from './dto';
-import { CatalogResponse, PizzaOrderResponse, PizzaOrdersResponse } from './pizza.model';
+import { PizzaOrderResponse, PizzaOrdersResponse, PizzasResponse } from './pizza.model';
 
 @Resolver('🍕 pizza query')
 @DescribeContext('PizzaQuery')
@@ -24,14 +24,14 @@ export class PizzaQuery extends BaseResolver {
     super();
   }
 
-  @Query(() => CatalogResponse)
-  getPizzas(): CatalogResponse {
+  @Query(() => PizzasResponse)
+  getPizzasCatalog(): PizzasResponse {
     return this.wrapSuccess({ catalog: pizzas });
   }
 
   @GqlAuthorizedOnly()
   @Query(() => PizzaOrdersResponse)
-  async getDeliveries(@Context() context: { req: Request }): Promise<PizzaOrdersResponse> {
+  async getPizzaOrders(@Context() context: { req: Request }): Promise<PizzaOrdersResponse> {
     const token = context.req.headers.authorization.split(' ')[1];
     const decodedJwtAccessToken = (await this.authService.decode(token)) as User;
 
@@ -48,7 +48,7 @@ export class PizzaQuery extends BaseResolver {
 
   @GqlAuthorizedOnly()
   @Query(() => PizzaOrderResponse)
-  async getDelivery(
+  async getPizzaOrder(
     @Args() getPizzaOrderDto: GetPizzaOrderDto,
     @Context() context: { req: Request }
   ): Promise<PizzaOrderResponse> {

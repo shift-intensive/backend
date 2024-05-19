@@ -4,7 +4,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import type { Document } from 'mongoose';
 import { Schema as MongooseSchema } from 'mongoose';
 
-import { PersonAddress, PizzaPerson } from '../../entities';
+import { PizzaAddress, PizzaPerson } from '../../entities';
 
 export enum PizzaStatus {
   IN_PROCESSING,
@@ -34,10 +34,10 @@ export class PizzaOrder {
   @ApiProperty({ description: 'Данные пользователя', type: PizzaPerson })
   person: PizzaPerson;
 
-  @Field(() => PersonAddress)
+  @Field(() => PizzaAddress)
   @Prop({ required: true })
-  @ApiProperty({ description: 'Адрес доставки', type: PersonAddress })
-  receiverAddress: PersonAddress;
+  @ApiProperty({ description: 'Адрес доставки', type: PizzaAddress })
+  receiverAddress: PizzaAddress;
 
   @Field(() => PizzaStatus)
   @Prop({ required: true, default: PizzaStatus.IN_PROCESSING })
