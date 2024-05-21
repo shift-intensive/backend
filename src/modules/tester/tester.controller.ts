@@ -1,6 +1,6 @@
-import { BadRequestException, Body, Controller, Next, Patch, Post, Req } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Next, Patch, Post, Req, Res } from '@nestjs/common';
 import { ApiBearerAuth, ApiHeader, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 
 import { ApiAuthorizedOnly } from '@/utils/guards';
 import { BaseResolver } from '@/utils/services';
@@ -40,6 +40,7 @@ export class TesterController extends BaseResolver {
   })
   async createOtp(
     @Req() request: Request,
+    @Res() response: Response,
     @Body() createOtpDto: CreateOtpDto,
     @Next() next
   ): Promise<OtpResponse> {
@@ -55,10 +56,13 @@ export class TesterController extends BaseResolver {
       const { retryDelay, created } = existingOtp;
       const now = new Date().getTime();
 
-      if (new Date(created).getTime() + retryDelay > now)
-        return this.wrapSuccess({
+      if (new Date(created).getTime() + retryDelay > now) {
+        const result = this.wrapSuccess({
           retryDelay: RETRY_DELAY * 10 - (now - new Date(created).getTime())
         });
+        response.json(result);
+        return result;
+      }
     }
 
     const code = Math.floor(100000 + Math.random() * 900000);
@@ -68,6 +72,8 @@ export class TesterController extends BaseResolver {
       retryDelay: RETRY_DELAY * 10
     });
 
-    return this.wrapSuccess({ retryDelay: RETRY_DELAY * 10 });
+    const result = this.wrapSuccess({ retryDelay: RETRY_DELAY * 10 });
+    response.json(result);
+    return result;
   }
 }
