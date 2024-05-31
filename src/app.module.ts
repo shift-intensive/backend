@@ -15,6 +15,7 @@ import { TesterModule } from '@/modules/tester/tester.module';
 import { UsersModule } from '@/modules/users/users.module';
 import { WakeUpModule } from '@/modules/wakeup/wakeup.module';
 
+import { AndroidSampleModule } from './modules/android-sample';
 import { AppController } from './app.controller';
 
 @Module({
@@ -53,6 +54,7 @@ import { AppController } from './app.controller';
       serveRoot: '/static',
       rootPath: path.join(__dirname, '..', 'static')
     }),
+    AndroidSampleModule,
     TesterModule,
     OtpsModule,
     UsersModule,

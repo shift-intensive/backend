@@ -4,6 +4,7 @@ import type { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { join } from 'path';
 
+import { AndroidSampleModule } from './modules/android-sample';
 import { OtpsModule } from './modules/otps';
 import { UsersModule } from './modules/users';
 import { AppModule } from './app.module';
@@ -56,6 +57,17 @@ async function bootstrap() {
     include: [OtpsModule, UsersModule]
   });
   SwaggerModule.setup('tester', app, testerDocument);
+
+  const androidSampleConfig = new DocumentBuilder()
+    .setTitle('android sample 🤖')
+    .setDescription('Апи для android sample')
+    .setVersion('1.0')
+    .build();
+
+  const androidSampleDocument = SwaggerModule.createDocument(app, androidSampleConfig, {
+    include: [AndroidSampleModule]
+  });
+  SwaggerModule.setup('android-sample', app, androidSampleDocument);
 
   const port = process.env.PORT ?? 3000;
   await app.listen(port);
