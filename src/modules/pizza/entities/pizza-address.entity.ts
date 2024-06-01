@@ -1,9 +1,9 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { ApiProperty } from '@nestjs/swagger';
 
-@InputType('AddressInput')
+@InputType('PizzaAddressInput')
 @ObjectType()
-export class Address {
+export class PizzaAddress {
   @Field(() => String)
   @ApiProperty({ example: 'street', description: 'Улица' })
   street: string;
@@ -13,8 +13,8 @@ export class Address {
   house: string;
 
   @Field(() => String)
-  @ApiProperty({ example: 'appartament', description: 'Номер квартиры' })
-  appartament: string;
+  @ApiProperty({ example: 'apartment', description: 'Номер квартиры' })
+  apartment: string;
 
   @Field(() => String, { nullable: true })
   @ApiProperty({ example: 'comment', description: 'Комментарий' })

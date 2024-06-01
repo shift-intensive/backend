@@ -106,8 +106,8 @@ export class CreateDeliveryOrderAddressDto {
   @IsString()
   @IsNotEmpty()
   @Field(() => String)
-  @ApiProperty({ example: 'appartament', description: 'Номер квартиры' })
-  appartament: string;
+  @ApiProperty({ example: 'apartment', description: 'Номер квартиры' })
+  apartment: string;
 
   @IsString()
   @Field(() => String, { nullable: true })
