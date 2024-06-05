@@ -22,7 +22,7 @@ export class AndroidSampleController extends BaseResolver {
     return LOAN_FEED_ITEMS;
   }
 
-  @Get('/loans/:id')
+  @Get('/loans/:loanId')
   @ApiOperation({ summary: 'получить займ' })
   @ApiResponse({
     status: 200,
