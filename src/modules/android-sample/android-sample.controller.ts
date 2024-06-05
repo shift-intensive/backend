@@ -5,8 +5,7 @@ import { BaseResolver } from '@/utils/services';
 
 import { LOAN_FEED_ITEMS, LOANS } from './constants';
 import { GetLoanDto } from './dto';
-import type { LoanFeedItem } from './entities';
-import { Loan } from './entities';
+import { Loan, LoanFeedItem } from './entities';
 
 @ApiTags('🤖 android')
 @Controller('/android')
@@ -15,8 +14,8 @@ export class AndroidSampleController extends BaseResolver {
   @ApiOperation({ summary: 'получить займы' })
   @ApiResponse({
     status: 200,
-    description: 'loans',
-    type: [Loan]
+    description: 'loan feed',
+    type: [LoanFeedItem]
   })
   getLoanFeed(): LoanFeedItem[] {
     return LOAN_FEED_ITEMS;
