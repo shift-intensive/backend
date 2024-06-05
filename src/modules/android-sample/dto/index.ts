@@ -1,1 +1,1 @@
-export * from './get-full-loan.dto';
+export * from './get-loan.dto';

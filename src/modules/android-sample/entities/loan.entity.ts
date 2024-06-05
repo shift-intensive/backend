@@ -1,27 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export enum LoanStatus {
-  APPROVED = 'APPROVED',
-  REGISTERED = 'REGISTERED',
-  REJECTED = 'REJECTED'
-}
+import { LoanFeedItem } from './loan-feed-item.entity';
 
-export class Loan {
-  @ApiProperty({ example: 1, description: 'Идентификатор займа' })
-  id: number;
+export class Loan extends LoanFeedItem {
+  @ApiProperty({ example: '+77259786293', description: 'Номер телефона' })
+  phone: string;
 
-  @ApiProperty({ example: 'Борис', description: 'Имя' })
-  first_name: string;
+  @ApiProperty({ example: '2024-05-25T12:01:44Z', description: 'Дата выдачи кредита' })
+  date: string;
 
-  @ApiProperty({ example: 'Михеев', description: 'Фамилия' })
-  last_name: string;
-
-  @ApiProperty({ example: 15000, description: 'Сумма кредита' })
-  amount: number;
-
-  @ApiProperty({ example: 190, description: 'Процентная ставка' })
-  percent: number;
-
-  @ApiProperty({ example: 'APPROVED', description: 'Процентная ставка', enum: LoanStatus })
-  status: LoanStatus;
+  @ApiProperty({ example: 20, description: 'Срок кредита' })
+  period: number;
 }

@@ -3,9 +3,10 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { BaseResolver } from '@/utils/services';
 
-import { EXPENDED_LOANS, LOANS } from './constants';
-import { GetFullLoanDto } from './dto';
-import { ExpendedLoan, Loan } from './entities';
+import { LOAN_FEED_ITEMS, LOANS } from './constants';
+import { GetLoanDto } from './dto';
+import type { LoanFeedItem } from './entities';
+import { Loan } from './entities';
 
 @ApiTags('🤖 android')
 @Controller('/android')
@@ -17,8 +18,8 @@ export class AndroidSampleController extends BaseResolver {
     description: 'loans',
     type: [Loan]
   })
-  getLoans(): Loan[] {
-    return LOANS;
+  getLoanFeed(): LoanFeedItem[] {
+    return LOAN_FEED_ITEMS;
   }
 
   @Get('/loans/:id')
@@ -26,9 +27,9 @@ export class AndroidSampleController extends BaseResolver {
   @ApiResponse({
     status: 200,
     description: 'loan',
-    type: ExpendedLoan
+    type: Loan
   })
-  getFullLoan(@Param() params: GetFullLoanDto): ExpendedLoan {
-    return EXPENDED_LOANS.find((loan) => loan.id === Number(params.loanId));
+  getFullLoan(@Param() params: GetLoanDto): Loan {
+    return LOANS.find((loan) => loan.id === Number(params.loanId));
   }
 }
