@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { BadRequestException, Controller, Get, Param } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { BaseResolver } from '@/utils/services';
@@ -29,6 +29,12 @@ export class AndroidSampleController extends BaseResolver {
     type: Loan
   })
   getFullLoan(@Param() params: GetLoanDto): Loan {
+    const loan = LOANS.find((loan) => loan.id === Number(params.loanId));
+
+    if (!loan) {
+      throw new BadRequestException(this.wrapFail('Займ не найден'));
+    }
+
     return LOANS.find((loan) => loan.id === Number(params.loanId));
   }
 }

@@ -54,6 +54,11 @@ export class CinemaController extends BaseResolver {
   })
   getFilm(@Param() params: GetFilmDto): FilmResponse {
     const film = this.cinemaService.getFilm(params.filmId);
+
+    if (!film) {
+      throw new BadRequestException(this.wrapFail('Фильм не найден'));
+    }
+
     return this.wrapSuccess({ film });
   }
 
