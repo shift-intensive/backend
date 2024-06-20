@@ -132,6 +132,6 @@ export class CreatePizzaPaymentDto {
 
   @ValidateNested()
   @Field(() => [CreatePizzaPaymentPizzaDto])
-  @ApiProperty({ example: 'pizzas', description: 'Пиццы' })
+  @ApiProperty({ description: 'Пиццы', type: [CreatePizzaPaymentPizzaDto] })
   pizzas: CreatePizzaPaymentPizzaDto[];
 }
