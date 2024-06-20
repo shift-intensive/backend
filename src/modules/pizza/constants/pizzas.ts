@@ -1,20 +1,94 @@
 import type { Pizza } from '../entities';
 import { Dough, Ingredient, Size } from '../entities';
 
+const TOPPINGS = [
+  { name: Ingredient.GREEN_PEPPER, cost: 60, img: './static/images/green_pepper.png' },
+  { name: Ingredient.TOMATO_SAUCE, cost: 50, img: '' },
+  { name: Ingredient.MOZARELLA, cost: 70, img: '' },
+  { name: Ingredient.PEPERONI, cost: 120, img: '' },
+  { name: Ingredient.SAUSAGE, cost: 130, img: '' },
+  { name: Ingredient.RED_ONION, cost: 60, img: '' },
+  { name: Ingredient.BLACK_OLIVE, cost: 70, img: '' },
+  { name: Ingredient.MUSHROOMS, cost: 80, img: '' },
+  { name: Ingredient.BASIL, cost: 80, img: '' },
+  { name: Ingredient.CHEDDAR, cost: 80, img: '' },
+  { name: Ingredient.PARMESAN, cost: 80, img: '' },
+  { name: Ingredient.FETA, cost: 80, img: '' },
+  { name: Ingredient.HAM, cost: 80, img: '' },
+  { name: Ingredient.PINEAPPLE, cost: 80, img: '' },
+  { name: Ingredient.TOMATO, cost: 80, img: '' },
+  { name: Ingredient.BEEF, cost: 80, img: '' },
+  { name: Ingredient.SALAMI, cost: 80, img: '' },
+  { name: Ingredient.BACON, cost: 80, img: '' },
+  { name: Ingredient.CHILE, cost: 80, img: '' },
+  { name: Ingredient.JALAPENO, cost: 80, img: '' },
+  { name: Ingredient.CORN, cost: 80, img: '' },
+  { name: Ingredient.ONION, cost: 80, img: '' },
+  { name: Ingredient.EGG, cost: 80, img: '' },
+  { name: Ingredient.SHRIMPS, cost: 80, img: '' },
+  { name: Ingredient.MUSSELS, cost: 80, img: '' },
+  { name: Ingredient.SQUID, cost: 80, img: '' },
+  { name: Ingredient.OLIVES, cost: 80, img: '' },
+  { name: Ingredient.SPINACH, cost: 80, img: '' },
+  { name: Ingredient.GARLIC, cost: 80, img: '' },
+  { name: Ingredient.OREGANO, cost: 80, img: '' },
+  { name: Ingredient.BANANA, cost: 80, img: '' },
+  { name: Ingredient.PEACH, cost: 80, img: '' },
+  { name: Ingredient.CHICKEN_FILLET, cost: 80, img: '' },
+  { name: Ingredient.BBQ_SAUCE, cost: 80, img: '' },
+  { name: Ingredient.CREAM_SAUCE, cost: 80, img: '' },
+  { name: Ingredient.SALMON, cost: 80, img: '' },
+  { name: Ingredient.PHILADELPHIA_CHEESE, cost: 80, img: '' },
+  { name: Ingredient.AVOCADO, cost: 80, img: '' }
+];
+
 export const pizzas: Pizza[] = [
   {
     id: '1',
     name: 'ШИФТ Суприм',
     ingredients: [
-      { name: Ingredient.TOMATO_SAUCE, cost: 50 },
-      { name: Ingredient.MOZARELLA, cost: 70 },
-      { name: Ingredient.PEPERONI, cost: 120 },
-      { name: Ingredient.SAUSAGE, cost: 130 },
-      { name: Ingredient.GREEN_PEPPER, cost: 60 },
-      { name: Ingredient.RED_ONION, cost: 60 },
-      { name: Ingredient.BLACK_OLIVE, cost: 70 },
-      { name: Ingredient.MUSHROOMS, cost: 80 }
+      {
+        name: Ingredient.TOMATO_SAUCE,
+        cost: 50,
+        img: ''
+      },
+      {
+        name: Ingredient.MOZARELLA,
+        cost: 70,
+        img: ''
+      },
+      {
+        name: Ingredient.PEPERONI,
+        cost: 120,
+        img: ''
+      },
+      {
+        name: Ingredient.SAUSAGE,
+        cost: 130,
+        img: ''
+      },
+      {
+        name: Ingredient.GREEN_PEPPER,
+        cost: 60,
+        img: './static/images/green_pepper.png'
+      },
+      {
+        name: Ingredient.RED_ONION,
+        cost: 60,
+        img: ''
+      },
+      {
+        name: Ingredient.BLACK_OLIVE,
+        cost: 70,
+        img: ''
+      },
+      {
+        name: Ingredient.MUSHROOMS,
+        cost: 80,
+        img: ''
+      }
     ],
+    toppings: TOPPINGS,
     description:
       'Наша пицца с пепперони, колбасой, зеленым перцем, луком, оливками и шампиньонами.',
     sizes: [
@@ -42,10 +116,23 @@ export const pizzas: Pizza[] = [
     id: '2',
     name: 'Маргарита',
     ingredients: [
-      { name: Ingredient.TOMATO_SAUCE, cost: 50 },
-      { name: Ingredient.MOZARELLA, cost: 70 },
-      { name: Ingredient.BASIL, cost: 40 }
+      {
+        name: Ingredient.TOMATO_SAUCE,
+        cost: 50,
+        img: ''
+      },
+      {
+        name: Ingredient.MOZARELLA,
+        cost: 70,
+        img: ''
+      },
+      {
+        name: Ingredient.BASIL,
+        cost: 40,
+        img: ''
+      }
     ],
+    toppings: TOPPINGS,
     description: 'Классическая пицца с томатным соусом, моцареллой и листьями базилика.',
     sizes: [
       { name: Size.SMALL, price: 449 },
@@ -72,12 +159,33 @@ export const pizzas: Pizza[] = [
     id: '3',
     name: 'Четыре Сыра',
     ingredients: [
-      { name: Ingredient.TOMATO_SAUCE, cost: 50 },
-      { name: Ingredient.MOZARELLA, cost: 70 },
-      { name: Ingredient.CHEDDAR, cost: 90 },
-      { name: Ingredient.PARMESAN, cost: 90 },
-      { name: Ingredient.FETA, cost: 100 }
+      {
+        name: Ingredient.TOMATO_SAUCE,
+        cost: 50,
+        img: ''
+      },
+      {
+        name: Ingredient.MOZARELLA,
+        cost: 70,
+        img: ''
+      },
+      {
+        name: Ingredient.CHEDDAR,
+        cost: 90,
+        img: ''
+      },
+      {
+        name: Ingredient.PARMESAN,
+        cost: 90,
+        img: ''
+      },
+      {
+        name: Ingredient.FETA,
+        cost: 100,
+        img: ''
+      }
     ],
+    toppings: TOPPINGS,
     description: 'Пицца с миксом моцареллы, чеддера, пармезана и феты.',
     sizes: [
       { name: Size.SMALL, price: 549 },
@@ -104,11 +212,28 @@ export const pizzas: Pizza[] = [
     id: '4',
     name: 'Гавайская',
     ingredients: [
-      { name: Ingredient.TOMATO_SAUCE, cost: 50 },
-      { name: Ingredient.MOZARELLA, cost: 70 },
-      { name: Ingredient.HAM, cost: 150 },
-      { name: Ingredient.PINEAPPLE, cost: 100 }
+      {
+        name: Ingredient.TOMATO_SAUCE,
+        cost: 50,
+        img: ''
+      },
+      {
+        name: Ingredient.MOZARELLA,
+        cost: 70,
+        img: ''
+      },
+      {
+        name: Ingredient.HAM,
+        cost: 150,
+        img: ''
+      },
+      {
+        name: Ingredient.PINEAPPLE,
+        cost: 100,
+        img: ''
+      }
     ],
+    toppings: TOPPINGS,
     description: 'Пицца с ветчиной и ананасом.',
     sizes: [
       { name: Size.SMALL, price: 549 },
@@ -135,10 +260,23 @@ export const pizzas: Pizza[] = [
     id: '5',
     name: 'Пепперони',
     ingredients: [
-      { name: Ingredient.TOMATO_SAUCE, cost: 50 },
-      { name: Ingredient.MOZARELLA, cost: 70 },
-      { name: Ingredient.PEPERONI, cost: 120 }
+      {
+        name: Ingredient.TOMATO_SAUCE,
+        cost: 50,
+        img: ''
+      },
+      {
+        name: Ingredient.MOZARELLA,
+        cost: 70,
+        img: ''
+      },
+      {
+        name: Ingredient.PEPERONI,
+        cost: 120,
+        img: ''
+      }
     ],
+    toppings: TOPPINGS,
     description: 'Классическая пицца с пепперони.',
     sizes: [
       { name: Size.SMALL, price: 499 },
@@ -165,13 +303,38 @@ export const pizzas: Pizza[] = [
     id: '6',
     name: 'Вегетарианская',
     ingredients: [
-      { name: Ingredient.TOMATO_SAUCE, cost: 50 },
-      { name: Ingredient.MOZARELLA, cost: 70 },
-      { name: Ingredient.TOMATO, cost: 60 },
-      { name: Ingredient.MUSHROOMS, cost: 80 },
-      { name: Ingredient.GREEN_PEPPER, cost: 60 },
-      { name: Ingredient.RED_ONION, cost: 60 }
+      {
+        name: Ingredient.TOMATO_SAUCE,
+        cost: 50,
+        img: ''
+      },
+      {
+        name: Ingredient.MOZARELLA,
+        cost: 70,
+        img: ''
+      },
+      {
+        name: Ingredient.TOMATO,
+        cost: 60,
+        img: ''
+      },
+      {
+        name: Ingredient.MUSHROOMS,
+        cost: 80,
+        img: ''
+      },
+      {
+        name: Ingredient.GREEN_PEPPER,
+        cost: 60,
+        img: './static/images/green_pepper.png'
+      },
+      {
+        name: Ingredient.RED_ONION,
+        cost: 60,
+        img: ''
+      }
     ],
+    toppings: TOPPINGS,
     description: 'Пицца с овощами: помидорами, шампиньонами, зеленым перцем и красным луком.',
     sizes: [
       { name: Size.SMALL, price: 549 },
@@ -198,12 +361,33 @@ export const pizzas: Pizza[] = [
     id: '7',
     name: 'Мясная',
     ingredients: [
-      { name: Ingredient.TOMATO_SAUCE, cost: 50 },
-      { name: Ingredient.MOZARELLA, cost: 70 },
-      { name: Ingredient.BEEF, cost: 140 },
-      { name: Ingredient.SALAMI, cost: 120 },
-      { name: Ingredient.BACON, cost: 160 }
+      {
+        name: Ingredient.TOMATO_SAUCE,
+        cost: 50,
+        img: ''
+      },
+      {
+        name: Ingredient.MOZARELLA,
+        cost: 70,
+        img: ''
+      },
+      {
+        name: Ingredient.BEEF,
+        cost: 140,
+        img: ''
+      },
+      {
+        name: Ingredient.SALAMI,
+        cost: 120,
+        img: ''
+      },
+      {
+        name: Ingredient.BACON,
+        cost: 160,
+        img: ''
+      }
     ],
+    toppings: TOPPINGS,
     description: 'Пицца с ассорти мяса: говядиной, салями и беконом.',
     sizes: [
       { name: Size.SMALL, price: 599 },
@@ -230,14 +414,43 @@ export const pizzas: Pizza[] = [
     id: '8',
     name: 'Мексиканская',
     ingredients: [
-      { name: Ingredient.TOMATO_SAUCE, cost: 50 },
-      { name: Ingredient.MOZARELLA, cost: 70 },
-      { name: Ingredient.BEEF, cost: 140 },
-      { name: Ingredient.CHILE, cost: 80 },
-      { name: Ingredient.JALAPENO, cost: 80 },
-      { name: Ingredient.CORN, cost: 60 },
-      { name: Ingredient.ONION, cost: 60 }
+      {
+        name: Ingredient.TOMATO_SAUCE,
+        cost: 50,
+        img: ''
+      },
+      {
+        name: Ingredient.MOZARELLA,
+        cost: 70,
+        img: ''
+      },
+      {
+        name: Ingredient.BEEF,
+        cost: 140,
+        img: ''
+      },
+      {
+        name: Ingredient.CHILE,
+        cost: 80,
+        img: ''
+      },
+      {
+        name: Ingredient.JALAPENO,
+        cost: 80,
+        img: ''
+      },
+      {
+        name: Ingredient.CORN,
+        cost: 60,
+        img: ''
+      },
+      {
+        name: Ingredient.ONION,
+        cost: 60,
+        img: ''
+      }
     ],
+    toppings: TOPPINGS,
     description:
       'Пицца с мексиканскими пряностями: говядиной, перцем чили, перцем халапеньо, кукурузой и луком.',
     sizes: [
@@ -265,12 +478,33 @@ export const pizzas: Pizza[] = [
     id: '9',
     name: 'Кальцоне',
     ingredients: [
-      { name: Ingredient.TOMATO_SAUCE, cost: 50 },
-      { name: Ingredient.MOZARELLA, cost: 70 },
-      { name: Ingredient.HAM, cost: 120 },
-      { name: Ingredient.MUSHROOMS, cost: 80 },
-      { name: Ingredient.EGG, cost: 30 }
+      {
+        name: Ingredient.TOMATO_SAUCE,
+        cost: 50,
+        img: ''
+      },
+      {
+        name: Ingredient.MOZARELLA,
+        cost: 70,
+        img: ''
+      },
+      {
+        name: Ingredient.HAM,
+        cost: 120,
+        img: ''
+      },
+      {
+        name: Ingredient.MUSHROOMS,
+        cost: 80,
+        img: ''
+      },
+      {
+        name: Ingredient.EGG,
+        cost: 30,
+        img: ''
+      }
     ],
+    toppings: TOPPINGS,
     description: 'Запеченная пицца-кальцоне с моцареллой, ветчиной, грибами и яйцом.',
     sizes: [
       { name: Size.SMALL, price: 599 },
@@ -297,12 +531,33 @@ export const pizzas: Pizza[] = [
     id: '10',
     name: 'Мясоед',
     ingredients: [
-      { name: Ingredient.TOMATO_SAUCE, cost: 50 },
-      { name: Ingredient.MOZARELLA, cost: 70 },
-      { name: Ingredient.SALAMI, cost: 120 },
-      { name: Ingredient.BACON, cost: 160 },
-      { name: Ingredient.HAM, cost: 140 }
+      {
+        name: Ingredient.TOMATO_SAUCE,
+        cost: 50,
+        img: ''
+      },
+      {
+        name: Ingredient.MOZARELLA,
+        cost: 70,
+        img: ''
+      },
+      {
+        name: Ingredient.SALAMI,
+        cost: 120,
+        img: ''
+      },
+      {
+        name: Ingredient.BACON,
+        cost: 160,
+        img: ''
+      },
+      {
+        name: Ingredient.HAM,
+        cost: 140,
+        img: ''
+      }
     ],
+    toppings: TOPPINGS,
     description: 'Пицца для любителей мяса с салями, беконом и ветчиной.',
     sizes: [
       { name: Size.SMALL, price: 649 },
@@ -329,13 +584,38 @@ export const pizzas: Pizza[] = [
     id: '11',
     name: 'Морская',
     ingredients: [
-      { name: Ingredient.TOMATO_SAUCE, cost: 50 },
-      { name: Ingredient.MOZARELLA, cost: 70 },
-      { name: Ingredient.SHRIMPS, cost: 180 },
-      { name: Ingredient.MUSSELS, cost: 150 },
-      { name: Ingredient.SQUID, cost: 140 },
-      { name: Ingredient.OLIVES, cost: 60 }
+      {
+        name: Ingredient.TOMATO_SAUCE,
+        cost: 50,
+        img: ''
+      },
+      {
+        name: Ingredient.MOZARELLA,
+        cost: 70,
+        img: ''
+      },
+      {
+        name: Ingredient.SHRIMPS,
+        cost: 180,
+        img: ''
+      },
+      {
+        name: Ingredient.MUSSELS,
+        cost: 150,
+        img: ''
+      },
+      {
+        name: Ingredient.SQUID,
+        cost: 140,
+        img: ''
+      },
+      {
+        name: Ingredient.OLIVES,
+        cost: 60,
+        img: ''
+      }
     ],
+    toppings: TOPPINGS,
     description: 'Пицца с морепродуктами: креветками, мидиями, кальмарами и маслинами.',
     sizes: [
       { name: Size.SMALL, price: 649 },
@@ -362,13 +642,38 @@ export const pizzas: Pizza[] = [
     id: '12',
     name: 'Четыре Сыра с грибами',
     ingredients: [
-      { name: Ingredient.TOMATO_SAUCE, cost: 50 },
-      { name: Ingredient.MOZARELLA, cost: 70 },
-      { name: Ingredient.CHEDDAR, cost: 90 },
-      { name: Ingredient.PARMESAN, cost: 90 },
-      { name: Ingredient.FETA, cost: 100 },
-      { name: Ingredient.MUSHROOMS, cost: 80 }
+      {
+        name: Ingredient.TOMATO_SAUCE,
+        cost: 50,
+        img: ''
+      },
+      {
+        name: Ingredient.MOZARELLA,
+        cost: 70,
+        img: ''
+      },
+      {
+        name: Ingredient.CHEDDAR,
+        cost: 90,
+        img: ''
+      },
+      {
+        name: Ingredient.PARMESAN,
+        cost: 90,
+        img: ''
+      },
+      {
+        name: Ingredient.FETA,
+        cost: 100,
+        img: ''
+      },
+      {
+        name: Ingredient.MUSHROOMS,
+        cost: 80,
+        img: ''
+      }
     ],
+    toppings: TOPPINGS,
     description: 'Пицца с миксом моцареллы, чеддера, пармезана, феты и шампиньонами.',
     sizes: [
       { name: Size.SMALL, price: 649 },
@@ -395,11 +700,28 @@ export const pizzas: Pizza[] = [
     id: '13',
     name: 'Маринара',
     ingredients: [
-      { name: Ingredient.TOMATO_SAUCE, cost: 50 },
-      { name: Ingredient.GARLIC, cost: 30 },
-      { name: Ingredient.OLIVES, cost: 40 },
-      { name: Ingredient.OREGANO, cost: 20 }
+      {
+        name: Ingredient.TOMATO_SAUCE,
+        cost: 50,
+        img: ''
+      },
+      {
+        name: Ingredient.GARLIC,
+        cost: 30,
+        img: ''
+      },
+      {
+        name: Ingredient.OLIVES,
+        cost: 40,
+        img: ''
+      },
+      {
+        name: Ingredient.OREGANO,
+        cost: 20,
+        img: ''
+      }
     ],
+    toppings: TOPPINGS,
     description: 'Простая пицца с томатным соусом, чесноком, оливковым маслом и орегано.',
     sizes: [
       { name: Size.SMALL, price: 449 },
@@ -426,12 +748,33 @@ export const pizzas: Pizza[] = [
     id: '14',
     name: 'Фруктовая',
     ingredients: [
-      { name: Ingredient.TOMATO_SAUCE, cost: 50 },
-      { name: Ingredient.MOZARELLA, cost: 70 },
-      { name: Ingredient.PINEAPPLE, cost: 100 },
-      { name: Ingredient.BANANA, cost: 80 },
-      { name: Ingredient.PEACH, cost: 80 }
+      {
+        name: Ingredient.TOMATO_SAUCE,
+        cost: 50,
+        img: ''
+      },
+      {
+        name: Ingredient.MOZARELLA,
+        cost: 70,
+        img: ''
+      },
+      {
+        name: Ingredient.PINEAPPLE,
+        cost: 100,
+        img: ''
+      },
+      {
+        name: Ingredient.BANANA,
+        cost: 80,
+        img: ''
+      },
+      {
+        name: Ingredient.PEACH,
+        cost: 80,
+        img: ''
+      }
     ],
+    toppings: TOPPINGS,
     description: 'Пицца с фруктами: ананасом, бананом и персиком.',
     sizes: [
       { name: Size.SMALL, price: 499 },
@@ -458,12 +801,33 @@ export const pizzas: Pizza[] = [
     id: '15',
     name: 'Барбекю Чикен',
     ingredients: [
-      { name: Ingredient.TOMATO_SAUCE, cost: 50 },
-      { name: Ingredient.MOZARELLA, cost: 70 },
-      { name: Ingredient.CHICKEN_FILLET, cost: 150 },
-      { name: Ingredient.ONION, cost: 60 },
-      { name: Ingredient.BBQ_SAUCE, cost: 80 }
+      {
+        name: Ingredient.TOMATO_SAUCE,
+        cost: 50,
+        img: ''
+      },
+      {
+        name: Ingredient.MOZARELLA,
+        cost: 70,
+        img: ''
+      },
+      {
+        name: Ingredient.CHICKEN_FILLET,
+        cost: 150,
+        img: ''
+      },
+      {
+        name: Ingredient.ONION,
+        cost: 60,
+        img: ''
+      },
+      {
+        name: Ingredient.BBQ_SAUCE,
+        cost: 80,
+        img: ''
+      }
     ],
+    toppings: TOPPINGS,
     description: 'Пицца с куриной грудкой, луком и барбекю соусом.',
     sizes: [
       { name: Size.SMALL, price: 549 },
@@ -490,13 +854,38 @@ export const pizzas: Pizza[] = [
     id: '16',
     name: 'Филадельфия',
     ingredients: [
-      { name: Ingredient.CREAM_SAUCE, cost: 60 },
-      { name: Ingredient.MOZARELLA, cost: 70 },
-      { name: Ingredient.SALMON, cost: 200 },
-      { name: Ingredient.PHILADELPHIA_CHEESE, cost: 120 },
-      { name: Ingredient.ONION, cost: 50 },
-      { name: Ingredient.AVOCADO, cost: 80 }
+      {
+        name: Ingredient.CREAM_SAUCE,
+        cost: 60,
+        img: ''
+      },
+      {
+        name: Ingredient.MOZARELLA,
+        cost: 70,
+        img: ''
+      },
+      {
+        name: Ingredient.SALMON,
+        cost: 200,
+        img: ''
+      },
+      {
+        name: Ingredient.PHILADELPHIA_CHEESE,
+        cost: 120,
+        img: ''
+      },
+      {
+        name: Ingredient.ONION,
+        cost: 50,
+        img: ''
+      },
+      {
+        name: Ingredient.AVOCADO,
+        cost: 80,
+        img: ''
+      }
     ],
+    toppings: TOPPINGS,
     description: 'Пицца с лососем, сыром филадельфия, авокадо и зеленым луком.',
     sizes: [
       { name: Size.SMALL, price: 649 },
@@ -523,15 +912,48 @@ export const pizzas: Pizza[] = [
     id: '17',
     name: 'Пикантная Мексиканская',
     ingredients: [
-      { name: Ingredient.TOMATO_SAUCE, cost: 50 },
-      { name: Ingredient.MOZARELLA, cost: 70 },
-      { name: Ingredient.BEEF, cost: 140 },
-      { name: Ingredient.CHILE, cost: 80 },
-      { name: Ingredient.JALAPENO, cost: 80 },
-      { name: Ingredient.CORN, cost: 60 },
-      { name: Ingredient.ONION, cost: 60 },
-      { name: Ingredient.CHEDDAR, cost: 90 }
+      {
+        name: Ingredient.TOMATO_SAUCE,
+        cost: 50,
+        img: ''
+      },
+      {
+        name: Ingredient.MOZARELLA,
+        cost: 70,
+        img: ''
+      },
+      {
+        name: Ingredient.BEEF,
+        cost: 140,
+        img: ''
+      },
+      {
+        name: Ingredient.CHILE,
+        cost: 80,
+        img: ''
+      },
+      {
+        name: Ingredient.JALAPENO,
+        cost: 80,
+        img: ''
+      },
+      {
+        name: Ingredient.CORN,
+        cost: 60,
+        img: ''
+      },
+      {
+        name: Ingredient.ONION,
+        cost: 60,
+        img: ''
+      },
+      {
+        name: Ingredient.CHEDDAR,
+        cost: 90,
+        img: ''
+      }
     ],
+    toppings: TOPPINGS,
     description:
       'Острая пицца с говядиной, перцем чили, перцем халапеньо, кукурузой, луком и топленным сыром.',
     sizes: [
@@ -559,12 +981,33 @@ export const pizzas: Pizza[] = [
     id: '18',
     name: 'Карбонара',
     ingredients: [
-      { name: Ingredient.CREAM_SAUCE, cost: 60 },
-      { name: Ingredient.MOZARELLA, cost: 70 },
-      { name: Ingredient.BACON, cost: 160 },
-      { name: Ingredient.PARMESAN, cost: 100 },
-      { name: Ingredient.EGG, cost: 30 }
+      {
+        name: Ingredient.CREAM_SAUCE,
+        cost: 60,
+        img: ''
+      },
+      {
+        name: Ingredient.MOZARELLA,
+        cost: 70,
+        img: ''
+      },
+      {
+        name: Ingredient.BACON,
+        cost: 160,
+        img: ''
+      },
+      {
+        name: Ingredient.PARMESAN,
+        cost: 100,
+        img: ''
+      },
+      {
+        name: Ingredient.EGG,
+        cost: 30,
+        img: ''
+      }
     ],
+    toppings: TOPPINGS,
     description: 'Пицца с беконом, сыром пармезан и яйцом в сливочном соусе.',
     sizes: [
       { name: Size.SMALL, price: 649 },
@@ -591,14 +1034,43 @@ export const pizzas: Pizza[] = [
     id: '19',
     name: 'Греческая',
     ingredients: [
-      { name: Ingredient.TOMATO_SAUCE, cost: 50 },
-      { name: Ingredient.MOZARELLA, cost: 70 },
-      { name: Ingredient.TOMATO, cost: 60 },
-      { name: Ingredient.OLIVES, cost: 80 },
-      { name: Ingredient.GREEN_PEPPER, cost: 60 },
-      { name: Ingredient.FETA, cost: 100 },
-      { name: Ingredient.OREGANO, cost: 30 }
+      {
+        name: Ingredient.TOMATO_SAUCE,
+        cost: 50,
+        img: ''
+      },
+      {
+        name: Ingredient.MOZARELLA,
+        cost: 70,
+        img: ''
+      },
+      {
+        name: Ingredient.TOMATO,
+        cost: 60,
+        img: ''
+      },
+      {
+        name: Ingredient.OLIVES,
+        cost: 80,
+        img: ''
+      },
+      {
+        name: Ingredient.GREEN_PEPPER,
+        cost: 60,
+        img: './static/images/green_pepper.png'
+      },
+      {
+        name: Ingredient.FETA,
+        cost: 100,
+        img: ''
+      },
+      {
+        name: Ingredient.OREGANO,
+        cost: 30,
+        img: ''
+      }
     ],
+    toppings: TOPPINGS,
     description:
       'Пицца с томатным соусом, моцареллой, помидорами, оливками, перцем, фетой и орегано.',
     sizes: [
@@ -626,13 +1098,38 @@ export const pizzas: Pizza[] = [
     id: '20',
     name: 'Шпинатная',
     ingredients: [
-      { name: Ingredient.TOMATO_SAUCE, cost: 50 },
-      { name: Ingredient.MOZARELLA, cost: 70 },
-      { name: Ingredient.SPINACH, cost: 80 },
-      { name: Ingredient.FETA, cost: 100 },
-      { name: Ingredient.GARLIC, cost: 30 },
-      { name: Ingredient.OREGANO, cost: 30 }
+      {
+        name: Ingredient.TOMATO_SAUCE,
+        cost: 50,
+        img: ''
+      },
+      {
+        name: Ingredient.MOZARELLA,
+        cost: 70,
+        img: ''
+      },
+      {
+        name: Ingredient.SPINACH,
+        cost: 80,
+        img: ''
+      },
+      {
+        name: Ingredient.FETA,
+        cost: 100,
+        img: ''
+      },
+      {
+        name: Ingredient.GARLIC,
+        cost: 30,
+        img: ''
+      },
+      {
+        name: Ingredient.OREGANO,
+        cost: 30,
+        img: ''
+      }
     ],
+    toppings: TOPPINGS,
     description: 'Пицца с томатным соусом, моцареллой, шпинатом, фетой, чесноком и орегано.',
     sizes: [
       { name: Size.SMALL, price: 549 },

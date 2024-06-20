@@ -2,6 +2,45 @@ import { ArgsType, Field, InputType } from '@nestjs/graphql';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, ValidateNested } from 'class-validator';
 
+import { PizzaDough, PizzaIngredient, PizzaSize } from '../entities';
+
+@InputType('CreatePizzaPaymentPizzaDto')
+export class CreatePizzaPaymentPizzaDto {
+  @IsString()
+  @IsNotEmpty()
+  @Field(() => String)
+  @ApiProperty({ example: '1', description: 'Идентификатор пиццы' })
+  id: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @Field(() => String)
+  @ApiProperty({ description: 'Название пиццы' })
+  name: string;
+
+  @Field(() => [PizzaIngredient])
+  @ApiProperty({ description: 'Топпинги', type: [PizzaIngredient] })
+  toppings: PizzaIngredient[];
+
+  @IsString()
+  @IsNotEmpty()
+  @Field(() => String)
+  @ApiProperty({ description: 'Описание пиццы' })
+  description: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @Field(() => [PizzaSize])
+  @ApiProperty({ description: 'Размеры пиццы', type: PizzaSize })
+  size: PizzaSize;
+
+  @IsString()
+  @IsNotEmpty()
+  @Field(() => PizzaDough)
+  @ApiProperty({ description: 'Тип теста', type: PizzaDough })
+  doughs: PizzaDough;
+}
+
 @InputType('CreatePizzaPaymentPersonDto')
 export class CreatePizzaPaymentPersonDto {
   @IsString()
@@ -90,4 +129,9 @@ export class CreatePizzaPaymentDto {
   @Field(() => CreatePizzaPaymentDebitCardDto)
   @ApiProperty({ description: 'Банковская карта', type: CreatePizzaPaymentDebitCardDto })
   debitCard: CreatePizzaPaymentDebitCardDto;
+
+  @ValidateNested()
+  @Field(() => [CreatePizzaPaymentPizzaDto])
+  @ApiProperty({ example: 'pizzas', description: 'Пиццы' })
+  pizzas: CreatePizzaPaymentPizzaDto[];
 }

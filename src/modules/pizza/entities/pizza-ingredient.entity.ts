@@ -56,4 +56,8 @@ export class PizzaIngredient {
   @Field(() => Number)
   @ApiProperty({ description: 'Цена ингредиента' })
   cost: number;
+
+  @Field(() => String)
+  @ApiProperty({ description: 'Количество ингредиента' })
+  img: string;
 }

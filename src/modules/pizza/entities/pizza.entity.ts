@@ -20,6 +20,10 @@ export class Pizza {
   @ApiProperty({ description: 'Ингредиенты', type: [PizzaIngredient] })
   ingredients: PizzaIngredient[];
 
+  @Field(() => [PizzaIngredient])
+  @ApiProperty({ description: 'Топпинги', type: [PizzaIngredient] })
+  toppings: PizzaIngredient[];
+
   @Field(() => String)
   @ApiProperty({ description: 'Описание пиццы' })
   description: string;
