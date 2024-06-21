@@ -2,44 +2,48 @@ import type { Pizza } from '../entities';
 import { Dough, Ingredient, Size } from '../entities';
 
 const TOPPINGS = [
-  { name: Ingredient.GREEN_PEPPER, cost: 60, img: './static/images/green_pepper.png' },
-  { name: Ingredient.TOMATO_SAUCE, cost: 50, img: '' },
-  { name: Ingredient.MOZARELLA, cost: 70, img: '' },
-  { name: Ingredient.PEPERONI, cost: 120, img: '' },
-  { name: Ingredient.SAUSAGE, cost: 130, img: '' },
-  { name: Ingredient.RED_ONION, cost: 60, img: '' },
-  { name: Ingredient.BLACK_OLIVE, cost: 70, img: '' },
-  { name: Ingredient.MUSHROOMS, cost: 80, img: '' },
-  { name: Ingredient.BASIL, cost: 80, img: '' },
-  { name: Ingredient.CHEDDAR, cost: 80, img: '' },
-  { name: Ingredient.PARMESAN, cost: 80, img: '' },
-  { name: Ingredient.FETA, cost: 80, img: '' },
-  { name: Ingredient.HAM, cost: 80, img: '' },
-  { name: Ingredient.PINEAPPLE, cost: 80, img: '' },
-  { name: Ingredient.TOMATO, cost: 80, img: '' },
-  { name: Ingredient.BEEF, cost: 80, img: '' },
-  { name: Ingredient.SALAMI, cost: 80, img: '' },
-  { name: Ingredient.BACON, cost: 80, img: '' },
-  { name: Ingredient.CHILE, cost: 80, img: '' },
-  { name: Ingredient.JALAPENO, cost: 80, img: '' },
-  { name: Ingredient.CORN, cost: 80, img: '' },
-  { name: Ingredient.ONION, cost: 80, img: '' },
-  { name: Ingredient.EGG, cost: 80, img: '' },
-  { name: Ingredient.SHRIMPS, cost: 80, img: '' },
-  { name: Ingredient.MUSSELS, cost: 80, img: '' },
-  { name: Ingredient.SQUID, cost: 80, img: '' },
-  { name: Ingredient.OLIVES, cost: 80, img: '' },
-  { name: Ingredient.SPINACH, cost: 80, img: '' },
-  { name: Ingredient.GARLIC, cost: 80, img: '' },
-  { name: Ingredient.OREGANO, cost: 80, img: '' },
-  { name: Ingredient.BANANA, cost: 80, img: '' },
-  { name: Ingredient.PEACH, cost: 80, img: '' },
-  { name: Ingredient.CHICKEN_FILLET, cost: 80, img: '' },
-  { name: Ingredient.BBQ_SAUCE, cost: 80, img: '' },
-  { name: Ingredient.CREAM_SAUCE, cost: 80, img: '' },
-  { name: Ingredient.SALMON, cost: 80, img: '' },
-  { name: Ingredient.PHILADELPHIA_CHEESE, cost: 80, img: '' },
-  { name: Ingredient.AVOCADO, cost: 80, img: '' }
+  { name: Ingredient.GREEN_PEPPER, cost: 60, img: '/static/images/ingredient/green_pepper.png' },
+  { name: Ingredient.TOMATO_SAUCE, cost: 50, img: '/static/images/ingredient/green_pepper.png' },
+  { name: Ingredient.MOZARELLA, cost: 70, img: '/static/images/ingredient/green_pepper.png' },
+  { name: Ingredient.PEPERONI, cost: 120, img: '/static/images/ingredient/green_pepper.png' },
+  { name: Ingredient.SAUSAGE, cost: 130, img: '/static/images/ingredient/green_pepper.png' },
+  { name: Ingredient.RED_ONION, cost: 60, img: '/static/images/ingredient/green_pepper.png' },
+  { name: Ingredient.BLACK_OLIVE, cost: 70, img: '/static/images/ingredient/green_pepper.png' },
+  { name: Ingredient.MUSHROOMS, cost: 80, img: '/static/images/ingredient/green_pepper.png' },
+  { name: Ingredient.BASIL, cost: 80, img: '/static/images/ingredient/green_pepper.png' },
+  { name: Ingredient.CHEDDAR, cost: 80, img: '/static/images/ingredient/green_pepper.png' },
+  { name: Ingredient.PARMESAN, cost: 80, img: '/static/images/ingredient/green_pepper.png' },
+  { name: Ingredient.FETA, cost: 80, img: '/static/images/ingredient/green_pepper.png' },
+  { name: Ingredient.HAM, cost: 80, img: '/static/images/ingredient/green_pepper.png' },
+  { name: Ingredient.PINEAPPLE, cost: 80, img: '/static/images/ingredient/green_pepper.png' },
+  { name: Ingredient.TOMATO, cost: 80, img: '/static/images/ingredient/green_pepper.png' },
+  { name: Ingredient.BEEF, cost: 80, img: '/static/images/ingredient/green_pepper.png' },
+  { name: Ingredient.SALAMI, cost: 80, img: '/static/images/ingredient/green_pepper.png' },
+  { name: Ingredient.BACON, cost: 80, img: '/static/images/ingredient/green_pepper.png' },
+  { name: Ingredient.CHILE, cost: 80, img: '/static/images/ingredient/green_pepper.png' },
+  { name: Ingredient.JALAPENO, cost: 80, img: '/static/images/ingredient/green_pepper.png' },
+  { name: Ingredient.CORN, cost: 80, img: '/static/images/ingredient/green_pepper.png' },
+  { name: Ingredient.ONION, cost: 80, img: '/static/images/ingredient/green_pepper.png' },
+  { name: Ingredient.EGG, cost: 80, img: '/static/images/ingredient/green_pepper.png' },
+  { name: Ingredient.SHRIMPS, cost: 80, img: '/static/images/ingredient/green_pepper.png' },
+  { name: Ingredient.MUSSELS, cost: 80, img: '/static/images/ingredient/green_pepper.png' },
+  { name: Ingredient.SQUID, cost: 80, img: '/static/images/ingredient/green_pepper.png' },
+  { name: Ingredient.OLIVES, cost: 80, img: '/static/images/ingredient/green_pepper.png' },
+  { name: Ingredient.SPINACH, cost: 80, img: '/static/images/ingredient/green_pepper.png' },
+  { name: Ingredient.GARLIC, cost: 80, img: '/static/images/ingredient/green_pepper.png' },
+  { name: Ingredient.OREGANO, cost: 80, img: '/static/images/ingredient/green_pepper.png' },
+  { name: Ingredient.BANANA, cost: 80, img: '/static/images/ingredient/green_pepper.png' },
+  { name: Ingredient.PEACH, cost: 80, img: '/static/images/ingredient/green_pepper.png' },
+  { name: Ingredient.CHICKEN_FILLET, cost: 80, img: '/static/images/ingredient/green_pepper.png' },
+  { name: Ingredient.BBQ_SAUCE, cost: 80, img: '/static/images/ingredient/green_pepper.png' },
+  { name: Ingredient.CREAM_SAUCE, cost: 80, img: '/static/images/ingredient/green_pepper.png' },
+  { name: Ingredient.SALMON, cost: 80, img: '/static/images/ingredient/green_pepper.png' },
+  {
+    name: Ingredient.PHILADELPHIA_CHEESE,
+    cost: 80,
+    img: '/static/images/ingredient/green_pepper.png'
+  },
+  { name: Ingredient.AVOCADO, cost: 80, img: '/static/images/ingredient/green_pepper.png' }
 ];
 
 export const pizzas: Pizza[] = [
@@ -50,42 +54,42 @@ export const pizzas: Pizza[] = [
       {
         name: Ingredient.TOMATO_SAUCE,
         cost: 50,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.MOZARELLA,
         cost: 70,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.PEPERONI,
         cost: 120,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.SAUSAGE,
         cost: 130,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.GREEN_PEPPER,
         cost: 60,
-        img: './static/images/green_pepper.png'
+        img: './static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.RED_ONION,
         cost: 60,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.BLACK_OLIVE,
         cost: 70,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.MUSHROOMS,
         cost: 80,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       }
     ],
     toppings: TOPPINGS,
@@ -119,17 +123,17 @@ export const pizzas: Pizza[] = [
       {
         name: Ingredient.TOMATO_SAUCE,
         cost: 50,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.MOZARELLA,
         cost: 70,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.BASIL,
         cost: 40,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       }
     ],
     toppings: TOPPINGS,
@@ -162,27 +166,27 @@ export const pizzas: Pizza[] = [
       {
         name: Ingredient.TOMATO_SAUCE,
         cost: 50,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.MOZARELLA,
         cost: 70,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.CHEDDAR,
         cost: 90,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.PARMESAN,
         cost: 90,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.FETA,
         cost: 100,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       }
     ],
     toppings: TOPPINGS,
@@ -215,22 +219,22 @@ export const pizzas: Pizza[] = [
       {
         name: Ingredient.TOMATO_SAUCE,
         cost: 50,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.MOZARELLA,
         cost: 70,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.HAM,
         cost: 150,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.PINEAPPLE,
         cost: 100,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       }
     ],
     toppings: TOPPINGS,
@@ -263,17 +267,17 @@ export const pizzas: Pizza[] = [
       {
         name: Ingredient.TOMATO_SAUCE,
         cost: 50,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.MOZARELLA,
         cost: 70,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.PEPERONI,
         cost: 120,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       }
     ],
     toppings: TOPPINGS,
@@ -306,32 +310,32 @@ export const pizzas: Pizza[] = [
       {
         name: Ingredient.TOMATO_SAUCE,
         cost: 50,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.MOZARELLA,
         cost: 70,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.TOMATO,
         cost: 60,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.MUSHROOMS,
         cost: 80,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.GREEN_PEPPER,
         cost: 60,
-        img: './static/images/green_pepper.png'
+        img: './static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.RED_ONION,
         cost: 60,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       }
     ],
     toppings: TOPPINGS,
@@ -364,27 +368,27 @@ export const pizzas: Pizza[] = [
       {
         name: Ingredient.TOMATO_SAUCE,
         cost: 50,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.MOZARELLA,
         cost: 70,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.BEEF,
         cost: 140,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.SALAMI,
         cost: 120,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.BACON,
         cost: 160,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       }
     ],
     toppings: TOPPINGS,
@@ -417,37 +421,37 @@ export const pizzas: Pizza[] = [
       {
         name: Ingredient.TOMATO_SAUCE,
         cost: 50,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.MOZARELLA,
         cost: 70,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.BEEF,
         cost: 140,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.CHILE,
         cost: 80,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.JALAPENO,
         cost: 80,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.CORN,
         cost: 60,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.ONION,
         cost: 60,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       }
     ],
     toppings: TOPPINGS,
@@ -481,27 +485,27 @@ export const pizzas: Pizza[] = [
       {
         name: Ingredient.TOMATO_SAUCE,
         cost: 50,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.MOZARELLA,
         cost: 70,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.HAM,
         cost: 120,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.MUSHROOMS,
         cost: 80,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.EGG,
         cost: 30,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       }
     ],
     toppings: TOPPINGS,
@@ -534,27 +538,27 @@ export const pizzas: Pizza[] = [
       {
         name: Ingredient.TOMATO_SAUCE,
         cost: 50,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.MOZARELLA,
         cost: 70,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.SALAMI,
         cost: 120,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.BACON,
         cost: 160,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.HAM,
         cost: 140,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       }
     ],
     toppings: TOPPINGS,
@@ -587,32 +591,32 @@ export const pizzas: Pizza[] = [
       {
         name: Ingredient.TOMATO_SAUCE,
         cost: 50,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.MOZARELLA,
         cost: 70,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.SHRIMPS,
         cost: 180,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.MUSSELS,
         cost: 150,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.SQUID,
         cost: 140,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.OLIVES,
         cost: 60,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       }
     ],
     toppings: TOPPINGS,
@@ -645,32 +649,32 @@ export const pizzas: Pizza[] = [
       {
         name: Ingredient.TOMATO_SAUCE,
         cost: 50,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.MOZARELLA,
         cost: 70,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.CHEDDAR,
         cost: 90,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.PARMESAN,
         cost: 90,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.FETA,
         cost: 100,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.MUSHROOMS,
         cost: 80,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       }
     ],
     toppings: TOPPINGS,
@@ -703,22 +707,22 @@ export const pizzas: Pizza[] = [
       {
         name: Ingredient.TOMATO_SAUCE,
         cost: 50,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.GARLIC,
         cost: 30,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.OLIVES,
         cost: 40,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.OREGANO,
         cost: 20,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       }
     ],
     toppings: TOPPINGS,
@@ -751,27 +755,27 @@ export const pizzas: Pizza[] = [
       {
         name: Ingredient.TOMATO_SAUCE,
         cost: 50,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.MOZARELLA,
         cost: 70,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.PINEAPPLE,
         cost: 100,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.BANANA,
         cost: 80,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.PEACH,
         cost: 80,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       }
     ],
     toppings: TOPPINGS,
@@ -804,27 +808,27 @@ export const pizzas: Pizza[] = [
       {
         name: Ingredient.TOMATO_SAUCE,
         cost: 50,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.MOZARELLA,
         cost: 70,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.CHICKEN_FILLET,
         cost: 150,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.ONION,
         cost: 60,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.BBQ_SAUCE,
         cost: 80,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       }
     ],
     toppings: TOPPINGS,
@@ -857,32 +861,32 @@ export const pizzas: Pizza[] = [
       {
         name: Ingredient.CREAM_SAUCE,
         cost: 60,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.MOZARELLA,
         cost: 70,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.SALMON,
         cost: 200,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.PHILADELPHIA_CHEESE,
         cost: 120,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.ONION,
         cost: 50,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.AVOCADO,
         cost: 80,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       }
     ],
     toppings: TOPPINGS,
@@ -915,42 +919,42 @@ export const pizzas: Pizza[] = [
       {
         name: Ingredient.TOMATO_SAUCE,
         cost: 50,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.MOZARELLA,
         cost: 70,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.BEEF,
         cost: 140,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.CHILE,
         cost: 80,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.JALAPENO,
         cost: 80,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.CORN,
         cost: 60,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.ONION,
         cost: 60,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.CHEDDAR,
         cost: 90,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       }
     ],
     toppings: TOPPINGS,
@@ -984,27 +988,27 @@ export const pizzas: Pizza[] = [
       {
         name: Ingredient.CREAM_SAUCE,
         cost: 60,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.MOZARELLA,
         cost: 70,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.BACON,
         cost: 160,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.PARMESAN,
         cost: 100,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.EGG,
         cost: 30,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       }
     ],
     toppings: TOPPINGS,
@@ -1037,37 +1041,37 @@ export const pizzas: Pizza[] = [
       {
         name: Ingredient.TOMATO_SAUCE,
         cost: 50,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.MOZARELLA,
         cost: 70,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.TOMATO,
         cost: 60,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.OLIVES,
         cost: 80,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.GREEN_PEPPER,
         cost: 60,
-        img: './static/images/green_pepper.png'
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.FETA,
         cost: 100,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.OREGANO,
         cost: 30,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       }
     ],
     toppings: TOPPINGS,
@@ -1101,32 +1105,32 @@ export const pizzas: Pizza[] = [
       {
         name: Ingredient.TOMATO_SAUCE,
         cost: 50,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.MOZARELLA,
         cost: 70,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.SPINACH,
         cost: 80,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.FETA,
         cost: 100,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.GARLIC,
         cost: 30,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       },
       {
         name: Ingredient.OREGANO,
         cost: 30,
-        img: ''
+        img: '/static/images/ingredient/green_pepper.png'
       }
     ],
     toppings: TOPPINGS,
