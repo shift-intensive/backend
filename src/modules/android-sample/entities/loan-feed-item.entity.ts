@@ -19,7 +19,7 @@ export class LoanFeedItem {
   @ApiProperty({ example: 15000, description: 'Сумма кредита' })
   amount: number;
 
-  @ApiProperty({ example: 190, description: 'Процентная ставка' })
+  @ApiProperty({ example: 1.9, description: 'Процентная ставка' })
   percent: number;
 
   @ApiProperty({ example: 'APPROVED', description: 'Процентная ставка', enum: LoanStatus })
