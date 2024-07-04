@@ -44,7 +44,7 @@ export const pizzas: Pizza[] = [
       {
         name: Ingredient.GREEN_PEPPER,
         cost: 60,
-        img: './static/images/ingredient/green_pepper.png'
+        img: '/static/images/ingredient/green_pepper.png'
       },
 
       {
@@ -261,7 +261,7 @@ export const pizzas: Pizza[] = [
       {
         name: Ingredient.GREEN_PEPPER,
         cost: 60,
-        img: './static/images/ingredient/green_pepper.png'
+        img: '/static/images/ingredient/green_pepper.png'
       }
     ],
     toppings: TOPPINGS,
@@ -426,7 +426,7 @@ export const pizzas: Pizza[] = [
       {
         name: Ingredient.MOZZARELLA,
         cost: 70,
-        img: '/static/images/ingredient/green_pepper.png'
+        img: '/static/images/ingredient/mozzarella.png'
       },
 
       {
