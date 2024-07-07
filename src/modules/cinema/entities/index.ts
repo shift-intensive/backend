@@ -4,5 +4,6 @@ export * from './film-hall.entity';
 export * from './film-hall-cell.entity';
 export * from './film-person.entity';
 export * from './film-seance.entity';
+export * from './film-staff.entity';
 export * from './film-ticket.entity';
-export * from './film-user-raiting.entity';
+export * from './film-user-rating.entity';

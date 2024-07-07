@@ -152,7 +152,7 @@ export class CinemaController extends BaseResolver {
   ): Promise<PaymentResponse> {
     const { person } = createCinemaPaymentDto;
 
-    const formatedTickets = createCinemaPaymentDto.tickets.map((ticket) => ({
+    const formattedTickets = createCinemaPaymentDto.tickets.map((ticket) => ({
       filmId: createCinemaPaymentDto.filmId,
       seance: createCinemaPaymentDto.seance,
       phone: createCinemaPaymentDto.person.phone,
@@ -162,7 +162,7 @@ export class CinemaController extends BaseResolver {
 
     const existedTickets = [];
     await Promise.all(
-      formatedTickets.map(async (ticket) => {
+      formattedTickets.map(async (ticket) => {
         const existedTicket = await this.cinemaService.findOne({
           'seance.date': ticket.seance.date,
           'seance.time': ticket.seance.time,
@@ -198,7 +198,7 @@ export class CinemaController extends BaseResolver {
       );
     }
 
-    const tickets = await this.cinemaService.insertMany(formatedTickets);
+    const tickets = await this.cinemaService.insertMany(formattedTickets);
     const filmName = this.cinemaService.getFilmName(createCinemaPaymentDto.filmId);
 
     const orderNumber = Math.floor(Math.random() * 10 ** 6);
@@ -206,7 +206,7 @@ export class CinemaController extends BaseResolver {
       filmName,
       orderNumber,
       tickets,
-      phone: createCinemaPaymentDto.person.phone,
+      person,
       status: CinemaOrderStatus.PAYED
     });
 

@@ -1,3 +1,4 @@
+export * from './ordered-pizza.entity';
 export * from './pizza.entity';
 export * from './pizza-address.entity';
 export * from './pizza-dough.entity';

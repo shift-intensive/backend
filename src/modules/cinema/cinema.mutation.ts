@@ -112,7 +112,7 @@ export class CinemaMutation extends BaseResolver {
       filmName,
       orderNumber,
       tickets,
-      phone: createCinemaPaymentDto.person.phone,
+      person,
       status: CinemaOrderStatus.PAYED
     });
 

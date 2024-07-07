@@ -1,27 +1,22 @@
-import { Field, InputType, ObjectType, registerEnumType } from '@nestjs/graphql';
+import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { ApiProperty } from '@nestjs/swagger';
 
-export enum Profession {
-  ACTOR = 'ACTOR',
-  DIRECTOR = 'DIRECTOR'
-}
-
-registerEnumType(Profession, {
-  name: 'Profession'
-});
-
-@InputType('CinemaPersonInput')
+@InputType('FilmPersonInput')
 @ObjectType()
 export class FilmPerson {
   @Field(() => String)
-  @ApiProperty({ example: '1', description: 'Идентификатор персоны' })
-  id: string;
-
-  @Field(() => [Profession])
-  @ApiProperty({ description: 'Список профессий', enum: Profession })
-  professions: Profession[];
+  @ApiProperty({ example: 'firstname', description: 'Имя' })
+  firstname: string;
 
   @Field(() => String)
-  @ApiProperty({ description: 'Полное имя персоны' })
-  fullName: string;
+  @ApiProperty({ example: 'lastname', description: 'Фамилия' })
+  lastname: string;
+
+  @Field(() => String, { nullable: true })
+  @ApiProperty({ example: 'middlename', description: 'Отчество' })
+  middlename?: string;
+
+  @Field(() => String)
+  @ApiProperty({ example: '89990009999', description: 'Телефон' })
+  phone: string;
 }
