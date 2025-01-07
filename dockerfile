@@ -1,5 +1,5 @@
 FROM node:20-alpine AS base
-LABEL org.opencontainers.image.source https://github.com/siberiacancode/scrum-poker-frontend
+LABEL org.opencontainers.image.source https://github.com/shift-intensive/backend
 
 FROM base AS builder
 

@@ -7,6 +7,7 @@ pipeline {
         IP='51.250.122.249'
         PORT='3003'
         MONGODB_URL='mongodb://admin:1234@shift-intensive-database:27017'
+        JWT_SECRET='qwertyuiopasdfghjklzxcvbnm123456'
     }
     stages {
         stage('cleanup') {
@@ -45,7 +46,7 @@ pipeline {
                         "sudo docker login ghcr.io -u $GITHUB_TOKEN_USR --password $GITHUB_TOKEN_PSW &&\
                         sudo docker rm -f shift-intensive-backend &&\
                         sudo docker pull ghcr.io/shift-intensive/backend:latest &&\
-                        sudo docker run --restart=always --name shift-intensive-backend -d -p $PORT:$PORT -e PORT=$PORT -e MONGODB_URL=$MONGODB_URL --network scrum-poker ghcr.io/shift-intensive/backend:latest &&\
+                        sudo docker run --restart=always --name shift-intensive-backend -d -p $PORT:$PORT -e PORT=$PORT -e MONGODB_URL=$MONGODB_URL -e JWT_SECRET=$JWT_SECRET --network scrum-poker ghcr.io/shift-intensive/backend:latest &&\
                         sudo docker image prune"'
                 }
             }
