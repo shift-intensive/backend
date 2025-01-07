@@ -4,13 +4,14 @@ import { ApiBearerAuth, ApiHeader, ApiOperation, ApiResponse, ApiTags } from '@n
 import { Request } from 'express';
 
 import type { User } from '@/modules/users';
+
 import { UsersService } from '@/modules/users';
 import { ApiAuthorizedOnly } from '@/utils/guards';
 import { AuthService, BaseResolver, BaseResponse } from '@/utils/services';
 
 import { pizzas } from './constants/pizzas';
-import { PizzaOrderService, PizzaStatus } from './modules/pizza-order';
 import { CancelPizzaOrderDto, CreatePizzaPaymentDto, GetPizzaOrderDto } from './dto';
+import { PizzaOrderService, PizzaStatus } from './modules/pizza-order';
 import {
   PizzaOrderResponse,
   PizzaOrdersResponse,

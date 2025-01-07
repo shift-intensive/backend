@@ -5,9 +5,10 @@ import { Request, Response } from 'express';
 import { ApiAuthorizedOnly } from '@/utils/guards';
 import { BaseResolver } from '@/utils/services';
 
+import type { OtpResponse } from '../otps/otps.model';
+
 import { OtpsService, RETRY_DELAY } from '../otps';
 import { CreateOtpDto } from '../otps/dto';
-import type { OtpResponse } from '../otps/otps.model';
 
 @ApiTags('🧪 tester')
 @Controller()

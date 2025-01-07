@@ -8,8 +8,8 @@ import { getDDMMYYFormatDate } from '@/utils/helpers';
 import { AuthService, BaseResolver, BaseResponse } from '@/utils/services';
 
 import type { User } from '../users';
-import { UsersService } from '../users';
 
+import { UsersService } from '../users';
 import {
   CinemaOrdersResponse,
   FilmResponse,

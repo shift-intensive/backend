@@ -5,6 +5,7 @@ import { Model } from 'mongoose';
 import { BaseService } from '@/utils/services';
 
 import type { UserDocument } from './entities';
+
 import { User } from './entities';
 
 @Injectable()

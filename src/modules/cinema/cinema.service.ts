@@ -4,8 +4,9 @@ import { Model } from 'mongoose';
 
 import { BaseService } from '@/utils/services';
 
-import { films, schedules } from './constants';
 import type { TicketDocument } from './entities';
+
+import { films, schedules } from './constants';
 import { Ticket } from './entities';
 
 @Injectable()

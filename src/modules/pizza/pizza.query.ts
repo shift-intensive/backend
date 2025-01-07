@@ -1,6 +1,7 @@
+import type { Request } from 'express';
+
 import { BadRequestException } from '@nestjs/common';
 import { Args, Context, Query, Resolver } from '@nestjs/graphql';
-import type { Request } from 'express';
 
 import { pizzas } from '@/modules/pizza/constants/pizzas';
 import { DescribeContext } from '@/utils/decorators';
@@ -9,8 +10,8 @@ import { AuthService, BaseResolver } from '@/utils/services';
 
 import type { User } from '../users';
 
-import { PizzaOrderService } from './modules/pizza-order';
 import { GetPizzaOrderDto } from './dto';
+import { PizzaOrderService } from './modules/pizza-order';
 import { PizzaOrderResponse, PizzaOrdersResponse, PizzasResponse } from './pizza.model';
 
 @Resolver('🍕 pizza query')

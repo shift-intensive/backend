@@ -6,8 +6,9 @@ import { OtpsService } from '@/modules/otps';
 import { ApiAuthorizedOnly } from '@/utils/guards';
 import { AuthService, BaseResolver } from '@/utils/services';
 
-import { SignInDto, UpdateProfileDto } from './dto';
 import type { User } from './entities';
+
+import { SignInDto, UpdateProfileDto } from './dto';
 import { SessionResponse, SignInResponse, UpdateProfileResponse } from './users.model';
 import { UsersService } from './users.service';
 

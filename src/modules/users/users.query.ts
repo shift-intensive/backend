@@ -1,5 +1,6 @@
-import { Context, Query, Resolver } from '@nestjs/graphql';
 import type { Request } from 'express';
+
+import { Context, Query, Resolver } from '@nestjs/graphql';
 import { GraphQLError } from 'graphql';
 
 import { DescribeContext } from '@/utils/decorators';
