@@ -1,6 +1,6 @@
 version: '3.8'
-# sudo docker run -d -p 27017:27017 --restart=always -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=1234 --name scrum-poker-database --network scrum-poker -v data-db:/data/db mongo:latest
-# sudo docker run -d -p 27017:27017 --name scrum-poker-database --network scrum-poker -v data-db:/data/db mongo:latest
+# sudo docker run -d -p 27018:27017 --restart=always -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=1234 --name shift-intensive-database --network shift-intensive -v shift-intensive-data-db:/data/db mongo:latest
+# sudo docker run -d -p 27018:27017 --name shift-intensive-database --network shift-intensive-poker -v data-db:/data/db mongo:latest
 
 services:
   database:
