@@ -23,6 +23,7 @@ services:
       dockerfile: Dockerfile
     container_name: shift-intensive-service
     environment:
+      - JWT_SECRET=qwertyuiopasdfghjklzxcvbnm123456
       - PORT=${PORT}
       - MONGODB_URL=mongodb://shift-intensive-database:27017
     ports:

@@ -40,7 +40,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, apiConfig);
   SwaggerModule.setup('api', app, document);
 
-  app.setBaseViewsDir(join(__dirname, '..', 'src/views'));
+  app.setBaseViewsDir(join(__dirname, '..', 'static/views'));
   app.setViewEngine('hbs');
 
   const testerConfig = new DocumentBuilder()
