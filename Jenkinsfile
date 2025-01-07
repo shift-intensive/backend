@@ -6,7 +6,7 @@ pipeline {
         IMAGE_VERSION='latest'
         IP='51.250.122.249'
         PORT='3003'
-        MONGODB_URL='mongodb://admin:1234@shift-intensive-database:27017'
+        MONGODB_URL='mongodb://admin:1234@shift-intensive-database:27018'
         JWT_SECRET='qwertyuiopasdfghjklzxcvbnm123456'
     }
     stages {
