@@ -1,4 +1,5 @@
 import type { CanActivate } from '@nestjs/common';
+
 import { UseGuards } from '@nestjs/common';
 
 import { ApiAuthGuard } from './api-auth.guard';

@@ -6,6 +6,7 @@ import { Model } from 'mongoose';
 import { BaseService } from '@/utils/services';
 
 import type { PizzaOrderDocument } from './pizza-order.entity';
+
 import { PizzaOrder, PizzaStatus } from './pizza-order.entity';
 
 @Injectable()

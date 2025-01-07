@@ -1,5 +1,6 @@
-import { Args, Context, Query, Resolver } from '@nestjs/graphql';
 import type { Request } from 'express';
+
+import { Args, Context, Query, Resolver } from '@nestjs/graphql';
 import { GraphQLError } from 'graphql';
 
 import { DescribeContext } from '@/utils/decorators';
@@ -8,8 +9,8 @@ import { getDDMMYYFormatDate } from '@/utils/helpers';
 import { AuthService, BaseResolver } from '@/utils/services';
 
 import type { User } from '../users';
-
 import type { CinemaOrdersResponse } from './cinema.model';
+
 import { FilmResponse, FilmsResponse, ScheduleResponse, TicketsResponse } from './cinema.model';
 import { CinemaService } from './cinema.service';
 import { GetFilmDto, GetScheduleDto } from './dto';

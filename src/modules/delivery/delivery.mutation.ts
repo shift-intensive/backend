@@ -1,6 +1,6 @@
 import { BadRequestException } from '@nestjs/common';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { randomUUID } from 'crypto';
+import { randomUUID } from 'node:crypto';
 
 import { UsersService } from '@/modules/users';
 import { DescribeContext } from '@/utils/decorators';
@@ -8,9 +8,10 @@ import { GqlAuthorizedOnly } from '@/utils/guards';
 import { getDistance } from '@/utils/helpers';
 import { BaseResolver, BaseResponse } from '@/utils/services';
 
+import type { DeliveryOption } from './entities';
+
 import { CalculateDeliveryResponse, DeliverResponse } from './delivery.model';
 import { CalculateDeliveryDto, CancelDeliveryOrderDto, CreateDeliveryOrderDto } from './dto';
-import type { DeliveryOption } from './entities';
 import { DeliveryOptionType } from './entities';
 import { DeliveryOrderService, DeliveryStatus } from './modules';
 

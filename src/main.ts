@@ -1,13 +1,14 @@
+import type { NestExpressApplication } from '@nestjs/platform-express';
+
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import type { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { join } from 'path';
+import { join } from 'node:path';
 
+import { AppModule } from './app.module';
 import { AndroidSampleModule } from './modules/android-sample';
 import { OtpsModule } from './modules/otps';
 import { UsersModule } from './modules/users';
-import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {

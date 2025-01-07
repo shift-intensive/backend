@@ -1,4 +1,5 @@
 import type { ApolloDriverConfig } from '@nestjs/apollo';
+
 import { ApolloDriver } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
@@ -6,7 +7,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { AcceptLanguageResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
-import * as path from 'path';
+import * as path from 'node:path';
 
 import { CinemaModule } from '@/modules/cinema/cinema.module';
 import { DeliveryModule } from '@/modules/delivery/delivery.module';
@@ -16,8 +17,8 @@ import { TesterModule } from '@/modules/tester/tester.module';
 import { UsersModule } from '@/modules/users/users.module';
 import { WakeUpModule } from '@/modules/wakeup/wakeup.module';
 
-import { AndroidSampleModule } from './modules/android-sample';
 import { AppController } from './app.controller';
+import { AndroidSampleModule } from './modules/android-sample';
 
 @Module({
   controllers: [AppController],
@@ -39,7 +40,6 @@ import { AppController } from './app.controller';
       playground: true,
       introspection: true,
       formatError: (error) => {
-        console.log('@', error);
         const graphQLFormattedError = {
           // @ts-ignore
           message: error.extensions?.exception?.response?.message || error.message,

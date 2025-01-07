@@ -1,4 +1,3 @@
-import { Injectable } from '@nestjs/common';
 import type {
   Document,
   FilterQuery,
@@ -6,6 +5,8 @@ import type {
   UpdateQuery,
   UpdateWithAggregationPipeline
 } from 'mongoose';
+
+import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 
 @Injectable()

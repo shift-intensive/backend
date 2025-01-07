@@ -1,6 +1,7 @@
+import type { Request } from 'express';
+
 import { BadRequestException } from '@nestjs/common';
 import { Args, Context, Query, Resolver } from '@nestjs/graphql';
-import type { Request } from 'express';
 
 import { DescribeContext } from '@/utils/decorators';
 import { GqlAuthorizedOnly } from '@/utils/guards';

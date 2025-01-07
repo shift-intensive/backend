@@ -1,7 +1,8 @@
+import type { Document } from 'mongoose';
+
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import type { Document } from 'mongoose';
 import { Schema as MongooseSchema } from 'mongoose';
 
 @InputType('FilmTicketSeanceInput')

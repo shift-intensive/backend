@@ -5,6 +5,7 @@ import { Model } from 'mongoose';
 import { BaseService } from '@/utils/services';
 
 import type { CinemaOrderDocument } from './cinema-order.entity';
+
 import { CinemaOrder } from './cinema-order.entity';
 
 @Injectable()

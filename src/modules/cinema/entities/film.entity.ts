@@ -3,8 +3,8 @@ import { ApiProperty } from '@nestjs/swagger';
 
 import { Country } from '@/utils/common';
 
-import { FilmPerson } from './film-person.entity';
-import { FilmUserRaiting } from './film-user-raiting.entity';
+import { FilmStaff } from './film-staff.entity';
+import { FilmUserRating } from './film-user-rating.entity';
 
 export enum Rating {
   G = 'G',
@@ -46,14 +46,14 @@ export class Film {
   releaseDate: string;
 
   @ApiProperty()
-  @Field(() => [FilmPerson], { defaultValue: [] })
-  @ApiProperty({ description: 'Актеры', type: [FilmPerson] })
-  actors: FilmPerson[];
+  @Field(() => [FilmStaff], { defaultValue: [] })
+  @ApiProperty({ description: 'Актеры', type: [FilmStaff] })
+  actors: FilmStaff[];
 
   @ApiProperty()
-  @Field(() => [FilmPerson], { defaultValue: [] })
-  @ApiProperty({ description: 'Режиссер', type: [FilmPerson] })
-  directors: FilmPerson[];
+  @Field(() => [FilmStaff], { defaultValue: [] })
+  @ApiProperty({ description: 'Режиссер', type: [FilmStaff] })
+  directors: FilmStaff[];
 
   @ApiProperty()
   @Field(() => Number)
@@ -70,9 +70,9 @@ export class Film {
   genres: string[];
 
   @ApiProperty()
-  @Field(() => FilmUserRaiting)
-  @ApiProperty({ description: 'Рейтинг пользователей', type: FilmUserRaiting })
-  userRatings: FilmUserRaiting;
+  @Field(() => FilmUserRating)
+  @ApiProperty({ description: 'Рейтинг пользователей', type: FilmUserRating })
+  userRatings: FilmUserRating;
 
   @ApiProperty()
   @Field(() => String)

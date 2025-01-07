@@ -6,8 +6,8 @@ import { DescribeContext } from '@/utils/decorators';
 import { GqlAuthorizedOnly } from '@/utils/guards';
 import { BaseResolver, BaseResponse } from '@/utils/services';
 
-import { PizzaOrderService, PizzaStatus } from './modules/pizza-order';
 import { CancelPizzaOrderDto, CreatePizzaPaymentDto } from './dto';
+import { PizzaOrderService, PizzaStatus } from './modules/pizza-order';
 import { PizzaPaymentResponse } from './pizza.model';
 
 @Resolver('🍕 pizza mutation')

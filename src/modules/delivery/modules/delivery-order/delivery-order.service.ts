@@ -6,6 +6,7 @@ import { Model } from 'mongoose';
 import { BaseService } from '@/utils/services';
 
 import type { DeliveryOrderDocument } from './delivery-order.entity';
+
 import { DeliveryOrder, DeliveryStatus } from './delivery-order.entity';
 
 @Injectable()
