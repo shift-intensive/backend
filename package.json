@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "npx @nestjs/cli start --watch",
     "build": "npx @nestjs/cli build",
-    "db": "docker-compose up",
+    "docker-compose": "docker compose -p shift-intensive up --build",
     "dev-debug": "nest start --debug --watch",
     "prod": "node dist/main",
     "lint": "eslint . --fix",
