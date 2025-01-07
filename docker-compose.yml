@@ -3,10 +3,10 @@ version: '3.8'
 # sudo docker run -d -p 27018:27017 --name shift-intensive-database --network shift-intensive-poker -v data-db:/data/db mongo:latest
 
 services:
-  database:
+  shift-intensive-database:
     image: mongo:latest
     restart: always
-    container_name: scrum-poker-database
+    container_name: shift-intensive-database
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=1234
@@ -17,15 +17,15 @@ services:
         source: ./data
         target: /data/db
 
-  backend:
+  shift-intensive-service:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: scrum-poker-backend
+    container_name: shift-intensive-service
     environment:
       - PORT=${PORT}
-      - MONGODB_URL=mongodb://database:27017
+      - MONGODB_URL=mongodb://shift-intensive-database:27017
     ports:
       - '3001:3001'
     depends_on:
-      - database
+      - shift-intensive-database
