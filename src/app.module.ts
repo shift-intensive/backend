@@ -38,7 +38,7 @@ import { withBaseUrl } from './utils/helpers';
       autoSchemaFile: path.join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
       playground: true,
-      path: withBaseUrl('/graphql'),
+      useGlobalPrefix: true,
       introspection: true,
       formatError: (error: any) => {
         const graphQLFormattedError = {
