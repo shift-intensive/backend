@@ -15,7 +15,6 @@ import { OtpsModule } from '@/modules/otps/otps.module';
 import { PizzaModule } from '@/modules/pizza/pizza.module';
 import { TesterModule } from '@/modules/tester/tester.module';
 import { UsersModule } from '@/modules/users/users.module';
-import { WakeUpModule } from '@/modules/wakeup/wakeup.module';
 
 import { AppController } from './app.controller';
 import { AndroidSampleModule } from './modules/android-sample';
@@ -38,13 +37,12 @@ import { AndroidSampleModule } from './modules/android-sample';
       autoSchemaFile: path.join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
       playground: true,
+      path: 'api/graphql',
       introspection: true,
-      formatError: (error) => {
+      formatError: (error: any) => {
         const graphQLFormattedError = {
-          // @ts-ignore
           message: error.extensions?.exception?.response?.message || error.message,
           code: error.extensions?.code || 'SERVER_ERROR',
-          // @ts-ignore
           name: error.extensions?.exception?.name || error.name
         };
         return graphQLFormattedError;
@@ -61,8 +59,7 @@ import { AndroidSampleModule } from './modules/android-sample';
     UsersModule,
     CinemaModule,
     DeliveryModule,
-    PizzaModule,
-    WakeUpModule
+    PizzaModule
   ],
   providers: []
 })

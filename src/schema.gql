@@ -2,20 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Address {
-  appartament: String!
-  comment: String
-  house: String!
-  street: String!
-}
-
-input AddressInput {
-  appartament: String!
-  comment: String
-  house: String!
-  street: String!
-}
-
 type BaseResponse {
   reason: String
   success: Boolean!
@@ -39,17 +25,11 @@ type CalculateDeliveryResponse {
   success: Boolean!
 }
 
-type CatalogResponse {
-  catalog: [Pizza!]!
-  reason: String
-  success: Boolean!
-}
-
 type CinemaOrder {
   _id: String!
   filmName: String!
   orderNumber: Float!
-  phone: String!
+  person: FilmPerson!
   status: CinemaOrderStatus!
   tickets: [Ticket!]!
 }
@@ -58,7 +38,7 @@ input CinemaOrderInput {
   _id: String!
   filmName: String!
   orderNumber: Float!
-  phone: String!
+  person: FilmPersonInput!
   status: CinemaOrderStatus!
   tickets: [TicketInput!]!
 }
@@ -66,12 +46,6 @@ input CinemaOrderInput {
 enum CinemaOrderStatus {
   CANCELED
   PAYED
-}
-
-input CinemaPersonInput {
-  fullName: String!
-  id: String!
-  professions: [Profession!]!
 }
 
 type Country {
@@ -89,7 +63,7 @@ input CountryInput {
 }
 
 input CreateDeliveryOrderAddressDto {
-  appartament: String!
+  apartment: String!
   comment: String
   house: String!
   street: String!
@@ -166,6 +140,20 @@ type DeliverResponse {
   success: Boolean!
 }
 
+type DeliveryAddress {
+  apartment: String!
+  comment: String
+  house: String!
+  street: String!
+}
+
+input DeliveryAddressInput {
+  apartment: String!
+  comment: String
+  house: String!
+  street: String!
+}
+
 type DeliveryOption {
   days: Float!
   id: String!
@@ -192,10 +180,10 @@ type DeliveryOrder {
   cancellable: Boolean!
   payer: Payer!
   receiver: DeliveryPerson!
-  receiverAddress: Address!
+  receiverAddress: DeliveryAddress!
   receiverPoint: DeliveryPoint!
   sender: DeliveryPerson!
-  senderAddress: Address!
+  senderAddress: DeliveryAddress!
   senderPoint: DeliveryPoint!
   status: DeliveryStatus!
 }
@@ -205,10 +193,10 @@ input DeliveryOrderInput {
   cancellable: Boolean!
   payer: Payer!
   receiver: DeliveryPersonInput!
-  receiverAddress: AddressInput!
+  receiverAddress: DeliveryAddressInput!
   receiverPoint: DeliveryPointInput!
   sender: DeliveryPersonInput!
-  senderAddress: AddressInput!
+  senderAddress: DeliveryAddressInput!
   senderPoint: DeliveryPointInput!
   status: DeliveryStatus!
 }
@@ -297,11 +285,11 @@ enum Dough {
 }
 
 type Film {
-  actors: [FilmPerson!]!
+  actors: [FilmStaff!]!
   ageRating: Rating!
   country: Country
   description: String!
-  directors: [FilmPerson!]!
+  directors: [FilmStaff!]!
   genres: [String!]!
   id: String!
   img: String!
@@ -309,7 +297,7 @@ type Film {
   originalName: String!
   releaseDate: String!
   runtime: Float!
-  userRatings: FilmUserRaiting!
+  userRatings: FilmUserRating!
 }
 
 type FilmHall {
@@ -339,11 +327,11 @@ input FilmHallInput {
 }
 
 input FilmInput {
-  actors: [CinemaPersonInput!]! = []
+  actors: [FilmStaffInput!]! = []
   ageRating: Rating!
   country: CountryInput
   description: String!
-  directors: [CinemaPersonInput!]! = []
+  directors: [FilmStaffInput!]! = []
   genres: [String!]! = []
   id: String!
   img: String!
@@ -351,19 +339,39 @@ input FilmInput {
   originalName: String!
   releaseDate: String!
   runtime: Float!
-  userRatings: FilmUserRaitingInput!
+  userRatings: FilmUserRatingInput!
 }
 
 type FilmPerson {
-  fullName: String!
-  id: String!
-  professions: [Profession!]!
+  firstname: String!
+  lastname: String!
+  middlename: String
+  phone: String!
+}
+
+input FilmPersonInput {
+  firstname: String!
+  lastname: String!
+  middlename: String
+  phone: String!
 }
 
 type FilmResponse {
   film: Film!
   reason: String
   success: Boolean!
+}
+
+type FilmStaff {
+  fullName: String!
+  id: String!
+  professions: [Profession!]!
+}
+
+input FilmStaffInput {
+  fullName: String!
+  id: String!
+  professions: [Profession!]!
 }
 
 type FilmTicketSeance {
@@ -376,12 +384,12 @@ input FilmTicketSeanceInput {
   time: String!
 }
 
-type FilmUserRaiting {
+type FilmUserRating {
   imdb: String!
   kinopoisk: String!
 }
 
-input FilmUserRaitingInput {
+input FilmUserRatingInput {
   imdb: String!
   kinopoisk: String!
 }
@@ -393,44 +401,24 @@ type FilmsResponse {
 }
 
 enum Ingredient {
-  AVOCADO
   BACON
-  BANANA
   BASIL
-  BBQ_SAUCE
-  BEEF
-  BLACK_OLIVE
   CHEDDAR
   CHICKEN_FILLET
   CHILE
-  CORN
-  CREAM_SAUCE
-  EGG
   FETA
-  GARLIC
   GREEN_PEPPER
   HAM
-  JALAPENO
-  MOZARELLA
+  MEATBALLS
+  MOZZARELLA
   MUSHROOMS
-  MUSSELS
-  OLIVES
   ONION
-  OREGANO
   PARMESAN
-  PEACH
   PEPERONI
-  PHILADELPHIA_CHEESE
+  PICKLE
   PINEAPPLE
-  RED_ONION
-  SALAMI
-  SALMON
-  SAUSAGE
   SHRIMPS
-  SPINACH
-  SQUID
   TOMATO
-  TOMATO_SAUCE
 }
 
 type Mutation {
@@ -441,9 +429,27 @@ type Mutation {
   createCinemaPayment(debitCard: CreatePaymentDebitCardDto!, filmId: String!, person: CreatePaymentPersonDto!, seance: CreatePaymentSeanceDto!, tickets: [CreatePaymentTicketsDto!]!): PaymentResponse!
   createDeliveryOrder(option: CreateDeliveryOrderDeliveryOptionDto!, payer: Payer!, receiver: CreateDeliveryOrderPersonDto!, receiverAddress: CreateDeliveryOrderAddressDto!, receiverPoint: CreateDeliveryOrderPointDto!, sender: CreateDeliveryOrderPersonDto!, senderAddress: CreateDeliveryOrderAddressDto!, senderPoint: CreateDeliveryOrderPointDto!): DeliverResponse!
   createOtp(phone: String!): OtpResponse!
-  createPizzaPayment(debitCard: CreatePizzaPaymentDebitCardDto!, person: CreatePizzaPaymentPersonDto!, receiverAddress: CreatePizzaPaymentAddressDto!): PizzaPaymentResponse!
+  createPizzaPayment(debitCard: CreatePizzaPaymentDebitCardDto!, person: CreatePizzaPaymentPersonDto!, pizzas: [OrderedPizzaInput!]!, receiverAddress: CreatePizzaPaymentAddressDto!): PizzaPaymentResponse!
   signin(code: Float!, phone: String!): SignInResponse!
   updateProfile(phone: String!, profile: UpdateProfileProfileDto!): UpdateProfileResponse!
+}
+
+type OrderedPizza {
+  description: String!
+  doughs: PizzaDough!
+  id: String!
+  name: String!
+  size: [PizzaSize!]!
+  toppings: [PizzaIngredient!]!
+}
+
+input OrderedPizzaInput {
+  description: String!
+  doughs: PizzaDoughInput!
+  id: String!
+  name: String!
+  size: [PizzaSizeInput!]!
+  toppings: [PizzaIngredientInput!]!
 }
 
 type Otp {
@@ -479,20 +485,6 @@ type PaymentResponse {
   success: Boolean!
 }
 
-type PersonAddress {
-  apartment: String!
-  comment: String
-  house: String!
-  street: String!
-}
-
-input PersonAddressInput {
-  apartment: String!
-  comment: String
-  house: String!
-  street: String!
-}
-
 type Pizza {
   allergens: [String!]!
   calories: Float!
@@ -510,7 +502,22 @@ type Pizza {
   protein: String!
   sizes: [PizzaSize!]!
   sodium: String!
+  toppings: [PizzaIngredient!]!
   totalFat: String!
+}
+
+type PizzaAddress {
+  apartment: String!
+  comment: String
+  house: String!
+  street: String!
+}
+
+input PizzaAddressInput {
+  apartment: String!
+  comment: String
+  house: String!
+  street: String!
 }
 
 type PizzaDough {
@@ -525,11 +532,13 @@ input PizzaDoughInput {
 
 type PizzaIngredient {
   cost: Float!
+  img: String!
   name: Ingredient!
 }
 
 input PizzaIngredientInput {
   cost: Float!
+  img: String!
   name: Ingredient!
 }
 
@@ -550,6 +559,7 @@ input PizzaInput {
   protein: String!
   sizes: [PizzaSizeInput!]!
   sodium: String!
+  toppings: [PizzaIngredientInput!]!
   totalFat: String!
 }
 
@@ -557,7 +567,8 @@ type PizzaOrder {
   _id: String!
   cancellable: Boolean!
   person: PizzaPerson!
-  receiverAddress: PersonAddress!
+  pizzas: [OrderedPizza!]!
+  receiverAddress: PizzaAddress!
   status: PizzaStatus!
 }
 
@@ -565,7 +576,8 @@ input PizzaOrderInput {
   _id: String!
   cancellable: Boolean!
   person: PizzaPersonInput!
-  receiverAddress: PersonAddressInput!
+  pizzas: [OrderedPizzaInput!]!
+  receiverAddress: PizzaAddressInput!
   status: PizzaStatus!
 }
 
@@ -619,6 +631,12 @@ enum PizzaStatus {
   WAITING_COURIER
 }
 
+type PizzasResponse {
+  catalog: [Pizza!]!
+  reason: String
+  success: Boolean!
+}
+
 enum Profession {
   ACTOR
   DIRECTOR
@@ -627,15 +645,15 @@ enum Profession {
 type Query {
   getCinemaOrders: TicketsResponse!
   getCinemaToday: FilmsResponse!
-  getDeliveries: PizzaOrdersResponse!
-  getDelivery(orderId: String!): PizzaOrderResponse!
   getDeliveryOrder(orderId: String!): DeliveryOrderResponse!
   getDeliveryOrders: DeliveryOrdersResponse!
   getDeliveryPackageTypes: DeliveryPackageTypesResponse!
   getDeliveryPoints: DeliveryPointsResponse!
   getFilm(filmId: String!): FilmResponse!
   getFilmSchedule(filmId: String!): ScheduleResponse!
-  getPizzas: CatalogResponse!
+  getPizzaOrder(orderId: String!): PizzaOrderResponse!
+  getPizzaOrders: PizzaOrdersResponse!
+  getPizzasCatalog: PizzasResponse!
   session: SessionResponse!
 }
 

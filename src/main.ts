@@ -40,7 +40,7 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, apiConfig);
-  SwaggerModule.setup('rest', app, document);
+  SwaggerModule.setup('/api/rest', app, document);
 
   app.setBaseViewsDir(join(__dirname, '..', 'static/views'));
   app.setViewEngine('hbs');
@@ -59,7 +59,7 @@ async function bootstrap() {
   const testerDocument = SwaggerModule.createDocument(app, testerConfig, {
     include: [OtpsModule, UsersModule]
   });
-  SwaggerModule.setup('tester', app, testerDocument);
+  SwaggerModule.setup('/api/tester', app, testerDocument);
 
   const androidSampleConfig = new DocumentBuilder()
     .setTitle('android sample 🤖')
@@ -70,7 +70,7 @@ async function bootstrap() {
   const androidSampleDocument = SwaggerModule.createDocument(app, androidSampleConfig, {
     include: [AndroidSampleModule]
   });
-  SwaggerModule.setup('android-sample', app, androidSampleDocument);
+  SwaggerModule.setup('/api/android-sample', app, androidSampleDocument);
 
   const port = process.env.PORT ?? 3000;
   await app.listen(port);

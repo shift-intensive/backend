@@ -13,10 +13,10 @@ export class AppController {
   @Render('main.hbs')
   async main() {
     return {
-      graphql: '/graphql',
-      rest: '/api',
-      otps: '/otps',
-      tester: '/tester'
+      graphql: '/api/graphql',
+      rest: '/api/rest',
+      otps: '/api/otps',
+      tester: '/api/tester'
     };
   }
 
