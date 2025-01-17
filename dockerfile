@@ -1,4 +1,4 @@
-FROM node:20-alpine AS base
+FROM node:22-alpine AS base
 LABEL org.opencontainers.image.source https://github.com/shift-intensive/backend
 
 FROM base AS builder
