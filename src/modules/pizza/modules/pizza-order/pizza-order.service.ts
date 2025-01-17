@@ -10,7 +10,7 @@ import type { PizzaOrderDocument } from './pizza-order.entity';
 import { PizzaOrder, PizzaStatus } from './pizza-order.entity';
 
 @Injectable()
-export class PizzaOrderService extends BaseService<PizzaOrderDocument, PizzaOrder> {
+export class PizzaOrderService extends BaseService<PizzaOrderDocument> {
   constructor(@InjectModel(PizzaOrder.name) private PizzaOrderModel: Model<PizzaOrderDocument>) {
     super(PizzaOrderModel);
   }

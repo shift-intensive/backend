@@ -10,7 +10,7 @@ import type { DeliveryOrderDocument } from './delivery-order.entity';
 import { DeliveryOrder, DeliveryStatus } from './delivery-order.entity';
 
 @Injectable()
-export class DeliveryOrderService extends BaseService<DeliveryOrderDocument, DeliveryOrder> {
+export class DeliveryOrderService extends BaseService<DeliveryOrderDocument> {
   constructor(
     @InjectModel(DeliveryOrder.name) private DeliveryOrderModel: Model<DeliveryOrderDocument>
   ) {

@@ -9,7 +9,7 @@ import type { CinemaOrderDocument } from './cinema-order.entity';
 import { CinemaOrder } from './cinema-order.entity';
 
 @Injectable()
-export class CinemaOrderService extends BaseService<CinemaOrderDocument, CinemaOrder> {
+export class CinemaOrderService extends BaseService<CinemaOrderDocument> {
   constructor(@InjectModel(CinemaOrder.name) private CinemaOrderModel: Model<CinemaOrderDocument>) {
     super(CinemaOrderModel);
   }

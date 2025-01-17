@@ -24,7 +24,7 @@ export class AppController {
   @ApiOperation({ summary: 'страница с отп кодами' })
   @Render('otps.hbs')
   async otps() {
-    const otps = await this.otpsService.find({});
+    const otps = await this.otpsService.find();
 
     return {
       otps: otps.map((otp) => ({

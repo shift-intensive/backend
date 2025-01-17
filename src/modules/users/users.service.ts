@@ -9,7 +9,7 @@ import type { UserDocument } from './entities';
 import { User } from './entities';
 
 @Injectable()
-export class UsersService extends BaseService<UserDocument, User> {
+export class UsersService extends BaseService<UserDocument> {
   constructor(@InjectModel(User.name) private UserModel: Model<UserDocument>) {
     super(UserModel);
   }

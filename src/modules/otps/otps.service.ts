@@ -11,7 +11,7 @@ import { OTP_EXPIRED_TIME } from './constants';
 import { Otp } from './entities';
 
 @Injectable()
-export class OtpsService extends BaseService<OtpDocument, Otp> {
+export class OtpsService extends BaseService<OtpDocument> {
   constructor(@InjectModel(Otp.name) private OtpModel: Model<OtpDocument>) {
     super(OtpModel);
   }

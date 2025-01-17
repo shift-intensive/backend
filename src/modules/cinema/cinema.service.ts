@@ -10,7 +10,7 @@ import { films, schedules } from './constants';
 import { Ticket } from './entities';
 
 @Injectable()
-export class CinemaService extends BaseService<TicketDocument, Ticket> {
+export class CinemaService extends BaseService<TicketDocument> {
   constructor(@InjectModel(Ticket.name) private TicketModel: Model<TicketDocument>) {
     super(TicketModel);
   }
