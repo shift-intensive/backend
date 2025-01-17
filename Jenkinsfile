@@ -46,8 +46,7 @@ pipeline {
                         "sudo docker login ghcr.io -u $GITHUB_TOKEN_USR --password $GITHUB_TOKEN_PSW &&\
                         sudo docker rm -f shift-intensive-backend &&\
                         sudo docker pull ghcr.io/shift-intensive/backend:latest &&\
-                        sudo docker run --restart=always --name shift-intensive-backend -d -p $PORT:$PORT -e PORT=$PORT -e MONGODB_URL=$MONGODB_URL -e JWT_SECRET=$JWT_SECRET --network shift-intensive ghcr.io/shift-intensive/backend:latest &&\
-                        sudo docker image prune"'
+                        sudo docker run --restart=always --name shift-intensive-backend -d -p $PORT:$PORT -e PORT=$PORT -e MONGODB_URL=$MONGODB_URL -e JWT_SECRET=$JWT_SECRET --network shift-intensive ghcr.io/shift-intensive/backend:latest"'
                 }
             }
         }
