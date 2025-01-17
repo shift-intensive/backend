@@ -14,6 +14,8 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     cors: { origin: '*' }
   });
+
+  app.setGlobalPrefix('api');
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -38,7 +40,7 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, apiConfig);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('rest', app, document);
 
   app.setBaseViewsDir(join(__dirname, '..', 'static/views'));
   app.setViewEngine('hbs');
