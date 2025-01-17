@@ -8,6 +8,6 @@ export class BaseResponse {
   success!: boolean;
 
   @Field(() => String, { nullable: true })
-  @ApiProperty({ description: 'Причина ошибки', nullable: true, required: false })
+  @ApiProperty({ description: 'Причина ошибки', required: false })
   reason?: string;
 }
