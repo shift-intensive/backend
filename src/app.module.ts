@@ -18,6 +18,7 @@ import { UsersModule } from '@/modules/users/users.module';
 
 import { AppController } from './app.controller';
 import { AndroidSampleModule } from './modules/android-sample';
+import { withBaseUrl } from './utils/helpers';
 
 @Module({
   controllers: [AppController],
@@ -37,7 +38,7 @@ import { AndroidSampleModule } from './modules/android-sample';
       autoSchemaFile: path.join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
       playground: true,
-      path: 'api/graphql',
+      path: withBaseUrl('/graphql'),
       introspection: true,
       formatError: (error: any) => {
         const graphQLFormattedError = {
@@ -50,7 +51,7 @@ import { AndroidSampleModule } from './modules/android-sample';
       context: ({ req, res }) => ({ req, res })
     }),
     ServeStaticModule.forRoot({
-      serveRoot: '/static',
+      serveRoot: withBaseUrl('/static'),
       rootPath: path.join(__dirname, '..', 'static')
     }),
     AndroidSampleModule,

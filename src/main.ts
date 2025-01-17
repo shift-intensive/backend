@@ -9,13 +9,14 @@ import { AppModule } from './app.module';
 import { AndroidSampleModule } from './modules/android-sample';
 import { OtpsModule } from './modules/otps';
 import { UsersModule } from './modules/users';
+import { BASE_URL, withBaseUrl } from './utils/helpers';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     cors: { origin: '*' }
   });
 
-  app.setGlobalPrefix('api');
+  app.setGlobalPrefix(BASE_URL);
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -24,11 +25,11 @@ async function bootstrap() {
     })
   );
 
-  app.use('/live', (_req, res) => {
+  app.use(withBaseUrl('/health'), (_req, res) => {
     res.json({ status: true });
   });
 
-  const apiConfig = new DocumentBuilder()
+  const restConfig = new DocumentBuilder()
     .setTitle('shift backend 🔥')
     .setDescription('Апи для выполнения индивидуальных заданий')
     .setVersion('1.0')
@@ -39,8 +40,8 @@ async function bootstrap() {
     })
     .build();
 
-  const document = SwaggerModule.createDocument(app, apiConfig);
-  SwaggerModule.setup('/api/rest', app, document);
+  const document = SwaggerModule.createDocument(app, restConfig);
+  SwaggerModule.setup(withBaseUrl('/rest'), app, document);
 
   app.setBaseViewsDir(join(__dirname, '..', 'static/views'));
   app.setViewEngine('hbs');
@@ -59,7 +60,7 @@ async function bootstrap() {
   const testerDocument = SwaggerModule.createDocument(app, testerConfig, {
     include: [OtpsModule, UsersModule]
   });
-  SwaggerModule.setup('/api/tester', app, testerDocument);
+  SwaggerModule.setup(withBaseUrl('/tester'), app, testerDocument);
 
   const androidSampleConfig = new DocumentBuilder()
     .setTitle('android sample 🤖')
@@ -70,11 +71,11 @@ async function bootstrap() {
   const androidSampleDocument = SwaggerModule.createDocument(app, androidSampleConfig, {
     include: [AndroidSampleModule]
   });
-  SwaggerModule.setup('/api/android-sample', app, androidSampleDocument);
+  SwaggerModule.setup(withBaseUrl('/android-sample'), app, androidSampleDocument);
 
   const port = process.env.PORT ?? 3000;
   await app.listen(port);
 
-  console.log(`Application is running on: ${await app.getUrl()}`);
+  console.log(`Application is running on: ${await app.getUrl()}${BASE_URL}`);
 }
 bootstrap();
