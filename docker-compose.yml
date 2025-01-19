@@ -25,7 +25,7 @@ services:
     environment:
       - JWT_SECRET=qwertyuiopasdfghjklzxcvbnm123456
       - PORT=${PORT}
-      - MONGODB_URL=mongodb://shift-intensive-database:27017
+      - DATABASE_URL=mongodb://shift-intensive-database:27017
     ports:
       - '3001:3001'
     depends_on:

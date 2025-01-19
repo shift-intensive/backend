@@ -18,6 +18,7 @@ export class OtpsService extends BaseService<OtpDocument> {
 
   @Cron('* */10 * * * *')
   async handleCron() {
+    console.log('OTP CRON:', new Date());
     const otps = await this.find({});
 
     const expiredOtpsIds = otps
