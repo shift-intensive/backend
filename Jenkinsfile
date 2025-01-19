@@ -3,8 +3,7 @@ pipeline {
     environment {
         GITHUB_TOKEN=credentials('github-container')
         DATABASE_URL=credentials('database-url')
-        SSH_USERNAME=credentials('yandex-apps-container')
-        
+
         IMAGE_NAME='shift-intensive/backend'
         IMAGE_VERSION='latest'
 
@@ -41,15 +40,16 @@ pipeline {
         }
         stage('deploy') {
             steps {
-                sh 'echo $SSH_USERNAME'
-                sh 'install -m 600 -D /dev/null ~/.ssh/id_rsa'
-                sh 'rm ~/.ssh/id_rsa'
-                sh 'cp -i $SSH_PRIVATE_KEY ~/.ssh/id_rsa'
-                sh 'ssh -o "StrictHostKeyChecking=no" $SSH_USERNAME@$IP \
-                    "sudo docker login ghcr.io -u $GITHUB_TOKEN_USR --password $GITHUB_TOKEN_PSW &&\
-                    sudo docker rm -f shift-intensive-backend &&\
-                    sudo docker pull ghcr.io/shift-intensive/backend:latest &&\
-                    sudo docker run --restart=always --name shift-intensive-backend -d -p $PORT:$PORT -e PORT=$PORT -e SERVER_URL=$SERVER_URL -e DATABASE_URL=$DATABASE_URL -e JWT_SECRET=$JWT_SECRET --network shift-intensive ghcr.io/shift-intensive/backend:latest"'
+                withCredentials(bindings: [sshUserPrivateKey(credentialsId: 'yandex-apps-container', keyFileVariable: 'SSH_PRIVATE_KEY', usernameVariable: 'SSH_USERNAME')]) {
+                    sh 'install -m 600 -D /dev/null ~/.ssh/id_rsa'
+                    sh 'rm ~/.ssh/id_rsa'
+                    sh 'cp -i $SSH_PRIVATE_KEY ~/.ssh/id_rsa'
+                    sh 'ssh -o "StrictHostKeyChecking=no" $SSH_USERNAME@$IP \
+                        "sudo docker login ghcr.io -u $GITHUB_TOKEN_USR --password $GITHUB_TOKEN_PSW &&\
+                        sudo docker rm -f shift-intensive-backend &&\
+                        sudo docker pull ghcr.io/shift-intensive/backend:latest &&\
+                        sudo docker run --restart=always --name shift-intensive-backend -d -p $PORT:$PORT -e PORT=$PORT -e SERVER_URL=$SERVER_URL -e DATABASE_URL=$DATABASE_URL -e JWT_SECRET=$JWT_SECRET --network shift-intensive ghcr.io/shift-intensive/backend:latest"'
+                }
             }
         }
     }
