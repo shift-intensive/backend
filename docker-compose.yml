@@ -23,8 +23,24 @@ services:
     environment:
       - JWT_SECRET=qwertyuiopasdfghjklzxcvbnm123456
       - PORT=${PORT}
-      - DATABASE_URL=mongodb://shift-intensive-database:27017
+      - DATABASE_URL=mongodb://admin:1234@shift-intensive-database:27017
+      - SERVER_URL=http://localhost:3001/
     ports:
       - '3001:3001'
     depends_on:
       - shift-intensive-database
+
+  shift-intensive-sql:
+    image: postgres:latest
+    restart: always
+    container_name: shift-intensive-sql
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: pokemon
+    volumes:
+      - type: bind
+        source: ./data
+        target: /data/db
