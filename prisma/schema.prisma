@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator dbml {
+  provider = "prisma-dbml-generator"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("SQL_DATABASE_URL")
+}
+
+model OTP {
+  id          Int     @id @default(autoincrement())
+  phoneNumber String  @unique
+  code        String
+  createdAt   DateTime @default(now())
+  expiresAt   DateTime
+
+  profile     Profile @relation(fields: [phoneNumber], references: [phoneNumber], onDelete: Cascade)
+}
+
+model Profile {
+  id          Int                @id @default(autoincrement())
+  phoneNumber String             @unique
+  name        String
+  email       String?
+  createdAt   DateTime           @default(now())
+
+  otp                  OTP?
+  loginHistory         LoginHistory[]
+  userActions          UserActions[]
+  profileChangeHistory ProfileChangeHistory[]
+}
+
+enum HistoryType {
+  LOGIN_HISTORY
+  PROFILE_CHANGE_HISTORY
+}
+
+model UserActions {
+  id         Int      @id @default(autoincrement())
+  profileId  Int
+  action     String
+  timestamp  DateTime @default(now())
+  historyId  Int
+  historyType HistoryType
+
+  profile    Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+}
+
+model LoginHistory {
+  id         Int      @id @default(autoincrement())
+  profileId  Int
+  loginTime  DateTime @default(now())
+  ipAddress  String?
+
+  profile    Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+}
+
+model ProfileChangeHistory {
+  id         Int      @id @default(autoincrement())
+  profileId  Int
+  change     String
+  timestamp  DateTime @default(now())
+
+  profile    Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+}

@@ -15,21 +15,6 @@ services:
         source: ./data
         target: /data/db
 
-  shift-intensive-service:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: shift-intensive-service
-    environment:
-      - JWT_SECRET=qwertyuiopasdfghjklzxcvbnm123456
-      - PORT=${PORT}
-      - DATABASE_URL=mongodb://admin:1234@shift-intensive-database:27017
-      - SERVER_URL=http://localhost:3001/
-    ports:
-      - '3001:3001'
-    depends_on:
-      - shift-intensive-database
-
   shift-intensive-sql:
     image: postgres:latest
     restart: always
@@ -39,8 +24,24 @@ services:
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: 1234
-      POSTGRES_DB: pokemon
+      POSTGRES_DB: shift
     volumes:
       - type: bind
         source: ./data
         target: /data/db
+
+  shift-intensive-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: shift-intensive-service
+    environment:
+      - JWT_SECRET=qwertyuiopasdfghjklzxcvbnm123456
+      - PORT=${PORT}
+      - SERVER_URL=http://localhost:3001/
+      - DATABASE_URL=mongodb://admin:1234@shift-intensive-database:27017
+      - SQL_DATABASE_URL=postgresql://admin:1234@localhost:5432/shift?schema=public
+    ports:
+      - '3001:3001'
+    depends_on:
+      - shift-intensive-database

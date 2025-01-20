@@ -250,7 +250,9 @@ export class CinemaController extends BaseResolver {
       throw new BadRequestException(this.wrapFail('Некорректный токен авторизации'));
     }
 
-    const orders = await this.cinemaOrderService.find({ phone: decodedJwtAccessToken.phone });
+    const orders = await this.cinemaOrderService.find({
+      'person.phone': decodedJwtAccessToken.phone
+    });
 
     return this.wrapSuccess({ orders });
   }

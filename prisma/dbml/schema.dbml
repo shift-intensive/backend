@@ -1,0 +1,63 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table OTP {
+  id Int [pk, increment]
+  phoneNumber String [unique, not null]
+  code String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  expiresAt DateTime [not null]
+  profile Profile [not null]
+}
+
+Table Profile {
+  id Int [pk, increment]
+  phoneNumber String [unique, not null]
+  name String [not null]
+  email String
+  createdAt DateTime [default: `now()`, not null]
+  otp OTP
+  loginHistory LoginHistory [not null]
+  userActions UserActions [not null]
+  profileChangeHistory ProfileChangeHistory [not null]
+}
+
+Table UserActions {
+  id Int [pk, increment]
+  profileId Int [not null]
+  action String [not null]
+  timestamp DateTime [default: `now()`, not null]
+  historyId Int [not null]
+  historyType HistoryType [not null]
+  profile Profile [not null]
+}
+
+Table LoginHistory {
+  id Int [pk, increment]
+  profileId Int [not null]
+  loginTime DateTime [default: `now()`, not null]
+  ipAddress String
+  profile Profile [not null]
+}
+
+Table ProfileChangeHistory {
+  id Int [pk, increment]
+  profileId Int [not null]
+  change String [not null]
+  timestamp DateTime [default: `now()`, not null]
+  profile Profile [not null]
+}
+
+Enum HistoryType {
+  LOGIN_HISTORY
+  PROFILE_CHANGE_HISTORY
+}
+
+Ref: OTP.phoneNumber - Profile.phoneNumber [delete: Cascade]
+
+Ref: UserActions.profileId > Profile.id [delete: Cascade]
+
+Ref: LoginHistory.profileId > Profile.id [delete: Cascade]
+
+Ref: ProfileChangeHistory.profileId > Profile.id [delete: Cascade]

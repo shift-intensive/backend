@@ -1,7 +1,4 @@
-import type {
-  Document,
-  FilterQuery
-} from 'mongoose';
+import type { Document, FilterQuery } from 'mongoose';
 
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
@@ -14,8 +11,11 @@ export class BaseService<Doc extends Document> {
     this.model.create(...params)) as typeof this.model.create;
   insertMany = ((...params: Parameters<typeof this.model.insertMany>) =>
     this.model.insertMany(...params)) as typeof this.model.insertMany;
-  find = ((...params: Parameters<typeof this.model.find>) =>
-    this.model.find(...params)) as typeof this.model.find;
+  find = ((...params: Parameters<typeof this.model.find>) => {
+    console.log('@@@', params);
+    console.log('@@@', this.model);
+    return this.model.find(...params);
+  }) as typeof this.model.find;
   findById = ((...params: Parameters<typeof this.model.findById>) =>
     this.model.findById(...params)) as typeof this.model.findById;
   findOne = ((...params: Parameters<typeof this.model.findOne>) =>

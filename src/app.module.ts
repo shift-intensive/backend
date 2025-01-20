@@ -20,6 +20,8 @@ import { AppController } from './app.controller';
 import { AndroidSampleModule } from './modules/android-sample';
 import { withBaseUrl } from './utils/helpers';
 
+console.log('@@@', path.join(__dirname, '/static/locales/'));
+
 @Module({
   controllers: [AppController],
   imports: [
@@ -27,7 +29,7 @@ import { withBaseUrl } from './utils/helpers';
     I18nModule.forRoot({
       fallbackLanguage: 'en',
       loaderOptions: {
-        path: path.join(__dirname, '/static/'),
+        path: path.join(__dirname, '/static/locales/'),
         watch: true
       },
       resolvers: [{ use: QueryResolver, options: ['lang'] }, AcceptLanguageResolver]
@@ -52,7 +54,7 @@ import { withBaseUrl } from './utils/helpers';
     }),
     ServeStaticModule.forRoot({
       serveRoot: withBaseUrl('/static'),
-      rootPath: path.join(__dirname, '..', 'static')
+      rootPath: path.join(__dirname, 'static')
     }),
     AndroidSampleModule,
     TesterModule,
