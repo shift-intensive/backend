@@ -17,6 +17,7 @@ export class PizzaOrderService extends BaseService<PizzaOrderDocument> {
 
   @Cron('*/20 * * * *')
   async handleCron() {
+    console.log('PIZZA CRON:', new Date());
     const orders = await this.find({
       $and: [{ status: { $ne: PizzaStatus.SUCCESS } }, { status: { $ne: PizzaStatus.CANCELED } }]
     });

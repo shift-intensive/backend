@@ -33,6 +33,7 @@ async function bootstrap() {
     .setTitle('shift backend 🔥')
     .setDescription('Апи для выполнения индивидуальных заданий')
     .setVersion('1.0')
+    .addServer(process.env.SERVER_URL)
     .addBearerAuth({
       type: 'http',
       scheme: 'bearer',
@@ -50,6 +51,7 @@ async function bootstrap() {
     .setTitle('shift tester 🧪')
     .setDescription('Апи для тестирования')
     .setVersion('1.0')
+    .addServer(process.env.SERVER_URL)
     .addBearerAuth({
       type: 'http',
       scheme: 'bearer',
@@ -66,6 +68,7 @@ async function bootstrap() {
     .setTitle('android sample 🤖')
     .setDescription('Апи для android sample')
     .setVersion('1.0')
+    .addServer(process.env.SERVER_URL)
     .build();
 
   const androidSampleDocument = SwaggerModule.createDocument(app, androidSampleConfig, {

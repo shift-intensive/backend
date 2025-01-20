@@ -19,6 +19,7 @@ export class DeliveryOrderService extends BaseService<DeliveryOrderDocument> {
 
   @Cron('*/20 * * * *')
   async handleCron() {
+    console.log('DELIVERY CRON:', new Date());
     const deliveries = await this.find({
       $and: [
         { status: { $ne: DeliveryStatus.SUCCESS } },

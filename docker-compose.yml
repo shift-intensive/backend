@@ -1,6 +1,4 @@
 version: '3.8'
-# sudo docker run -d -p 27018:27017 --restart=always -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=1234 --name shift-intensive-database --network shift-intensive -v shift-intensive-data-db:/data/db mongo:latest
-# sudo docker run -d -p 27018:27017 --name shift-intensive-database --network shift-intensive-poker -v data-db:/data/db mongo:latest
 
 services:
   shift-intensive-database:
@@ -25,8 +23,24 @@ services:
     environment:
       - JWT_SECRET=qwertyuiopasdfghjklzxcvbnm123456
       - PORT=${PORT}
-      - MONGODB_URL=mongodb://shift-intensive-database:27017
+      - DATABASE_URL=mongodb://admin:1234@shift-intensive-database:27017
+      - SERVER_URL=http://localhost:3001/
     ports:
       - '3001:3001'
     depends_on:
       - shift-intensive-database
+
+  shift-intensive-sql:
+    image: postgres:latest
+    restart: always
+    container_name: shift-intensive-sql
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: pokemon
+    volumes:
+      - type: bind
+        source: ./data
+        target: /data/db
