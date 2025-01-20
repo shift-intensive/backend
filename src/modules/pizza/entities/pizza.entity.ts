@@ -16,6 +16,7 @@ export class Pizza {
   @ApiProperty({ description: 'Название пиццы' })
   name: string;
 
+  // почему у нас оказалось 2 одинаковых сущности с разным названием
   @Field(() => [PizzaIngredient])
   @ApiProperty({ description: 'Ингредиенты', type: [PizzaIngredient] })
   ingredients: PizzaIngredient[];

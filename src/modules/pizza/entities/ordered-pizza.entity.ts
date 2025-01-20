@@ -3,8 +3,20 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
 
 import { PizzaDough } from './pizza-dough.entity';
-import { PizzaIngredient } from './pizza-ingredient.entity';
+import { Ingredient } from './pizza-ingredient.entity';
 import { PizzaSize } from './pizza-size.entity';
+
+@InputType('OrderedPizzaIngredientInput')
+@ObjectType()
+export class OrderedPizzaIngredient {
+  @Field(() => Ingredient)
+  @ApiProperty({ enum: Ingredient, description: 'Название ингредиента' })
+  name: Ingredient;
+
+  @Field(() => Number)
+  @ApiProperty({ description: 'Цена ингредиента' })
+  cost: number;
+}
 
 @InputType('OrderedPizzaInput')
 @ObjectType()
@@ -21,19 +33,13 @@ export class OrderedPizza {
   @ApiProperty({ description: 'Название пиццы' })
   name: string;
 
-  @Field(() => [PizzaIngredient])
-  @ApiProperty({ description: 'Топпинги', type: [PizzaIngredient] })
-  toppings: PizzaIngredient[];
+  @Field(() => [OrderedPizzaIngredient])
+  @ApiProperty({ description: 'Топпинги', type: [OrderedPizzaIngredient] })
+  toppings: OrderedPizzaIngredient[];
 
   @IsString()
   @IsNotEmpty()
-  @Field(() => String)
-  @ApiProperty({ description: 'Описание пиццы' })
-  description: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @Field(() => [PizzaSize])
+  @Field(() => PizzaSize)
   @ApiProperty({ description: 'Размеры пиццы', type: PizzaSize })
   size: PizzaSize;
 

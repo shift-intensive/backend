@@ -91,6 +91,8 @@ export class CinemaController extends BaseResolver {
       _id: { $in: order.tickets.map((ticket) => ticket._id) }
     });
 
+    // тут тикет сетится как "tickets": [{"acknowledged": true,"deletedCount": 1}]
+    // мб просто пустой массив засетить?
     await this.cinemaOrderService.updateOne(
       { _id: cancelCinemaOrderDto.orderId },
       { $set: { status: CinemaOrderStatus.CANCELED, tickets: updatedTickets } }
@@ -250,7 +252,9 @@ export class CinemaController extends BaseResolver {
       throw new BadRequestException(this.wrapFail('Некорректный токен авторизации'));
     }
 
-    const orders = await this.cinemaOrderService.find({ phone: decodedJwtAccessToken.phone });
+    const orders = await this.cinemaOrderService.find({
+      'person.phone': decodedJwtAccessToken.phone
+    });
 
     return this.wrapSuccess({ orders });
   }

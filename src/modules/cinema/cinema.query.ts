@@ -85,7 +85,9 @@ export class CinemaQuery extends BaseResolver {
       throw new GraphQLError('Некорректный токен авторизации');
     }
 
-    const orders = await this.cinemaOrderService.find({ phone: decodedJwtAccessToken.phone });
+    const orders = await this.cinemaOrderService.find({
+      'person.phone': decodedJwtAccessToken.phone
+    });
 
     return this.wrapSuccess({ orders });
   }

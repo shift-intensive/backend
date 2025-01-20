@@ -1,7 +1,4 @@
-import type {
-  Document,
-  FilterQuery
-} from 'mongoose';
+import type { Document, FilterQuery } from 'mongoose';
 
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';

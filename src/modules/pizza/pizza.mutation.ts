@@ -47,9 +47,14 @@ export class PizzaMutation extends BaseResolver {
     @Args() createPizzaPaymentDto: CreatePizzaPaymentDto
   ): Promise<PizzaPaymentResponse> {
     const { person } = createPizzaPaymentDto;
+    const pizzas = createPizzaPaymentDto.pizzas.reduce((acc, pizza) => {
+      acc.push({ ...pizza });
+      return acc;
+    }, []);
 
     const order = await this.pizzaOrderService.create({
       ...createPizzaPaymentDto,
+      pizzas,
       status: PizzaStatus.IN_PROCESSING,
       cancellable: true
     });
