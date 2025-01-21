@@ -1,6 +1,7 @@
 import { ArgsType, Field, InputType } from '@nestjs/graphql';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsNotEmpty, IsOptional, IsString, ValidateNested } from 'class-validator';
 
 import { OrderedPizza } from '../entities';
 
@@ -18,6 +19,8 @@ export class CreatePizzaPaymentPersonDto {
   @ApiProperty({ example: 'lastname', description: 'Фамилия' })
   lastname: string;
 
+  @IsString()
+  @IsOptional()
   @Field(() => String, { nullable: true })
   @ApiProperty({ example: 'middlename', description: 'Отчество', required: false })
   middlename?: string;
@@ -50,6 +53,7 @@ export class CreatePizzaPaymentAddressDto {
   apartment: string;
 
   @IsString()
+  @IsOptional()
   @Field(() => String, { nullable: true })
   @ApiProperty({ example: 'comment', description: 'Комментарий', required: false })
   comment?: string;
@@ -81,20 +85,24 @@ export class CreatePizzaPaymentDto {
   @ValidateNested()
   @Field(() => CreatePizzaPaymentAddressDto)
   @ApiProperty({ description: 'Адрес доставки', type: CreatePizzaPaymentAddressDto })
+  @Type(() => CreatePizzaPaymentAddressDto)
   receiverAddress: CreatePizzaPaymentAddressDto;
 
   @ValidateNested()
   @Field(() => CreatePizzaPaymentPersonDto)
   @ApiProperty({ description: 'Данные пользователя', type: CreatePizzaPaymentPersonDto })
+  @Type(() => CreatePizzaPaymentPersonDto)
   person: CreatePizzaPaymentPersonDto;
 
   @ValidateNested()
   @Field(() => CreatePizzaPaymentDebitCardDto)
   @ApiProperty({ description: 'Банковская карта', type: CreatePizzaPaymentDebitCardDto })
+  @Type(() => CreatePizzaPaymentDebitCardDto)
   debitCard: CreatePizzaPaymentDebitCardDto;
 
   @ValidateNested()
   @Field(() => [OrderedPizza])
   @ApiProperty({ description: 'Пиццы', type: [OrderedPizza] })
+  @Type(() => OrderedPizza)
   pizzas: OrderedPizza[];
 }
