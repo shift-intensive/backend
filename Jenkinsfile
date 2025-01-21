@@ -1,7 +1,9 @@
 pipeline {
     agent any
-    when {
-        expression { env.BRANCH_NAME == 'main' }
+    options {
+        when {
+            expression { env.BRANCH_NAME == 'main' }
+        }
     }
     environment {
         GITHUB_TOKEN=credentials('github-container')
