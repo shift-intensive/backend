@@ -3,6 +3,7 @@ pipeline {
     environment {
         GITHUB_TOKEN=credentials('github-container')
         DATABASE_URL=credentials('database-url')
+        SQL_DATABASE_URL=credentials('sql-database-url')
 
         IMAGE_NAME='shift-intensive/backend'
         IMAGE_VERSION='latest'
@@ -48,7 +49,7 @@ pipeline {
                         "sudo docker login ghcr.io -u $GITHUB_TOKEN_USR --password $GITHUB_TOKEN_PSW &&\
                         sudo docker rm -f shift-intensive-backend &&\
                         sudo docker pull ghcr.io/shift-intensive/backend:latest &&\
-                        sudo docker run --restart=always --name shift-intensive-backend -d -p $PORT:$PORT -e PORT=$PORT -e SERVER_URL=$SERVER_URL -e DATABASE_URL=$DATABASE_URL -e JWT_SECRET=$JWT_SECRET --network shift-intensive ghcr.io/shift-intensive/backend:latest"'
+                        sudo docker run --restart=always --name shift-intensive-backend -d -p $PORT:$PORT -e PORT=$PORT -e SERVER_URL=$SERVER_URL -e DATABASE_URL=$DATABASE_URL -e SQL_DATABASE_URL=$SQL_DATABASE_URL -e JWT_SECRET=$JWT_SECRET --network shift-intensive ghcr.io/shift-intensive/backend:latest"'
                 }
             }
         }
