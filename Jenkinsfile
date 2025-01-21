@@ -1,10 +1,5 @@
 pipeline {
     agent any
-    options {
-        when {
-            expression { env.BRANCH_NAME == 'main' }
-        }
-    }
     environment {
         GITHUB_TOKEN=credentials('github-container')
         DATABASE_URL=credentials('database-url')
