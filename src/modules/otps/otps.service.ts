@@ -16,7 +16,7 @@ export class OtpsService extends BaseService<OtpDocument> {
     super(OtpModel);
   }
 
-  @Cron('* */10 * * * *')
+  @Cron('0 0 * * * *')
   async handleCron() {
     console.log('OTP CRON:', new Date());
     const otps = await this.find({});

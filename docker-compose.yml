@@ -12,13 +12,13 @@ services:
       - 27018:27017
     volumes:
       - type: bind
-        source: ./data
+        source: ./data/mongo
         target: /data/db
 
-  shift-intensive-sql:
+  shift-intensive-postgres:
     image: postgres:latest
     restart: always
-    container_name: shift-intensive-sql
+    container_name: shift-intensive-postgres
     ports:
       - 5433:5432
     environment:
@@ -27,8 +27,21 @@ services:
       POSTGRES_DB: shift
     volumes:
       - type: bind
-        source: ./data
+        source: ./data/postgres
         target: /data/db
+
+  shift-intensive-pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    container_name: shift-intensive-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - /var/lib/pgadmin
+    ports:
+      - '5051:80'
 
   shift-intensive-service:
     build:
@@ -40,7 +53,7 @@ services:
       - PORT=${PORT}
       - SERVER_URL=http://localhost:3001/
       - DATABASE_URL=mongodb://admin:1234@shift-intensive-database:27017
-      - SQL_DATABASE_URL=postgresql://admin:1234@localhost:5432/shift?schema=public
+      - SQL_DATABASE_URL=postgresql://admin:1234@shift-intensive-postgres:5432/shift?schema=public
     ports:
       - '3001:3001'
     depends_on:

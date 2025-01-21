@@ -29,8 +29,11 @@ export class OtpsController extends BaseResolver {
       const { retryDelay, created } = existingOtp;
       const now = new Date().getTime();
 
-      if (new Date(created).getTime() + retryDelay > now)
+      if (new Date(created).getTime() + retryDelay > now) {
         return this.wrapSuccess({ retryDelay: RETRY_DELAY - (now - new Date(created).getTime()) });
+      }
+
+      await this.otpsService.delete({ phone: createOtpDto.phone });
     }
 
     const code = Math.floor(100000 + Math.random() * 900000);

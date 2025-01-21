@@ -7,8 +7,7 @@ import { join } from 'node:path';
 
 import { AppModule } from './app.module';
 import { AndroidSampleModule } from './modules/android-sample';
-import { OtpsModule } from './modules/otps';
-import { UsersModule } from './modules/users';
+import { TesterModule } from './modules/tester';
 import { BASE_URL, withBaseUrl } from './utils/helpers';
 
 async function bootstrap() {
@@ -60,7 +59,7 @@ async function bootstrap() {
     .build();
 
   const testerDocument = SwaggerModule.createDocument(app, testerConfig, {
-    include: [OtpsModule, UsersModule]
+    include: [TesterModule]
   });
   SwaggerModule.setup(withBaseUrl('/tester'), app, testerDocument);
 

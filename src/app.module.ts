@@ -20,8 +20,6 @@ import { AppController } from './app.controller';
 import { AndroidSampleModule } from './modules/android-sample';
 import { withBaseUrl } from './utils/helpers';
 
-console.log('@@@', path.join(__dirname, '/static/locales/'));
-
 @Module({
   controllers: [AppController],
   imports: [

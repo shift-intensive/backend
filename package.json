@@ -14,6 +14,8 @@
     "format": "prettier --write \"**/*.(ts|js)\"",
     "pretty": "yarn format && yarn lint",
     "lint-inspector": "npx @eslint/config-inspector",
+    "prisma-generate": "prisma generate",
+    "prisma-deploy": "prisma migrate deploy",
     "prepare": "husky"
   },
   "dependencies": {

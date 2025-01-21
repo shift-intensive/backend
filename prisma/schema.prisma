@@ -2,36 +2,13 @@ generator client {
   provider = "prisma-client-js"
 }
 
-generator dbml {
-  provider = "prisma-dbml-generator"
-}
+// generator dbml {
+//   provider = "prisma-dbml-generator"
+// }
 
 datasource db {
   provider = "postgresql"
   url      = env("SQL_DATABASE_URL")
-}
-
-model OTP {
-  id          Int     @id @default(autoincrement())
-  phoneNumber String  @unique
-  code        String
-  createdAt   DateTime @default(now())
-  expiresAt   DateTime
-
-  profile     Profile @relation(fields: [phoneNumber], references: [phoneNumber], onDelete: Cascade)
-}
-
-model Profile {
-  id          Int                @id @default(autoincrement())
-  phoneNumber String             @unique
-  name        String
-  email       String?
-  createdAt   DateTime           @default(now())
-
-  otp                  OTP?
-  loginHistory         LoginHistory[]
-  userActions          UserActions[]
-  profileChangeHistory ProfileChangeHistory[]
 }
 
 enum HistoryType {
@@ -39,31 +16,55 @@ enum HistoryType {
   PROFILE_CHANGE_HISTORY
 }
 
+model Otp {
+  id          Int     @id @default(autoincrement())
+  phone       String  @unique
+  code        Int
+  createdAt   DateTime @default(now())
+  retryDelay  Int
+}
+
+model User {
+  id         Int       @id @default(autoincrement())
+  phone      String    @unique @db.VarChar(20)
+  firstname  String?   @db.VarChar(50)
+  middlename String?   @db.VarChar(50)
+  lastname   String?   @db.VarChar(50)
+  email      String?   @unique @db.VarChar(100)
+  city       String?   @db.VarChar(100)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  loginHistory         LoginHistory[]
+  userActions          UserActions[]
+  profileChangeHistory ProfileChangeHistory[]
+}
+
+model LoginHistory {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  loginTime DateTime @default(now())
+  ipAddress String?
+
+  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
 model UserActions {
   id         Int      @id @default(autoincrement())
-  profileId  Int
+  userId     Int
   action     String
   timestamp  DateTime @default(now())
   historyId  Int
   historyType HistoryType
 
-  profile    Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
-}
-
-model LoginHistory {
-  id         Int      @id @default(autoincrement())
-  profileId  Int
-  loginTime  DateTime @default(now())
-  ipAddress  String?
-
-  profile    Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  user       User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model ProfileChangeHistory {
-  id         Int      @id @default(autoincrement())
-  profileId  Int
-  change     String
-  timestamp  DateTime @default(now())
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  change    String
+  timestamp DateTime @default(now())
 
-  profile    Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
