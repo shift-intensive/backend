@@ -1,6 +1,7 @@
-import { BadRequestException, Body, Controller, Patch, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Patch, Post, Req } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { ApiBearerAuth, ApiHeader, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Request } from 'express';
 
 import { ApiAuthorizedOnly } from '@/utils/guards';
 import { AuthService, BaseResolver, PrismaService } from '@/utils/services';
@@ -8,9 +9,9 @@ import { AuthService, BaseResolver, PrismaService } from '@/utils/services';
 import { OTP_EXPIRED_TIME, OtpsService, RETRY_DELAY } from '../otps';
 import { CreateOtpDto } from '../otps/dto';
 import { OtpResponse } from '../otps/otps.model';
-import { UsersService } from '../users';
+import { User, UsersService } from '../users';
 import { SignInDto, UpdateProfileDto } from '../users/dto';
-import { SignInResponse, UpdateProfileResponse } from '../users/users.model';
+import { SessionResponse, SignInResponse, UpdateProfileResponse } from '../users/users.model';
 
 @ApiTags('🧪 tester')
 @Controller('/tester')
@@ -22,6 +23,37 @@ export class TesterController extends BaseResolver {
     private readonly prismaService: PrismaService
   ) {
     super();
+  }
+
+  @ApiAuthorizedOnly()
+  @Get('/session')
+  @ApiOperation({ summary: 'получить сессию пользователя' })
+  @ApiResponse({
+    status: 200,
+    description: 'session',
+    type: SessionResponse
+  })
+  @ApiHeader({
+    name: 'authorization'
+  })
+  @ApiBearerAuth()
+  async session(@Req() request: Request): Promise<SessionResponse> {
+    const token = request.headers.authorization.split(' ')[1];
+
+    const decodedJwtAccessToken = (await this.authService.decode(token)) as User;
+
+    const mongoUser = await this.usersService.findOne({
+      phone: decodedJwtAccessToken.phone
+    });
+    const postgresUser = await this.prismaService.user.findFirst({
+      where: { phone: decodedJwtAccessToken.phone }
+    });
+
+    if (!mongoUser && !postgresUser) {
+      throw new BadRequestException(this.wrapFail('Пользователь не найден'));
+    }
+
+    return this.wrapSuccess({ user: mongoUser });
   }
 
   @ApiAuthorizedOnly()
