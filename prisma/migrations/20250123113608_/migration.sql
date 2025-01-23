@@ -53,7 +53,7 @@ CREATE TABLE "UserActions" (
 CREATE TABLE "ProfileChangeHistory" (
     "id" SERIAL NOT NULL,
     "userId" INTEGER NOT NULL,
-    "change" TEXT NOT NULL,
+    "change" JSONB NOT NULL,
     "timestamp" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "ProfileChangeHistory_pkey" PRIMARY KEY ("id")

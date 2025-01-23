@@ -91,6 +91,21 @@ export class TesterController extends BaseResolver {
       }
     );
 
+    const profileChangeHistory = await this.prismaService.profileChangeHistory.create({
+      data: {
+        userId: user.id,
+        change: JSON.parse(JSON.stringify(updateProfileDto.profile))
+      }
+    });
+    await this.prismaService.userActions.create({
+      data: {
+        userId: profileChangeHistory.id,
+        action: 'PROFILE_CHANGE',
+        historyType: 'PROFILE_CHANGE_HISTORY',
+        historyId: profileChangeHistory.id
+      }
+    });
+
     return this.wrapSuccess();
   }
 
@@ -145,7 +160,7 @@ export class TesterController extends BaseResolver {
     description: 'signin',
     type: SignInResponse
   })
-  async signin(@Body() signInDto: SignInDto): Promise<SignInResponse> {
+  async signin(@Req() request: Request, @Body() signInDto: SignInDto): Promise<SignInResponse> {
     let mongoUser = await this.usersService.findOne({ phone: signInDto.phone });
     let postgresUser = await this.prismaService.user.findFirst({
       where: { phone: signInDto.phone }
@@ -173,6 +188,22 @@ export class TesterController extends BaseResolver {
     ]);
 
     const { token } = await this.authService.login({ phone: signInDto.phone });
+
+    const loginHistory = await this.prismaService.loginHistory.create({
+      data: {
+        userId: postgresUser.id,
+        loginTime: new Date(),
+        ipAddress: request.ip
+      }
+    });
+    await this.prismaService.userActions.create({
+      data: {
+        userId: postgresUser.id,
+        action: 'LOGIN',
+        historyType: 'LOGIN_HISTORY',
+        historyId: loginHistory.id
+      }
+    });
 
     return this.wrapSuccess({ user: mongoUser, token });
   }

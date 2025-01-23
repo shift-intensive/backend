@@ -2,9 +2,9 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// generator dbml {
-//   provider = "prisma-dbml-generator"
-// }
+generator dbml {
+  provider = "prisma-dbml-generator"
+}
 
 datasource db {
   provider = "postgresql"
@@ -63,7 +63,7 @@ model UserActions {
 model ProfileChangeHistory {
   id        Int      @id @default(autoincrement())
   userId    Int
-  change    String
+  change    Json 
   timestamp DateTime @default(now())
 
   user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
