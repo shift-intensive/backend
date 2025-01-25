@@ -68,7 +68,7 @@ export class UsersController extends BaseResolver {
       throw new BadRequestException(this.wrapFail('Пользователь не существует'));
     }
 
-    await this.usersService.findOneAndUpdate(
+    const updatedUser = await this.usersService.findOneAndUpdate(
       { phone: user.phone },
       {
         $set: {
@@ -81,7 +81,7 @@ export class UsersController extends BaseResolver {
       }
     );
 
-    return this.wrapSuccess();
+    return this.wrapSuccess({ user: updatedUser });
   }
 
   @ApiAuthorizedOnly()

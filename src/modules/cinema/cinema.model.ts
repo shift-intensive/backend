@@ -61,7 +61,7 @@ export class ScheduleResponse extends BaseResponse {
 
 @ObjectType()
 export class PaymentResponse extends BaseResponse {
-  @Field(() => String)
-  @ApiProperty({ description: 'Номер заказа' })
+  @Field(() => CinemaOrder)
+  @ApiProperty({ description: 'Номер заказа', type: CinemaOrder })
   order: CinemaOrder;
 }

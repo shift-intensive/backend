@@ -9,9 +9,13 @@ import { getDDMMYYFormatDate } from '@/utils/helpers';
 import { AuthService, BaseResolver } from '@/utils/services';
 
 import type { User } from '../users';
-import type { CinemaOrdersResponse } from './cinema.model';
 
-import { FilmResponse, FilmsResponse, ScheduleResponse, TicketsResponse } from './cinema.model';
+import {
+  CinemaOrdersResponse,
+  FilmResponse,
+  FilmsResponse,
+  ScheduleResponse
+} from './cinema.model';
 import { CinemaService } from './cinema.service';
 import { GetFilmDto, GetScheduleDto } from './dto';
 import { CinemaOrderService } from './modules';
@@ -76,7 +80,7 @@ export class CinemaQuery extends BaseResolver {
   }
 
   @GqlAuthorizedOnly()
-  @Query(() => TicketsResponse)
+  @Query(() => CinemaOrdersResponse)
   async getCinemaOrders(@Context() context: { req: Request }): Promise<CinemaOrdersResponse> {
     const token = context.req.headers.authorization.split(' ')[1];
     const decodedJwtAccessToken = (await this.authService.decode(token)) as User;
@@ -85,7 +89,9 @@ export class CinemaQuery extends BaseResolver {
       throw new GraphQLError('Некорректный токен авторизации');
     }
 
-    const orders = await this.cinemaOrderService.find({ phone: decodedJwtAccessToken.phone });
+    const orders = await this.cinemaOrderService.find({
+      'person.phone': decodedJwtAccessToken.phone
+    });
 
     return this.wrapSuccess({ orders });
   }

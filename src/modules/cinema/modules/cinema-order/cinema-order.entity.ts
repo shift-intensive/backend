@@ -28,8 +28,8 @@ export class CinemaOrder {
   @Field(() => String)
   _id: MongooseSchema.Types.ObjectId;
 
-  @ApiProperty()
   @Field(() => String)
+  @Prop({ required: true })
   @ApiProperty({ description: 'Название фильма' })
   filmName: string;
 

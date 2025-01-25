@@ -91,6 +91,8 @@ export class CinemaController extends BaseResolver {
       _id: { $in: order.tickets.map((ticket) => ticket._id) }
     });
 
+    // тут тикет сетится как "tickets": [{"acknowledged": true,"deletedCount": 1}]
+    // мб просто пустой массив засетить?
     await this.cinemaOrderService.updateOne(
       { _id: cancelCinemaOrderDto.orderId },
       { $set: { status: CinemaOrderStatus.CANCELED, tickets: updatedTickets } }

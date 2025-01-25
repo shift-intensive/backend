@@ -48,6 +48,12 @@ enum CinemaOrderStatus {
   PAYED
 }
 
+type CinemaOrdersResponse {
+  orders: [CinemaOrder!]!
+  reason: String
+  success: Boolean!
+}
+
 type Country {
   code: String!
   code2: String!
@@ -435,21 +441,29 @@ type Mutation {
 }
 
 type OrderedPizza {
-  description: String!
   doughs: PizzaDough!
   id: String!
   name: String!
-  size: [PizzaSize!]!
-  toppings: [PizzaIngredient!]!
+  size: PizzaSize!
+  toppings: [OrderedPizzaIngredient!]!
+}
+
+type OrderedPizzaIngredient {
+  cost: Float!
+  name: Ingredient!
+}
+
+input OrderedPizzaIngredientInput {
+  cost: Float!
+  name: Ingredient!
 }
 
 input OrderedPizzaInput {
-  description: String!
   doughs: PizzaDoughInput!
   id: String!
   name: String!
-  size: [PizzaSizeInput!]!
-  toppings: [PizzaIngredientInput!]!
+  size: PizzaSizeInput!
+  toppings: [OrderedPizzaIngredientInput!]!
 }
 
 type Otp {
@@ -480,7 +494,7 @@ enum Payer {
 }
 
 type PaymentResponse {
-  order: String!
+  order: CinemaOrder!
   reason: String
   success: Boolean!
 }
@@ -643,7 +657,7 @@ enum Profession {
 }
 
 type Query {
-  getCinemaOrders: TicketsResponse!
+  getCinemaOrders: CinemaOrdersResponse!
   getCinemaToday: FilmsResponse!
   getDeliveryOrder(orderId: String!): DeliveryOrderResponse!
   getDeliveryOrders: DeliveryOrdersResponse!
@@ -719,18 +733,12 @@ input TicketInput {
   seance: FilmTicketSeanceInput!
 }
 
-type TicketsResponse {
-  reason: String
-  success: Boolean!
-  tickets: [Ticket!]!
-}
-
 input UpdateProfileProfileDto {
-  city: String!
-  email: String!
-  firstname: String!
-  lastname: String!
-  middlename: String!
+  city: String
+  email: String
+  firstname: String
+  lastname: String
+  middlename: String
 }
 
 type UpdateProfileResponse {

@@ -24,10 +24,10 @@ export class UsersMutation extends BaseResolver {
 
   @Mutation(() => SignInResponse)
   async signin(@Args() signInDto: SignInDto): Promise<SignInResponse> {
-    const user = await this.usersService.findOne({ phone: signInDto.phone });
+    let user = await this.usersService.findOne({ phone: signInDto.phone });
 
     if (!user) {
-      throw new GraphQLError('Неправильный отп код');
+      user = await this.usersService.create({ phone: signInDto.phone });
     }
 
     const otp = await this.otpsService.findOne({ phone: signInDto.phone, code: signInDto.code });
@@ -50,7 +50,7 @@ export class UsersMutation extends BaseResolver {
       throw new GraphQLError('Пользователь не найден');
     }
 
-    await this.usersService.findOneAndUpdate(
+    const updatedUser = await this.usersService.findOneAndUpdate(
       { phone: user.phone },
       {
         $set: {
@@ -63,6 +63,6 @@ export class UsersMutation extends BaseResolver {
       }
     );
 
-    return this.wrapSuccess();
+    return this.wrapSuccess({ user: updatedUser });
   }
 }

@@ -4,12 +4,12 @@ pipeline {
         GITHUB_TOKEN=credentials('github-container')
         DATABASE_URL=credentials('database-url')
         SQL_DATABASE_URL=credentials('sql-database-url')
+        IP=credentials('yandex-apps-ip')
 
         IMAGE_NAME='shift-intensive/backend'
         IMAGE_VERSION='latest'
-
-        IP='51.250.122.249'
         PORT='3003'
+        
         JWT_SECRET='qwertyuiopasdfghjklzxcvbnm123456'
         SERVER_URL='https://shift-intensive.ru/'
     }

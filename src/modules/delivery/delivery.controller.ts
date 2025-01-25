@@ -119,7 +119,6 @@ export class DeliveryController extends BaseResolver {
     @Body() createDeliveryOrderDto: CreateDeliveryOrderDto
   ): Promise<DeliverResponse> {
     const { sender } = createDeliveryOrderDto;
-    console.log('@@@', createDeliveryOrderDto);
 
     const order = await this.deliveryOrderService.create({
       ...createDeliveryOrderDto,
