@@ -1,6 +1,14 @@
 import { ArgsType, Field, InputType } from '@nestjs/graphql';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsNotEmpty, IsNumber, IsString, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  IsArray,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested
+} from 'class-validator';
 
 @InputType('CreatePaymentTicketsDto')
 export class CreatePaymentTicketsDto {
@@ -52,6 +60,8 @@ export class CreatePaymentPersonDto {
   @ApiProperty({ example: 'lastname', description: 'Фамилия' })
   lastname: string;
 
+  @IsString()
+  @IsOptional()
   @Field(() => String, { nullable: true })
   @ApiProperty({ example: 'middlename', description: 'Отчество' })
   middlename?: string;
@@ -65,6 +75,7 @@ export class CreatePaymentPersonDto {
 
 @InputType('CreatePaymentSeanceDto')
 export class CreatePaymentSeanceDto {
+  @IsString()
   @IsNotEmpty()
   @Field(() => String)
   @ApiProperty({ example: '29.06.23', description: 'Дата сеанса' })
@@ -88,21 +99,25 @@ export class CreateCinemaPaymentDto {
   @ValidateNested()
   @Field(() => CreatePaymentPersonDto)
   @ApiProperty({ description: 'Покупатель', type: CreatePaymentPersonDto })
+  @Type(() => CreatePaymentPersonDto)
   person: CreatePaymentPersonDto;
 
   @ValidateNested()
   @Field(() => CreatePaymentDebitCardDto)
   @ApiProperty({ description: 'Банковская карта', type: CreatePaymentDebitCardDto })
+  @Type(() => CreatePaymentDebitCardDto)
   debitCard: CreatePaymentDebitCardDto;
 
   @ValidateNested()
   @Field(() => CreatePaymentSeanceDto)
   @ApiProperty({ description: 'Сеанс фильма', type: CreatePaymentSeanceDto })
+  @Type(() => CreatePaymentSeanceDto)
   seance: CreatePaymentSeanceDto;
 
   @IsArray()
   @ValidateNested()
   @Field(() => [CreatePaymentTicketsDto])
   @ApiProperty({ description: 'Билеты', type: [CreatePaymentTicketsDto] })
+  @Type(() => CreatePaymentTicketsDto)
   tickets: CreatePaymentTicketsDto[];
 }

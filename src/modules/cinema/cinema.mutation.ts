@@ -133,6 +133,8 @@ export class CinemaMutation extends BaseResolver {
       }
     );
 
+    console.log('@@@@order', order);
+
     return this.wrapSuccess({ order });
   }
 }

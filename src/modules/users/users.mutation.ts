@@ -50,7 +50,7 @@ export class UsersMutation extends BaseResolver {
       throw new GraphQLError('Пользователь не найден');
     }
 
-    await this.usersService.findOneAndUpdate(
+    const updatedUser = await this.usersService.findOneAndUpdate(
       { phone: user.phone },
       {
         $set: {
@@ -63,6 +63,6 @@ export class UsersMutation extends BaseResolver {
       }
     );
 
-    return this.wrapSuccess();
+    return this.wrapSuccess({ user: updatedUser });
   }
 }
