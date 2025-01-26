@@ -65,9 +65,6 @@ CREATE UNIQUE INDEX "Otp_phone_key" ON "Otp"("phone");
 -- CreateIndex
 CREATE UNIQUE INDEX "User_phone_key" ON "User"("phone");
 
--- CreateIndex
-CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
-
 -- AddForeignKey
 ALTER TABLE "LoginHistory" ADD CONSTRAINT "LoginHistory_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 

@@ -70,7 +70,6 @@ export class TesterController extends BaseResolver {
   @ApiBearerAuth()
   async updateProfile(@Body() updateProfileDto: UpdateProfileDto): Promise<UpdateProfileResponse> {
     const isError = Math.random() > 0.3;
-    console.log('@updateProfile', Math.random() > 0.3, isError);
     if (isError) {
       throw new BadRequestException(this.wrapFail('Произошла ошибка'));
     }
