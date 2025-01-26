@@ -122,12 +122,12 @@ export class CinemaController extends BaseResolver {
       (acc, schedule, index) => {
         const formattedDate = getDDMMYYFormatDate(index);
 
-        const seances = schedule.map((element) => {
-          const updatedPlaces = structuredClone(element.hall.places);
+        const seances = schedule.map((seance) => {
+          const updatedPlaces = structuredClone(seance.hall.places);
           const payedTickets = tickets.filter(
             (ticket) =>
               ticket.seance.date === formattedDate &&
-              ticket.seance.time === element.time &&
+              ticket.seance.time === seance.time &&
               ticket.filmId === getScheduleDto.filmId
           );
 
@@ -137,7 +137,7 @@ export class CinemaController extends BaseResolver {
             });
           }
 
-          return { ...element, hall: { ...element.hall, places: updatedPlaces } };
+          return { ...seance, hall: { ...seance.hall, places: updatedPlaces } };
         });
 
         acc.push({ date: formattedDate, seances });
@@ -167,7 +167,8 @@ export class CinemaController extends BaseResolver {
       seance: createCinemaPaymentDto.seance,
       phone: createCinemaPaymentDto.person.phone,
       row: ticket.row,
-      column: ticket.column
+      column: ticket.column,
+      status: FilmTicketStatus.PAYED
     }));
 
     const existedTickets = [];
@@ -178,7 +179,7 @@ export class CinemaController extends BaseResolver {
           'seance.time': ticket.seance.time,
           row: ticket.row,
           column: ticket.column,
-          status: FilmTicketStatus.PAYED
+          status: ticket.status
         });
 
         if (existedTicket) {
@@ -203,19 +204,14 @@ export class CinemaController extends BaseResolver {
               seance: ticket.seance,
               row: ticket.row,
               column: ticket.column,
-              status: FilmTicketStatus.PAYED
+              status: ticket.status
             }))
           }
         )
       );
     }
 
-    const payedTickets = formattedTickets.map((ticket) => ({
-      ...ticket,
-      status: FilmTicketStatus.PAYED
-    }));
-
-    const tickets = await this.cinemaService.insertMany(payedTickets);
+    const tickets = await this.cinemaService.insertMany(formattedTickets);
     const filmName = this.cinemaService.getFilmName(createCinemaPaymentDto.filmId);
 
     const orderNumber = Math.floor(Math.random() * 10 ** 6);

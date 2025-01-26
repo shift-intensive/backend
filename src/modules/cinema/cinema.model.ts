@@ -34,13 +34,6 @@ export class FilmResponse extends BaseResponse {
   film: Film;
 }
 
-// @ObjectType()
-// export class ScheduleSeance extends FilmSeance {
-//   @Field(() => [Ticket])
-//   @ApiProperty({ description: 'Купленные билеты', type: [Ticket] })
-//   payedTickets: Ticket[];
-// }
-
 @ObjectType()
 export class Schedule {
   @Field(() => String)
