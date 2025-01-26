@@ -69,7 +69,7 @@ export class TesterController extends BaseResolver {
   })
   @ApiBearerAuth()
   async updateProfile(@Body() updateProfileDto: UpdateProfileDto): Promise<UpdateProfileResponse> {
-    const isError = Math.random() > 0.3;
+    const isError = Math.random() < 0.3;
     if (isError) {
       throw new BadRequestException(this.wrapFail('Произошла ошибка'));
     }
@@ -102,7 +102,7 @@ export class TesterController extends BaseResolver {
     });
     await this.prismaService.userActions.create({
       data: {
-        userId: profileChangeHistory.id,
+        userId: postgresUser.id,
         action: 'PROFILE_CHANGE',
         historyType: 'PROFILE_CHANGE_HISTORY',
         historyId: profileChangeHistory.id
