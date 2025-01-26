@@ -19,6 +19,7 @@ import {
 } from './cinema.model';
 import { CinemaService } from './cinema.service';
 import { CancelCinemaOrderDto, CreateCinemaPaymentDto, GetFilmDto, GetScheduleDto } from './dto';
+import { FilmHallCellType, FilmTicketStatus } from './entities';
 import { CinemaOrderService, CinemaOrderStatus } from './modules';
 
 @ApiTags('🍿 cinema')
@@ -87,12 +88,15 @@ export class CinemaController extends BaseResolver {
       throw new BadRequestException(this.wrapFail('Заказ нельзя отменить'));
     }
 
-    const updatedTickets = await this.cinemaService.delete({
+    await this.cinemaService.updateMany(
+      { _id: { $in: order.tickets.map((ticket) => ticket._id) } },
+      { $set: { status: FilmTicketStatus.CANCELED } }
+    );
+
+    const updatedTickets = await this.cinemaService.find({
       _id: { $in: order.tickets.map((ticket) => ticket._id) }
     });
 
-    // тут тикет сетится как "tickets": [{"acknowledged": true,"deletedCount": 1}]
-    // мб просто пустой массив засетить?
     await this.cinemaOrderService.updateOne(
       { _id: cancelCinemaOrderDto.orderId },
       { $set: { status: CinemaOrderStatus.CANCELED, tickets: updatedTickets } }
@@ -111,7 +115,7 @@ export class CinemaController extends BaseResolver {
   async getFilmSchedule(@Param() getScheduleDto: GetScheduleDto): Promise<ScheduleResponse> {
     const filmSchedule = this.cinemaService.getFilmSchedule(getScheduleDto.filmId);
     const tickets = await this.cinemaService.find({
-      'seance.date': { $gt: new Date().getTime() }
+      filmId: getScheduleDto.filmId
     });
 
     const updatedFilmSchedule = filmSchedule.reduce(
@@ -119,6 +123,7 @@ export class CinemaController extends BaseResolver {
         const formattedDate = getDDMMYYFormatDate(index);
 
         const seances = schedule.map((element) => {
+          const updatedPlaces = structuredClone(element.hall.places);
           const payedTickets = tickets.filter(
             (ticket) =>
               ticket.seance.date === formattedDate &&
@@ -126,10 +131,13 @@ export class CinemaController extends BaseResolver {
               ticket.filmId === getScheduleDto.filmId
           );
 
-          return {
-            ...element,
-            payedTickets
-          };
+          if (payedTickets.length) {
+            payedTickets.forEach((ticket) => {
+              updatedPlaces[ticket.row - 1][ticket.column - 1].type = FilmHallCellType.PAYED;
+            });
+          }
+
+          return { ...element, hall: { ...element.hall, places: updatedPlaces } };
         });
 
         acc.push({ date: formattedDate, seances });
@@ -169,7 +177,8 @@ export class CinemaController extends BaseResolver {
           'seance.date': ticket.seance.date,
           'seance.time': ticket.seance.time,
           row: ticket.row,
-          column: ticket.column
+          column: ticket.column,
+          status: FilmTicketStatus.PAYED
         });
 
         if (existedTicket) {
@@ -193,14 +202,20 @@ export class CinemaController extends BaseResolver {
             tickets: existedTickets.map((ticket) => ({
               seance: ticket.seance,
               row: ticket.row,
-              column: ticket.column
+              column: ticket.column,
+              status: FilmTicketStatus.PAYED
             }))
           }
         )
       );
     }
 
-    const tickets = await this.cinemaService.insertMany(formattedTickets);
+    const payedTickets = formattedTickets.map((ticket) => ({
+      ...ticket,
+      status: FilmTicketStatus.PAYED
+    }));
+
+    const tickets = await this.cinemaService.insertMany(payedTickets);
     const filmName = this.cinemaService.getFilmName(createCinemaPaymentDto.filmId);
 
     const orderNumber = Math.floor(Math.random() * 10 ** 6);

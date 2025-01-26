@@ -34,12 +34,12 @@ export class FilmResponse extends BaseResponse {
   film: Film;
 }
 
-@ObjectType()
-export class ScheduleSeance extends FilmSeance {
-  @Field(() => [Ticket])
-  @ApiProperty({ description: 'Купленные билеты', type: [Ticket] })
-  payedTickets: Ticket[];
-}
+// @ObjectType()
+// export class ScheduleSeance extends FilmSeance {
+//   @Field(() => [Ticket])
+//   @ApiProperty({ description: 'Купленные билеты', type: [Ticket] })
+//   payedTickets: Ticket[];
+// }
 
 @ObjectType()
 export class Schedule {
@@ -47,9 +47,9 @@ export class Schedule {
   @ApiProperty({ description: 'Дата сеансов' })
   date: string;
 
-  @Field(() => [ScheduleSeance])
-  @ApiProperty({ description: 'Сеансы', type: [ScheduleSeance] })
-  seances: ScheduleSeance[];
+  @Field(() => [FilmSeance])
+  @ApiProperty({ description: 'Сеансы', type: [FilmSeance] })
+  seances: FilmSeance[];
 }
 
 @ObjectType()
