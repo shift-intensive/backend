@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 
 import { OtpsModule } from '@/modules/otps';
+import { UsersModule } from '@/modules/users';
 import { AuthModule, PrismaService } from '@/utils/services';
 
-import { UsersModule } from '../users';
 import { TesterController } from './tester.controller';
 
 @Module({

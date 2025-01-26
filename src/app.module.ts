@@ -18,6 +18,7 @@ import { UsersModule } from '@/modules/users/users.module';
 
 import { AppController } from './app.controller';
 import { AndroidSampleModule } from './modules/android-sample';
+import { CronModule } from './modules/cron';
 import { withBaseUrl } from './utils/helpers';
 
 @Module({
@@ -60,7 +61,8 @@ import { withBaseUrl } from './utils/helpers';
     UsersModule,
     CinemaModule,
     DeliveryModule,
-    PizzaModule
+    PizzaModule,
+    CronModule
   ],
   providers: []
 })

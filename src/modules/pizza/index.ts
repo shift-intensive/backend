@@ -1,3 +1,3 @@
-export * from './delivery.module';
 export * from './entities';
 export * from './modules';
+export * from './pizza.module';
