@@ -70,30 +70,34 @@ export class TesterController extends BaseResolver {
   @ApiBearerAuth()
   async updateProfile(@Body() updateProfileDto: UpdateProfileDto): Promise<UpdateProfileResponse> {
     const isError = Math.random() > 0.3;
+    console.log('@updateProfile', Math.random() > 0.3, isError);
     if (isError) {
       throw new BadRequestException(this.wrapFail('Произошла ошибка'));
     }
 
-    const user = await this.usersService.findOne({ phone: updateProfileDto.phone });
+    const mongoUser = await this.usersService.findOne({ phone: updateProfileDto.phone });
+    const postgresUser = await this.prismaService.user.findFirst({
+      where: { phone: updateProfileDto.phone }
+    });
 
-    if (!user) {
+    if (!mongoUser && !postgresUser) {
       throw new BadRequestException(this.wrapFail('Пользователь не существует'));
     }
 
-    await this.prismaService.user.update({
-      where: { phone: user.phone },
-      data: updateProfileDto.profile
-    });
     await this.usersService.findOneAndUpdate(
-      { phone: user.phone },
+      { phone: mongoUser.phone },
       {
         $set: { ...updateProfileDto.profile }
       }
     );
+    await this.prismaService.user.update({
+      where: { phone: postgresUser.phone },
+      data: updateProfileDto.profile
+    });
 
     const profileChangeHistory = await this.prismaService.profileChangeHistory.create({
       data: {
-        userId: user.id,
+        userId: postgresUser.id,
         change: JSON.parse(JSON.stringify(updateProfileDto.profile))
       }
     });
@@ -106,7 +110,7 @@ export class TesterController extends BaseResolver {
       }
     });
 
-    return this.wrapSuccess();
+    return this.wrapSuccess({ user: mongoUser });
   }
 
   @Post('/auth/otp')
