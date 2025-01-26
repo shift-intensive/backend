@@ -1,14 +1,7 @@
 import { ArgsType, Field, InputType } from '@nestjs/graphql';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import {
-  IsArray,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-  ValidateNested
-} from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
 
 @InputType('CreatePaymentTicketsDto')
 export class CreatePaymentTicketsDto {
@@ -114,7 +107,6 @@ export class CreateCinemaPaymentDto {
   @Type(() => CreatePaymentSeanceDto)
   seance: CreatePaymentSeanceDto;
 
-  @IsArray()
   @ValidateNested()
   @Field(() => [CreatePaymentTicketsDto])
   @ApiProperty({ description: 'Билеты', type: [CreatePaymentTicketsDto] })

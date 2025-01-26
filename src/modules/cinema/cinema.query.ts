@@ -18,6 +18,7 @@ import {
 } from './cinema.model';
 import { CinemaService } from './cinema.service';
 import { GetFilmDto, GetScheduleDto } from './dto';
+import { FilmHallCellType } from './entities';
 import { CinemaOrderService } from './modules';
 
 @Resolver('🍿 cinema query')
@@ -48,25 +49,29 @@ export class CinemaQuery extends BaseResolver {
   async getFilmSchedule(@Args() getScheduleDto: GetScheduleDto): Promise<ScheduleResponse> {
     const filmSchedule = this.cinemaService.getFilmSchedule(getScheduleDto.filmId);
     const tickets = await this.cinemaService.find({
-      'seance.date': { $gt: new Date().getTime() }
+      filmId: getScheduleDto.filmId
     });
 
     const updatedFilmSchedule = filmSchedule.reduce(
       (acc, schedule, index) => {
         const formattedDate = getDDMMYYFormatDate(index);
 
-        const seances = schedule.map((element) => {
+        const seances = schedule.map((seance) => {
+          const updatedPlaces = structuredClone(seance.hall.places);
           const payedTickets = tickets.filter(
             (ticket) =>
               ticket.seance.date === formattedDate &&
-              ticket.seance.time === element.time &&
+              ticket.seance.time === seance.time &&
               ticket.filmId === getScheduleDto.filmId
           );
 
-          return {
-            ...element,
-            payedTickets
-          };
+          if (payedTickets.length) {
+            payedTickets.forEach((ticket) => {
+              updatedPlaces[ticket.row - 1][ticket.column - 1].type = FilmHallCellType.PAYED;
+            });
+          }
+
+          return { ...seance, hall: { ...seance.hall, places: updatedPlaces } };
         });
 
         acc.push({ date: formattedDate, seances });

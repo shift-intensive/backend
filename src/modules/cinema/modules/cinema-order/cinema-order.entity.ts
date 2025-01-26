@@ -50,7 +50,7 @@ export class CinemaOrder {
 
   @Field(() => CinemaOrderStatus)
   @Prop({ required: true, default: CinemaOrderStatus.PAYED })
-  @ApiProperty({ description: 'Статус билета', enum: CinemaOrderStatus })
+  @ApiProperty({ description: 'Статус заказа', enum: CinemaOrderStatus })
   status: CinemaOrderStatus;
 }
 
