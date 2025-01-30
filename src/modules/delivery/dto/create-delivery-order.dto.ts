@@ -1,6 +1,13 @@
 import { ArgsType, Field, InputType } from '@nestjs/graphql';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString, ValidateNested } from 'class-validator';
+import {
+  IsBoolean,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested
+} from 'class-validator';
 
 import { DeliveryOptionType } from '../entities';
 import { Payer } from '../modules';
@@ -110,9 +117,43 @@ export class CreateDeliveryOrderAddressDto {
   apartment: string;
 
   @IsString()
+  @IsOptional()
   @Field(() => String, { nullable: true })
   @ApiProperty({ example: 'comment', description: 'Комментарий', required: false })
   comment?: string;
+}
+
+@InputType('CreateDeliveryOrderReceiverAddressDto')
+export class CreateDeliveryOrderReceiverAddressDto {
+  @IsString()
+  @IsNotEmpty()
+  @Field(() => String)
+  @ApiProperty({ example: 'street', description: 'Улица' })
+  street: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @Field(() => String)
+  @ApiProperty({ example: 'house', description: 'Номер дома' })
+  house: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @Field(() => String)
+  @ApiProperty({ example: 'apartment', description: 'Номер квартиры' })
+  apartment: string;
+
+  @IsString()
+  @IsOptional()
+  @Field(() => String, { nullable: true })
+  @ApiProperty({ example: 'comment', description: 'Комментарий', required: false })
+  comment?: string;
+
+  @IsBoolean()
+  @IsOptional()
+  @Field(() => Boolean, { nullable: true })
+  @ApiProperty({ description: 'Бесконтактная доставка', required: false })
+  isNonContact?: boolean;
 }
 
 @ArgsType()
@@ -138,9 +179,9 @@ export class CreateDeliveryOrderDto {
   receiverPoint: CreateDeliveryOrderPointDto;
 
   @ValidateNested()
-  @Field(() => CreateDeliveryOrderAddressDto)
-  @ApiProperty({ description: 'Адрес получателя', type: CreateDeliveryOrderAddressDto })
-  receiverAddress: CreateDeliveryOrderAddressDto;
+  @Field(() => CreateDeliveryOrderReceiverAddressDto)
+  @ApiProperty({ description: 'Адрес получателя', type: CreateDeliveryOrderReceiverAddressDto })
+  receiverAddress: CreateDeliveryOrderReceiverAddressDto;
 
   @ValidateNested()
   @Field(() => CreateDeliveryOrderPersonDto)
