@@ -96,8 +96,8 @@ export class CreateDeliveryOrderPersonDto {
   phone: string;
 }
 
-@InputType('CreateDeliveryOrderAddressDto')
-export class CreateDeliveryOrderAddressDto {
+@InputType('CreateDeliveryOrderSenderAddressDto')
+export class CreateDeliveryOrderSenderAddressDto {
   @IsString()
   @IsNotEmpty()
   @Field(() => String)
@@ -164,9 +164,9 @@ export class CreateDeliveryOrderDto {
   senderPoint: CreateDeliveryOrderPointDto;
 
   @ValidateNested()
-  @Field(() => CreateDeliveryOrderAddressDto)
-  @ApiProperty({ description: 'Адрес отправителя', type: CreateDeliveryOrderAddressDto })
-  senderAddress: CreateDeliveryOrderAddressDto;
+  @Field(() => CreateDeliveryOrderSenderAddressDto)
+  @ApiProperty({ description: 'Адрес отправителя', type: CreateDeliveryOrderSenderAddressDto })
+  senderAddress: CreateDeliveryOrderSenderAddressDto;
 
   @ValidateNested()
   @Field(() => CreateDeliveryOrderPersonDto)
