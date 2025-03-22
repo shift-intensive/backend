@@ -97,6 +97,14 @@ input CreateDeliveryOrderPointDto {
   name: String!
 }
 
+input CreateDeliveryOrderReceiverAddressDto {
+  apartment: String!
+  comment: String
+  house: String!
+  isNonContact: Boolean
+  street: String!
+}
+
 input CreatePaymentDebitCardDto {
   cvv: String!
   expireDate: String!
@@ -186,7 +194,7 @@ type DeliveryOrder {
   cancellable: Boolean!
   payer: Payer!
   receiver: DeliveryPerson!
-  receiverAddress: DeliveryAddress!
+  receiverAddress: DeliveryReceiverAddress!
   receiverPoint: DeliveryPoint!
   sender: DeliveryPerson!
   senderAddress: DeliveryAddress!
@@ -199,7 +207,7 @@ input DeliveryOrderInput {
   cancellable: Boolean!
   payer: Payer!
   receiver: DeliveryPersonInput!
-  receiverAddress: DeliveryAddressInput!
+  receiverAddress: DeliveryReceiverAddressInput!
   receiverPoint: DeliveryPointInput!
   sender: DeliveryPersonInput!
   senderAddress: DeliveryAddressInput!
@@ -277,6 +285,22 @@ type DeliveryPointsResponse {
   success: Boolean!
 }
 
+type DeliveryReceiverAddress {
+  apartment: String!
+  comment: String
+  house: String!
+  isNonContact: Boolean
+  street: String!
+}
+
+input DeliveryReceiverAddressInput {
+  apartment: String!
+  comment: String
+  house: String!
+  isNonContact: Boolean
+  street: String!
+}
+
 enum DeliveryStatus {
   CANCELED
   IN_PROCESSING
@@ -325,6 +349,7 @@ enum FilmHallCellType {
   BLOCKED
   COMFORT
   ECONOM
+  PAYED
 }
 
 input FilmHallInput {
@@ -368,6 +393,16 @@ type FilmResponse {
   success: Boolean!
 }
 
+type FilmSeance {
+  hall: FilmHall!
+  time: String!
+}
+
+input FilmSeanceInput {
+  hall: FilmHallInput!
+  time: String!
+}
+
 type FilmStaff {
   fullName: String!
   id: String!
@@ -388,6 +423,11 @@ type FilmTicketSeance {
 input FilmTicketSeanceInput {
   date: String!
   time: String!
+}
+
+enum FilmTicketStatus {
+  CANCELED
+  PAYED
 }
 
 type FilmUserRating {
@@ -433,7 +473,7 @@ type Mutation {
   cancelDeliveryOrder(orderId: String!): BaseResponse!
   cancelPizzaOrder(orderId: String!): BaseResponse!
   createCinemaPayment(debitCard: CreatePaymentDebitCardDto!, filmId: String!, person: CreatePaymentPersonDto!, seance: CreatePaymentSeanceDto!, tickets: [CreatePaymentTicketsDto!]!): PaymentResponse!
-  createDeliveryOrder(option: CreateDeliveryOrderDeliveryOptionDto!, payer: Payer!, receiver: CreateDeliveryOrderPersonDto!, receiverAddress: CreateDeliveryOrderAddressDto!, receiverPoint: CreateDeliveryOrderPointDto!, sender: CreateDeliveryOrderPersonDto!, senderAddress: CreateDeliveryOrderAddressDto!, senderPoint: CreateDeliveryOrderPointDto!): DeliverResponse!
+  createDeliveryOrder(option: CreateDeliveryOrderDeliveryOptionDto!, payer: Payer!, receiver: CreateDeliveryOrderPersonDto!, receiverAddress: CreateDeliveryOrderReceiverAddressDto!, receiverPoint: CreateDeliveryOrderPointDto!, sender: CreateDeliveryOrderPersonDto!, senderAddress: CreateDeliveryOrderAddressDto!, senderPoint: CreateDeliveryOrderPointDto!): DeliverResponse!
   createOtp(phone: String!): OtpResponse!
   createPizzaPayment(debitCard: CreatePizzaPaymentDebitCardDto!, person: CreatePizzaPaymentPersonDto!, pizzas: [OrderedPizzaInput!]!, receiverAddress: CreatePizzaPaymentAddressDto!): PizzaPaymentResponse!
   signin(code: Float!, phone: String!): SignInResponse!
@@ -681,19 +721,13 @@ enum Rating {
 
 type Schedule {
   date: String!
-  seances: [ScheduleSeance!]!
+  seances: [FilmSeance!]!
 }
 
 type ScheduleResponse {
   reason: String
   schedules: [Schedule!]!
   success: Boolean!
-}
-
-type ScheduleSeance {
-  hall: FilmHall!
-  payedTickets: [Ticket!]!
-  time: String!
 }
 
 type SessionResponse {
@@ -722,6 +756,7 @@ type Ticket {
   phone: String!
   row: Float!
   seance: FilmTicketSeance!
+  status: FilmTicketStatus!
 }
 
 input TicketInput {
@@ -731,6 +766,7 @@ input TicketInput {
   phone: String!
   row: Float!
   seance: FilmTicketSeanceInput!
+  status: FilmTicketStatus!
 }
 
 input UpdateProfileProfileDto {
