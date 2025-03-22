@@ -3,6 +3,7 @@ import type { NestExpressApplication } from '@nestjs/platform-express';
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { apiReference } from '@scalar/nestjs-api-reference';
 import { join } from 'node:path';
 
 import { AppModule } from './app.module';
@@ -41,7 +42,12 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, restConfig);
-  SwaggerModule.setup(withBaseUrl('/rest'), app, document);
+  app.use(
+    withBaseUrl('/rest'),
+    apiReference({
+      content: document
+    })
+  );
 
   app.setBaseViewsDir(join(__dirname, 'static/views'));
   app.setViewEngine('hbs');
@@ -61,7 +67,12 @@ async function bootstrap() {
   const testerDocument = SwaggerModule.createDocument(app, testerConfig, {
     include: [TesterModule]
   });
-  SwaggerModule.setup(withBaseUrl('/tester'), app, testerDocument);
+  app.use(
+    withBaseUrl('/tester'),
+    apiReference({
+      content: testerDocument
+    })
+  );
 
   const androidSampleConfig = new DocumentBuilder()
     .setTitle('android sample 🤖')
@@ -73,7 +84,12 @@ async function bootstrap() {
   const androidSampleDocument = SwaggerModule.createDocument(app, androidSampleConfig, {
     include: [AndroidSampleModule]
   });
-  SwaggerModule.setup(withBaseUrl('/android-sample'), app, androidSampleDocument);
+  app.use(
+    withBaseUrl('/android-sample'),
+    apiReference({
+      content: androidSampleDocument
+    })
+  );
 
   const port = process.env.PORT ?? 3000;
   await app.listen(port);
