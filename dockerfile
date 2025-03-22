@@ -10,6 +10,7 @@ RUN yarn --production --frozen-lockfile
 
 COPY . .
 
+RUN yarn prisma-generate
 RUN yarn build
 
 FROM base AS runner
