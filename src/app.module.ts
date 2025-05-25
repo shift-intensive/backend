@@ -9,6 +9,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { AcceptLanguageResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
 import * as path from 'node:path';
 
+import { CarsModule } from '@/modules/cars/cars.module';
 import { CinemaModule } from '@/modules/cinema/cinema.module';
 import { DeliveryModule } from '@/modules/delivery/delivery.module';
 import { OtpsModule } from '@/modules/otps/otps.module';
@@ -61,6 +62,7 @@ import { withBaseUrl } from './utils/helpers';
     UsersModule,
     CinemaModule,
     DeliveryModule,
+    CarsModule,
     PizzaModule,
     CronModule
   ],
