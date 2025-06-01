@@ -24,7 +24,7 @@ export class UsersController extends BaseResolver {
   }
 
   @Post('/signin')
-  @ApiOperation({ summary: 'авторизация' })
+  @ApiOperation({ summary: 'Авторизация' })
   @ApiResponse({
     status: 200,
     description: 'signin',
@@ -51,7 +51,7 @@ export class UsersController extends BaseResolver {
 
   @ApiAuthorizedOnly()
   @Patch('/profile')
-  @ApiOperation({ summary: 'обновить профиль пользователя' })
+  @ApiOperation({ summary: 'Обновить профиль пользователя' })
   @ApiResponse({
     status: 200,
     description: 'update profile',
@@ -86,7 +86,7 @@ export class UsersController extends BaseResolver {
 
   @ApiAuthorizedOnly()
   @Get('/session')
-  @ApiOperation({ summary: 'получить сессию пользователя' })
+  @ApiOperation({ summary: 'Получить сессию пользователя' })
   @ApiResponse({
     status: 200,
     description: 'session',

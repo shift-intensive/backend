@@ -5,14 +5,15 @@ import { randomUUID } from 'node:crypto';
 import { UsersService } from '@/modules/users';
 import { DescribeContext } from '@/utils/decorators';
 import { GqlAuthorizedOnly } from '@/utils/guards';
-import { getDistance } from '@/utils/helpers';
 import { BaseResolver, BaseResponse } from '@/utils/services';
 
 import type { DeliveryOption } from './entities';
 
 import { CalculateDeliveryResponse, DeliverResponse } from './delivery.model';
+import { DeliveryService } from './delivery.service';
 import { CalculateDeliveryDto, CancelDeliveryOrderDto, CreateDeliveryOrderDto } from './dto';
 import { DeliveryOptionType } from './entities';
+import { calculateDelivery } from './helpers';
 import { DeliveryOrderService, DeliveryStatus } from './modules';
 
 @Resolver('📦 delivery mutation')
@@ -20,6 +21,7 @@ import { DeliveryOrderService, DeliveryStatus } from './modules';
 @Resolver()
 export class DeliveryMutation extends BaseResolver {
   constructor(
+    private readonly deliveryService: DeliveryService,
     private readonly deliveryOrderService: DeliveryOrderService,
     private readonly usersService: UsersService
   ) {
@@ -53,10 +55,35 @@ export class DeliveryMutation extends BaseResolver {
   async createDeliveryOrder(
     @Args() createDeliveryOrderDto: CreateDeliveryOrderDto
   ): Promise<DeliverResponse> {
-    const { sender } = createDeliveryOrderDto;
+    const { sender, senderPointId, receiverPointId, receiver } = createDeliveryOrderDto;
+
+    const senderPoint = this.deliveryService.getDeliveryPoint(senderPointId);
+    const receiverPoint = this.deliveryService.getDeliveryPoint(receiverPointId);
+    const packageType = this.deliveryService.getDeliveryPackageType(
+      createDeliveryOrderDto.packageId
+    );
+
+    if (!senderPoint || !receiverPoint || !packageType) {
+      throw new BadRequestException(this.wrapFail('Некорректные данные'));
+    }
+
+    let price = calculateDelivery({
+      senderPointCoordinates: senderPoint,
+      receiverPointCoordinates: receiverPoint,
+      packageData: packageType
+    });
+
+    if (createDeliveryOrderDto.optionType === DeliveryOptionType.EXPRESS) {
+      price *= 2;
+    }
 
     const order = await this.deliveryOrderService.create({
-      ...createDeliveryOrderDto,
+      price,
+      package: packageType,
+      senderPoint,
+      receiverPoint,
+      sender,
+      receiver,
       status: DeliveryStatus.IN_PROCESSING,
       cancellable: true
     });
@@ -85,22 +112,14 @@ export class DeliveryMutation extends BaseResolver {
   async calculateDelivery(
     @Args() calculateDeliveryDto: CalculateDeliveryDto
   ): Promise<CalculateDeliveryResponse> {
-    const distancePrice = getDistance(
-      calculateDeliveryDto.receiverPoint.latitude,
-      calculateDeliveryDto.receiverPoint.longitude,
-      calculateDeliveryDto.senderPoint.latitude,
-      calculateDeliveryDto.senderPoint.longitude
-    );
+    const price = calculateDelivery({
+      senderPointCoordinates: calculateDeliveryDto.senderPoint,
+      receiverPointCoordinates: calculateDeliveryDto.receiverPoint,
+      packageData: calculateDeliveryDto.package
+    });
 
-    const sizeWeightPrice =
-      (calculateDeliveryDto.package.length *
-        calculateDeliveryDto.package.weight *
-        calculateDeliveryDto.package.height *
-        calculateDeliveryDto.package.width) /
-      10000;
-
-    const price = Math.round((distancePrice + sizeWeightPrice) * 100);
     const days = Math.floor(Math.random() * 7) + 2;
+
     const options: DeliveryOption[] = [
       {
         id: randomUUID(),

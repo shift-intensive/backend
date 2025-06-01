@@ -1,75 +1,9 @@
 import { ArgsType, Field, InputType } from '@nestjs/graphql';
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsBoolean,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-  ValidateNested
-} from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsOptional, IsString, ValidateNested } from 'class-validator';
 
 import { DeliveryOptionType } from '../entities';
 import { Payer } from '../modules';
-
-@InputType('CreateDeliveryOrderDeliveryOptionDto')
-export class CreateDeliveryOrderDeliveryOptionDto {
-  @IsString()
-  @IsNotEmpty()
-  @Field(() => String)
-  @ApiProperty({ example: '1', description: 'Индентификатор опции доставки' })
-  id: string;
-
-  @IsNumber()
-  @IsNotEmpty()
-  @Field(() => Number)
-  @ApiProperty({ example: 10000, description: 'Цена доставки в копейках' })
-  price: number;
-
-  @IsNumber()
-  @IsNotEmpty()
-  @Field(() => Number)
-  @ApiProperty({ example: 2, description: 'Количество дней доставки' })
-  days: number;
-
-  @IsString()
-  @IsNotEmpty()
-  @Field(() => String)
-  @ApiProperty({ example: 'name', description: 'Название опции отправки' })
-  name: string;
-
-  @IsNotEmpty()
-  @Field(() => DeliveryOptionType)
-  @ApiProperty({ example: 'type', description: 'Тип доставки', enum: DeliveryOptionType })
-  type: DeliveryOptionType;
-}
-
-@InputType('CreateDeliveryOrderPointDto')
-export class CreateDeliveryOrderPointDto {
-  @IsString()
-  @IsNotEmpty()
-  @Field(() => String)
-  @ApiProperty({ example: '1', description: 'Индентификатор пункта' })
-  id: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @Field(() => String)
-  @ApiProperty({ example: 'name', description: 'Название пункта' })
-  name: string;
-
-  @IsNumber()
-  @IsNotEmpty()
-  @Field(() => Number)
-  @ApiProperty({ example: 100, description: 'Широта' })
-  latitude: number;
-
-  @IsNumber()
-  @IsNotEmpty()
-  @Field(() => Number)
-  @ApiProperty({ example: 100, description: 'Долгота' })
-  longitude: number;
-}
 
 @InputType('CreateDeliveryOrderPersonDto')
 export class CreateDeliveryOrderPersonDto {
@@ -158,10 +92,17 @@ export class CreateDeliveryOrderReceiverAddressDto {
 
 @ArgsType()
 export class CreateDeliveryOrderDto {
-  @ValidateNested()
-  @Field(() => CreateDeliveryOrderPointDto)
-  @ApiProperty({ description: 'Город отправки', type: CreateDeliveryOrderPointDto })
-  senderPoint: CreateDeliveryOrderPointDto;
+  @Field(() => String)
+  @ApiProperty({ description: 'Идентификатор типа посылки' })
+  packageId: string;
+
+  @Field(() => DeliveryOptionType)
+  @ApiProperty({ description: 'Тип заказа', enum: DeliveryOptionType })
+  optionType: DeliveryOptionType;
+
+  @Field(() => String)
+  @ApiProperty({ description: 'Идентификатор города отправки' })
+  senderPointId: string;
 
   @ValidateNested()
   @Field(() => CreateDeliveryOrderSenderAddressDto)
@@ -173,10 +114,9 @@ export class CreateDeliveryOrderDto {
   @ApiProperty({ description: 'Отправитель', type: CreateDeliveryOrderPersonDto })
   sender: CreateDeliveryOrderPersonDto;
 
-  @ValidateNested()
-  @Field(() => CreateDeliveryOrderPointDto)
-  @ApiProperty({ description: 'Город получения', type: CreateDeliveryOrderPointDto })
-  receiverPoint: CreateDeliveryOrderPointDto;
+  @Field(() => String)
+  @ApiProperty({ description: 'Идентификатор города получения' })
+  receiverPointId: string;
 
   @ValidateNested()
   @Field(() => CreateDeliveryOrderReceiverAddressDto)
@@ -192,9 +132,4 @@ export class CreateDeliveryOrderDto {
   @Field(() => Payer)
   @ApiProperty({ description: 'Кто будет оплачивать', enum: Payer })
   payer: Payer;
-
-  @IsNotEmpty()
-  @Field(() => CreateDeliveryOrderDeliveryOptionDto)
-  @ApiProperty({ description: 'Опция доставки', type: CreateDeliveryOrderDeliveryOptionDto })
-  option: CreateDeliveryOrderDeliveryOptionDto;
 }

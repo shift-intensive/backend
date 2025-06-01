@@ -5,36 +5,36 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Schema as MongooseSchema } from 'mongoose';
 
-export enum FilmTicketStatus {
+export enum CinemaTicketStatus {
   PAYED = 'PAYED',
   CANCELED = 'CANCELED'
 }
 
-registerEnumType(FilmTicketStatus, {
-  name: 'FilmTicketStatus'
+registerEnumType(CinemaTicketStatus, {
+  name: 'CinemaTicketStatus'
 });
 
-@InputType('FilmTicketSeanceInput')
+@InputType('CinemaTicketSeanceInput')
 @ObjectType()
-export class FilmTicketSeance {
+export class CinemaTicketSeance {
   @Field(() => String)
-  @ApiProperty({ example: '19.06.23', description: 'Дата сеанса' })
+  @ApiProperty({ example: '29.06.23', description: 'Дата сеанса' })
   date: string;
 
   @Field(() => String)
-  @ApiProperty({ example: '21:50', description: 'Время сеанса' })
+  @ApiProperty({ example: '10:00', description: 'Время сеанса' })
   time: string;
 }
 
-@InputType('TicketInput')
+@InputType('CinemaTicketInput')
 @ObjectType()
 @Schema({
-  collection: 'tickets',
+  collection: 'cinema/tickets',
   versionKey: false,
   minimize: false,
   timestamps: { createdAt: 'created', updatedAt: 'updated' }
 })
-export class Ticket {
+export class CinemaTicket {
   @Field(() => String)
   _id: MongooseSchema.Types.ObjectId;
 
@@ -42,6 +42,11 @@ export class Ticket {
   @Prop({ required: true })
   @ApiProperty({ description: 'Идентификатор фильма' })
   filmId: string;
+
+  @Field(() => String)
+  @Prop({ required: true })
+  @ApiProperty({ description: 'Идентификатор заказа' })
+  orderId: string;
 
   @Field(() => Number)
   @Prop({ required: true })
@@ -53,21 +58,21 @@ export class Ticket {
   @ApiProperty({ example: 1, description: 'Место' })
   column: number;
 
-  @Field(() => FilmTicketSeance)
+  @Field(() => CinemaTicketSeance)
   @Prop({ required: true })
-  @ApiProperty({ description: 'Сеанс фильма', type: FilmTicketSeance })
-  seance: FilmTicketSeance;
+  @ApiProperty({ description: 'Сеанс фильма', type: CinemaTicketSeance })
+  seance: CinemaTicketSeance;
 
   @Field(() => String)
   @Prop({ required: true })
   @ApiProperty({ example: '89990009999', description: 'Телефон' })
   phone: string;
 
-  @Field(() => FilmTicketStatus)
+  @Field(() => CinemaTicketStatus)
   @Prop({ required: true })
-  @ApiProperty({ description: 'Статус билета', enum: FilmTicketStatus })
-  status: FilmTicketStatus;
+  @ApiProperty({ description: 'Статус билета', enum: CinemaTicketStatus })
+  status: string;
 }
 
-export type TicketDocument = Ticket & Document;
-export const TicketSchema = SchemaFactory.createForClass(Ticket);
+export type CinemaTicketDocument = CinemaTicket & Document;
+export const CinemaTicketSchema = SchemaFactory.createForClass(CinemaTicket);

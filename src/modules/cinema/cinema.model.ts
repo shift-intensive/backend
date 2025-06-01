@@ -3,29 +3,8 @@ import { ApiProperty } from '@nestjs/swagger';
 
 import { BaseResponse } from '@/utils/services';
 
-import { Film, FilmSeance, Ticket } from './entities';
-import { CinemaOrder } from './modules';
-
-@ObjectType()
-export class FilmsResponse extends BaseResponse {
-  @Field(() => [Film])
-  @ApiProperty({ description: 'Фильмы', type: [Film] })
-  films: Film[];
-}
-
-@ObjectType()
-export class TicketsResponse extends BaseResponse {
-  @Field(() => [Ticket])
-  @ApiProperty({ description: 'Билеты', type: [Ticket] })
-  tickets: Ticket[];
-}
-
-@ObjectType()
-export class CinemaOrdersResponse extends BaseResponse {
-  @Field(() => [CinemaOrder])
-  @ApiProperty({ description: '', type: [CinemaOrder] })
-  orders: CinemaOrder[];
-}
+import { Film, FilmSchedule } from './entities';
+import { CinemaOrder } from './modules/cinema-order/cinema-order.entity';
 
 @ObjectType()
 export class FilmResponse extends BaseResponse {
@@ -35,26 +14,32 @@ export class FilmResponse extends BaseResponse {
 }
 
 @ObjectType()
-export class Schedule {
-  @Field(() => String)
-  @ApiProperty({ description: 'Дата сеансов' })
-  date: string;
-
-  @Field(() => [FilmSeance])
-  @ApiProperty({ description: 'Сеансы', type: [FilmSeance] })
-  seances: FilmSeance[];
+export class FilmsResponse extends BaseResponse {
+  @Field(() => [Film])
+  @ApiProperty({ description: 'Фильмы', type: [Film] })
+  films: Film[];
 }
 
 @ObjectType()
 export class ScheduleResponse extends BaseResponse {
-  @Field(() => [Schedule])
-  @ApiProperty({ description: 'Расписание', type: [Schedule] })
-  schedules: Schedule[];
+  @Field(() => FilmSchedule)
+  @ApiProperty({
+    description: 'Расписание',
+    type: FilmSchedule
+  })
+  schedules: FilmSchedule[];
 }
 
 @ObjectType()
 export class PaymentResponse extends BaseResponse {
   @Field(() => CinemaOrder)
-  @ApiProperty({ description: 'Номер заказа', type: CinemaOrder })
+  @ApiProperty({ description: 'Заказ', type: CinemaOrder })
   order: CinemaOrder;
+}
+
+@ObjectType()
+export class CinemaOrdersResponse extends BaseResponse {
+  @Field(() => [CinemaOrder])
+  @ApiProperty({ description: 'Заказы', type: [CinemaOrder] })
+  orders: CinemaOrder[];
 }

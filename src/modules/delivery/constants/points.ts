@@ -1,4 +1,4 @@
-export const points = [
+export const POINTS = [
   {
     id: '1',
     name: 'Москва',

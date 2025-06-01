@@ -16,7 +16,7 @@ export class OtpsController extends BaseResolver {
   }
 
   @Post('/auth/otp')
-  @ApiOperation({ summary: 'создание отп кода' })
+  @ApiOperation({ summary: 'Создание отп кода' })
   @ApiResponse({
     status: 200,
     description: 'create otp',

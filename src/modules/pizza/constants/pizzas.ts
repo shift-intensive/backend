@@ -2,55 +2,55 @@ import type { Pizza } from '../entities';
 
 import { Dough, Ingredient, Size } from '../entities';
 
-const TOPPINGS = [
-  { name: Ingredient.PINEAPPLE, cost: 80, img: '/static/images/ingredient/pineapple.png' },
-  { name: Ingredient.GREEN_PEPPER, cost: 60, img: '/static/images/ingredient/green_pepper.png' },
-  { name: Ingredient.MUSHROOMS, cost: 80, img: '/static/images/ingredient/mushrooms.png' },
-  { name: Ingredient.BACON, cost: 80, img: '/static/images/ingredient/bacon.png' },
-  { name: Ingredient.SHRIMPS, cost: 80, img: '/static/images/ingredient/shrimps.png' },
-  { name: Ingredient.HAM, cost: 80, img: '/static/images/ingredient/ham.png' },
-  { name: Ingredient.MOZZARELLA, cost: 70, img: '/static/images/ingredient/mozzarella.png' },
-  { name: Ingredient.PEPERONI, cost: 120, img: '/static/images/ingredient/peperoni.png' },
+export const TOPPINGS = [
+  { type: Ingredient.PINEAPPLE, price: 80, img: '/static/images/ingredient/pineapple.png' },
+  { type: Ingredient.GREEN_PEPPER, price: 60, img: '/static/images/ingredient/green_pepper.png' },
+  { type: Ingredient.MUSHROOMS, price: 80, img: '/static/images/ingredient/mushrooms.png' },
+  { type: Ingredient.BACON, price: 80, img: '/static/images/ingredient/bacon.png' },
+  { type: Ingredient.SHRIMPS, price: 80, img: '/static/images/ingredient/shrimps.png' },
+  { type: Ingredient.HAM, price: 80, img: '/static/images/ingredient/ham.png' },
+  { type: Ingredient.MOZZARELLA, price: 70, img: '/static/images/ingredient/mozzarella.png' },
+  { type: Ingredient.PEPERONI, price: 120, img: '/static/images/ingredient/peperoni.png' },
   {
-    name: Ingredient.CHICKEN_FILLET,
-    cost: 80,
+    type: Ingredient.CHICKEN_FILLET,
+    price: 80,
     img: '/static/images/ingredient/chicken_fillet.png'
   },
-  { name: Ingredient.ONION, cost: 80, img: '/static/images/ingredient/onion.png' },
-  { name: Ingredient.BASIL, cost: 80, img: '/static/images/ingredient/basil.png' },
-  { name: Ingredient.CHILE, cost: 80, img: '/static/images/ingredient/chile.png' },
-  { name: Ingredient.CHEDDAR, cost: 80, img: '/static/images/ingredient/cheddar.png' },
-  { name: Ingredient.MEATBALLS, cost: 80, img: '/static/images/ingredient/meatballs.png' },
-  { name: Ingredient.PICKLE, cost: 80, img: '/static/images/ingredient/pickle.png' },
-  { name: Ingredient.TOMATO, cost: 80, img: '/static/images/ingredient/tomato.png' },
-  { name: Ingredient.FETA, cost: 80, img: '/static/images/ingredient/feta.png' }
+  { type: Ingredient.ONION, price: 80, img: '/static/images/ingredient/onion.png' },
+  { type: Ingredient.BASIL, price: 80, img: '/static/images/ingredient/basil.png' },
+  { type: Ingredient.CHILE, price: 80, img: '/static/images/ingredient/chile.png' },
+  { type: Ingredient.CHEDDAR, price: 80, img: '/static/images/ingredient/cheddar.png' },
+  { type: Ingredient.MEATBALLS, price: 80, img: '/static/images/ingredient/meatballs.png' },
+  { type: Ingredient.PICKLE, price: 80, img: '/static/images/ingredient/pickle.png' },
+  { type: Ingredient.TOMATO, price: 80, img: '/static/images/ingredient/tomato.png' },
+  { type: Ingredient.FETA, price: 80, img: '/static/images/ingredient/feta.png' }
 ];
 
-export const pizzas: Pizza[] = [
+export const PIZZAS: Pizza[] = [
   {
     id: '1',
     name: 'ШИФТ Суприм',
     ingredients: [
       {
-        name: Ingredient.MOZZARELLA,
-        cost: 70,
+        type: Ingredient.MOZZARELLA,
+        price: 70,
         img: '/static/images/ingredient/mozzarella.png'
       },
       {
-        name: Ingredient.PEPERONI,
-        cost: 120,
+        type: Ingredient.PEPERONI,
+        price: 120,
         img: '/static/images/ingredient/peperoni.png'
       },
 
       {
-        name: Ingredient.GREEN_PEPPER,
-        cost: 60,
+        type: Ingredient.GREEN_PEPPER,
+        price: 60,
         img: '/static/images/ingredient/green_pepper.png'
       },
 
       {
-        name: Ingredient.MUSHROOMS,
-        cost: 80,
+        type: Ingredient.MUSHROOMS,
+        price: 80,
         img: '/static/images/ingredient/mushrooms.png'
       }
     ],
@@ -58,13 +58,13 @@ export const pizzas: Pizza[] = [
     description:
       'Шифт пицца с пепперони, колбасой, зеленым перцем, луком, оливками и шампиньонами.',
     sizes: [
-      { name: Size.SMALL, price: 499 },
-      { name: Size.MEDIUM, price: 799 },
-      { name: Size.LARGE, price: 1149 }
+      { type: Size.SMALL, price: 499 },
+      { type: Size.MEDIUM, price: 799 },
+      { type: Size.LARGE, price: 1149 }
     ],
     doughs: [
-      { name: Dough.THIN, price: 0 },
-      { name: Dough.THICK, price: 50 }
+      { type: Dough.THIN, price: 0 },
+      { type: Dough.THICK, price: 50 }
     ],
     calories: 320,
     protein: '18г',
@@ -83,26 +83,26 @@ export const pizzas: Pizza[] = [
     name: 'Маргарита',
     ingredients: [
       {
-        name: Ingredient.MOZZARELLA,
-        cost: 70,
+        type: Ingredient.MOZZARELLA,
+        price: 70,
         img: '/static/images/ingredient/mozzarella.png'
       },
       {
-        name: Ingredient.BASIL,
-        cost: 40,
+        type: Ingredient.BASIL,
+        price: 40,
         img: '/static/images/ingredient/basil.png'
       }
     ],
     toppings: TOPPINGS,
     description: 'Классическая пицца с томатным соусом, моцареллой и листьями базилика.',
     sizes: [
-      { name: Size.SMALL, price: 449 },
-      { name: Size.MEDIUM, price: 749 },
-      { name: Size.LARGE, price: 1099 }
+      { type: Size.SMALL, price: 449 },
+      { type: Size.MEDIUM, price: 749 },
+      { type: Size.LARGE, price: 1099 }
     ],
     doughs: [
-      { name: Dough.THIN, price: 0 },
-      { name: Dough.THICK, price: 50 }
+      { type: Dough.THIN, price: 0 },
+      { type: Dough.THICK, price: 50 }
     ],
     calories: 250,
     protein: '12г',
@@ -121,31 +121,31 @@ export const pizzas: Pizza[] = [
     name: 'Четыре Сыра',
     ingredients: [
       {
-        name: Ingredient.MOZZARELLA,
-        cost: 70,
+        type: Ingredient.MOZZARELLA,
+        price: 70,
         img: '/static/images/ingredient/mozzarella.png'
       },
       {
-        name: Ingredient.CHEDDAR,
-        cost: 90,
+        type: Ingredient.CHEDDAR,
+        price: 90,
         img: '/static/images/ingredient/cheddar.png'
       },
       {
-        name: Ingredient.PARMESAN,
-        cost: 90,
+        type: Ingredient.PARMESAN,
+        price: 90,
         img: '/static/images/ingredient/green_pepper.png'
       }
     ],
     toppings: TOPPINGS,
     description: 'Пицца с миксом моцареллы, чеддера, пармезана и феты.',
     sizes: [
-      { name: Size.SMALL, price: 549 },
-      { name: Size.MEDIUM, price: 849 },
-      { name: Size.LARGE, price: 1249 }
+      { type: Size.SMALL, price: 549 },
+      { type: Size.MEDIUM, price: 849 },
+      { type: Size.LARGE, price: 1249 }
     ],
     doughs: [
-      { name: Dough.THIN, price: 0 },
-      { name: Dough.THICK, price: 50 }
+      { type: Dough.THIN, price: 0 },
+      { type: Dough.THICK, price: 50 }
     ],
     calories: 380,
     protein: '20г',
@@ -164,31 +164,31 @@ export const pizzas: Pizza[] = [
     name: 'Гавайская',
     ingredients: [
       {
-        name: Ingredient.MOZZARELLA,
-        cost: 70,
+        type: Ingredient.MOZZARELLA,
+        price: 70,
         img: '/static/images/ingredient/mozzarella.png'
       },
       {
-        name: Ingredient.HAM,
-        cost: 150,
+        type: Ingredient.HAM,
+        price: 150,
         img: '/static/images/ingredient/ham.png'
       },
       {
-        name: Ingredient.PINEAPPLE,
-        cost: 100,
+        type: Ingredient.PINEAPPLE,
+        price: 100,
         img: '/static/images/ingredient/pineapple.png'
       }
     ],
     toppings: TOPPINGS,
     description: 'Пицца с ветчиной и ананасом.',
     sizes: [
-      { name: Size.SMALL, price: 549 },
-      { name: Size.MEDIUM, price: 849 },
-      { name: Size.LARGE, price: 1249 }
+      { type: Size.SMALL, price: 549 },
+      { type: Size.MEDIUM, price: 849 },
+      { type: Size.LARGE, price: 1249 }
     ],
     doughs: [
-      { name: Dough.THIN, price: 0 },
-      { name: Dough.THICK, price: 50 }
+      { type: Dough.THIN, price: 0 },
+      { type: Dough.THICK, price: 50 }
     ],
     calories: 420,
     protein: '22г',
@@ -207,26 +207,26 @@ export const pizzas: Pizza[] = [
     name: 'Пепперони',
     ingredients: [
       {
-        name: Ingredient.MOZZARELLA,
-        cost: 70,
+        type: Ingredient.MOZZARELLA,
+        price: 70,
         img: '/static/images/ingredient/mozzarella.png'
       },
       {
-        name: Ingredient.PEPERONI,
-        cost: 120,
+        type: Ingredient.PEPERONI,
+        price: 120,
         img: '/static/images/ingredient/peperoni.png'
       }
     ],
     toppings: TOPPINGS,
     description: 'Классическая пицца с пепперони.',
     sizes: [
-      { name: Size.SMALL, price: 499 },
-      { name: Size.MEDIUM, price: 799 },
-      { name: Size.LARGE, price: 1149 }
+      { type: Size.SMALL, price: 499 },
+      { type: Size.MEDIUM, price: 799 },
+      { type: Size.LARGE, price: 1149 }
     ],
     doughs: [
-      { name: Dough.THIN, price: 0 },
-      { name: Dough.THICK, price: 50 }
+      { type: Dough.THIN, price: 0 },
+      { type: Dough.THICK, price: 50 }
     ],
     calories: 350,
     protein: '16г',
@@ -245,36 +245,36 @@ export const pizzas: Pizza[] = [
     name: 'Вегетарианская',
     ingredients: [
       {
-        name: Ingredient.MOZZARELLA,
-        cost: 70,
+        type: Ingredient.MOZZARELLA,
+        price: 70,
         img: '/static/images/ingredient/mozzarella.png'
       },
       {
-        name: Ingredient.TOMATO,
-        cost: 60,
+        type: Ingredient.TOMATO,
+        price: 60,
         img: '/static/images/ingredient/tomato.png'
       },
       {
-        name: Ingredient.MUSHROOMS,
-        cost: 80,
+        type: Ingredient.MUSHROOMS,
+        price: 80,
         img: '/static/images/ingredient/mushrooms.png'
       },
       {
-        name: Ingredient.GREEN_PEPPER,
-        cost: 60,
+        type: Ingredient.GREEN_PEPPER,
+        price: 60,
         img: '/static/images/ingredient/green_pepper.png'
       }
     ],
     toppings: TOPPINGS,
     description: 'Пицца с овощами: помидорами, шампиньонами, зеленым перцем и красным луком.',
     sizes: [
-      { name: Size.SMALL, price: 549 },
-      { name: Size.MEDIUM, price: 849 },
-      { name: Size.LARGE, price: 1249 }
+      { type: Size.SMALL, price: 549 },
+      { type: Size.MEDIUM, price: 849 },
+      { type: Size.LARGE, price: 1249 }
     ],
     doughs: [
-      { name: Dough.THIN, price: 0 },
-      { name: Dough.THICK, price: 50 }
+      { type: Dough.THIN, price: 0 },
+      { type: Dough.THICK, price: 50 }
     ],
     calories: 280,
     protein: '14г',
@@ -293,31 +293,31 @@ export const pizzas: Pizza[] = [
     name: 'Мясная',
     ingredients: [
       {
-        name: Ingredient.MOZZARELLA,
-        cost: 70,
+        type: Ingredient.MOZZARELLA,
+        price: 70,
         img: '/static/images/ingredient/mozzarella.png'
       },
       {
-        name: Ingredient.BACON,
-        cost: 160,
+        type: Ingredient.BACON,
+        price: 160,
         img: '/static/images/ingredient/bacon.png'
       },
       {
-        name: Ingredient.SHRIMPS,
-        cost: 120,
+        type: Ingredient.SHRIMPS,
+        price: 120,
         img: '/static/images/ingredient/shrimps.png'
       }
     ],
     toppings: TOPPINGS,
     description: 'Пицца с ассорти мяса: говядиной, салями и беконом.',
     sizes: [
-      { name: Size.SMALL, price: 599 },
-      { name: Size.MEDIUM, price: 899 },
-      { name: Size.LARGE, price: 1299 }
+      { type: Size.SMALL, price: 599 },
+      { type: Size.MEDIUM, price: 899 },
+      { type: Size.LARGE, price: 1299 }
     ],
     doughs: [
-      { name: Dough.THIN, price: 0 },
-      { name: Dough.THICK, price: 50 }
+      { type: Dough.THIN, price: 0 },
+      { type: Dough.THICK, price: 50 }
     ],
     calories: 450,
     protein: '24г',
@@ -336,20 +336,20 @@ export const pizzas: Pizza[] = [
     name: 'Мексиканская',
     ingredients: [
       {
-        name: Ingredient.MOZZARELLA,
-        cost: 70,
+        type: Ingredient.MOZZARELLA,
+        price: 70,
         img: '/static/images/ingredient/mozzarella.png'
       },
 
       {
-        name: Ingredient.CHILE,
-        cost: 80,
+        type: Ingredient.CHILE,
+        price: 80,
         img: '/static/images/ingredient/green_pepper.png'
       },
 
       {
-        name: Ingredient.ONION,
-        cost: 60,
+        type: Ingredient.ONION,
+        price: 60,
         img: '/static/images/ingredient/onion.png'
       }
     ],
@@ -357,13 +357,13 @@ export const pizzas: Pizza[] = [
     description:
       'Пицца с мексиканскими пряностями: говядиной, перцем чили, перцем халапеньо, кукурузой и луком.',
     sizes: [
-      { name: Size.SMALL, price: 599 },
-      { name: Size.MEDIUM, price: 899 },
-      { name: Size.LARGE, price: 1299 }
+      { type: Size.SMALL, price: 599 },
+      { type: Size.MEDIUM, price: 899 },
+      { type: Size.LARGE, price: 1299 }
     ],
     doughs: [
-      { name: Dough.THIN, price: 0 },
-      { name: Dough.THICK, price: 50 }
+      { type: Dough.THIN, price: 0 },
+      { type: Dough.THICK, price: 50 }
     ],
     calories: 380,
     protein: '18г',
@@ -382,31 +382,31 @@ export const pizzas: Pizza[] = [
     name: 'Кальцоне',
     ingredients: [
       {
-        name: Ingredient.MOZZARELLA,
-        cost: 70,
+        type: Ingredient.MOZZARELLA,
+        price: 70,
         img: '/static/images/ingredient/mozzarella.png'
       },
       {
-        name: Ingredient.HAM,
-        cost: 120,
+        type: Ingredient.HAM,
+        price: 120,
         img: '/static/images/ingredient/ham.png'
       },
       {
-        name: Ingredient.MUSHROOMS,
-        cost: 80,
+        type: Ingredient.MUSHROOMS,
+        price: 80,
         img: '/static/images/ingredient/mushrooms.png'
       }
     ],
     toppings: TOPPINGS,
     description: 'Запеченная пицца-кальцоне с моцареллой, ветчиной, грибами и яйцом.',
     sizes: [
-      { name: Size.SMALL, price: 599 },
-      { name: Size.MEDIUM, price: 899 },
-      { name: Size.LARGE, price: 1299 }
+      { type: Size.SMALL, price: 599 },
+      { type: Size.MEDIUM, price: 899 },
+      { type: Size.LARGE, price: 1299 }
     ],
     doughs: [
-      { name: Dough.THIN, price: 0 },
-      { name: Dough.THICK, price: 50 }
+      { type: Dough.THIN, price: 0 },
+      { type: Dough.THICK, price: 50 }
     ],
     calories: 420,
     protein: '20г',
@@ -425,32 +425,32 @@ export const pizzas: Pizza[] = [
     name: 'Мясоед',
     ingredients: [
       {
-        name: Ingredient.MOZZARELLA,
-        cost: 70,
+        type: Ingredient.MOZZARELLA,
+        price: 70,
         img: '/static/images/ingredient/mozzarella.png'
       },
 
       {
-        name: Ingredient.BACON,
-        cost: 160,
+        type: Ingredient.BACON,
+        price: 160,
         img: '/static/images/ingredient/bacon.png'
       },
       {
-        name: Ingredient.HAM,
-        cost: 140,
+        type: Ingredient.HAM,
+        price: 140,
         img: '/static/images/ingredient/ham.png'
       }
     ],
     toppings: TOPPINGS,
     description: 'Пицца для любителей мяса с салями, беконом и ветчиной.',
     sizes: [
-      { name: Size.SMALL, price: 649 },
-      { name: Size.MEDIUM, price: 999 },
-      { name: Size.LARGE, price: 1449 }
+      { type: Size.SMALL, price: 649 },
+      { type: Size.MEDIUM, price: 999 },
+      { type: Size.LARGE, price: 1449 }
     ],
     doughs: [
-      { name: Dough.THIN, price: 0 },
-      { name: Dough.THICK, price: 50 }
+      { type: Dough.THIN, price: 0 },
+      { type: Dough.THICK, price: 50 }
     ],
     calories: 480,
     protein: '26г',
@@ -469,26 +469,26 @@ export const pizzas: Pizza[] = [
     name: 'Морская',
     ingredients: [
       {
-        name: Ingredient.MOZZARELLA,
-        cost: 70,
+        type: Ingredient.MOZZARELLA,
+        price: 70,
         img: '/static/images/ingredient/mozzarella.png'
       },
       {
-        name: Ingredient.SHRIMPS,
-        cost: 180,
+        type: Ingredient.SHRIMPS,
+        price: 180,
         img: '/static/images/ingredient/shrimps.png'
       }
     ],
     toppings: TOPPINGS,
     description: 'Пицца с морепродуктами: креветками, мидиями, кальмарами и маслинами.',
     sizes: [
-      { name: Size.SMALL, price: 649 },
-      { name: Size.MEDIUM, price: 999 },
-      { name: Size.LARGE, price: 1449 }
+      { type: Size.SMALL, price: 649 },
+      { type: Size.MEDIUM, price: 999 },
+      { type: Size.LARGE, price: 1449 }
     ],
     doughs: [
-      { name: Dough.THIN, price: 0 },
-      { name: Dough.THICK, price: 50 }
+      { type: Dough.THIN, price: 0 },
+      { type: Dough.THICK, price: 50 }
     ],
     calories: 420,
     protein: '22г',
@@ -507,37 +507,37 @@ export const pizzas: Pizza[] = [
     name: 'Четыре Сыра с грибами',
     ingredients: [
       {
-        name: Ingredient.MOZZARELLA,
-        cost: 70,
+        type: Ingredient.MOZZARELLA,
+        price: 70,
         img: '/static/images/ingredient/mozzarella.png'
       },
       {
-        name: Ingredient.CHEDDAR,
-        cost: 90,
+        type: Ingredient.CHEDDAR,
+        price: 90,
         img: '/static/images/ingredient/cheddar.png'
       },
       {
-        name: Ingredient.PARMESAN,
-        cost: 90,
+        type: Ingredient.PARMESAN,
+        price: 90,
         img: '/static/images/ingredient/green_pepper.png'
       },
 
       {
-        name: Ingredient.MUSHROOMS,
-        cost: 80,
+        type: Ingredient.MUSHROOMS,
+        price: 80,
         img: '/static/images/ingredient/mushrooms.png'
       }
     ],
     toppings: TOPPINGS,
     description: 'Пицца с миксом моцареллы, чеддера, пармезана, феты и шампиньонами.',
     sizes: [
-      { name: Size.SMALL, price: 649 },
-      { name: Size.MEDIUM, price: 999 },
-      { name: Size.LARGE, price: 1449 }
+      { type: Size.SMALL, price: 649 },
+      { type: Size.MEDIUM, price: 999 },
+      { type: Size.LARGE, price: 1449 }
     ],
     doughs: [
-      { name: Dough.THIN, price: 0 },
-      { name: Dough.THICK, price: 50 }
+      { type: Dough.THIN, price: 0 },
+      { type: Dough.THICK, price: 50 }
     ],
     calories: 400,
     protein: '20г',
@@ -556,21 +556,21 @@ export const pizzas: Pizza[] = [
     name: 'Маринара',
     ingredients: [
       {
-        name: Ingredient.MOZZARELLA,
-        cost: 70,
+        type: Ingredient.MOZZARELLA,
+        price: 70,
         img: '/static/images/ingredient/mozzarella.png'
       }
     ],
     toppings: TOPPINGS,
     description: 'Простая пицца с томатным соусом, чесноком, оливковым маслом и орегано.',
     sizes: [
-      { name: Size.SMALL, price: 449 },
-      { name: Size.MEDIUM, price: 749 },
-      { name: Size.LARGE, price: 1099 }
+      { type: Size.SMALL, price: 449 },
+      { type: Size.MEDIUM, price: 749 },
+      { type: Size.LARGE, price: 1099 }
     ],
     doughs: [
-      { name: Dough.THIN, price: 0 },
-      { name: Dough.THICK, price: 50 }
+      { type: Dough.THIN, price: 0 },
+      { type: Dough.THICK, price: 50 }
     ],
     calories: 280,
     protein: '6г',
@@ -589,26 +589,26 @@ export const pizzas: Pizza[] = [
     name: 'Фруктовая',
     ingredients: [
       {
-        name: Ingredient.MOZZARELLA,
-        cost: 70,
+        type: Ingredient.MOZZARELLA,
+        price: 70,
         img: '/static/images/ingredient/mozzarella.png'
       },
       {
-        name: Ingredient.PINEAPPLE,
-        cost: 100,
+        type: Ingredient.PINEAPPLE,
+        price: 100,
         img: '/static/images/ingredient/pineapple.png'
       }
     ],
     toppings: TOPPINGS,
     description: 'Пицца с фруктами: ананасом, бананом и персиком.',
     sizes: [
-      { name: Size.SMALL, price: 499 },
-      { name: Size.MEDIUM, price: 799 },
-      { name: Size.LARGE, price: 1149 }
+      { type: Size.SMALL, price: 499 },
+      { type: Size.MEDIUM, price: 799 },
+      { type: Size.LARGE, price: 1149 }
     ],
     doughs: [
-      { name: Dough.THIN, price: 0 },
-      { name: Dough.THICK, price: 50 }
+      { type: Dough.THIN, price: 0 },
+      { type: Dough.THICK, price: 50 }
     ],
     calories: 320,
     protein: '8г',
@@ -627,31 +627,31 @@ export const pizzas: Pizza[] = [
     name: 'Барбекю Чикен',
     ingredients: [
       {
-        name: Ingredient.MOZZARELLA,
-        cost: 70,
+        type: Ingredient.MOZZARELLA,
+        price: 70,
         img: '/static/images/ingredient/mozzarella.png'
       },
       {
-        name: Ingredient.CHICKEN_FILLET,
-        cost: 150,
+        type: Ingredient.CHICKEN_FILLET,
+        price: 150,
         img: '/static/images/ingredient/chicken_fillet.png'
       },
       {
-        name: Ingredient.ONION,
-        cost: 60,
+        type: Ingredient.ONION,
+        price: 60,
         img: '/static/images/ingredient/onion.png'
       }
     ],
     toppings: TOPPINGS,
     description: 'Пицца с куриной грудкой, луком и барбекю соусом.',
     sizes: [
-      { name: Size.SMALL, price: 549 },
-      { name: Size.MEDIUM, price: 849 },
-      { name: Size.LARGE, price: 1249 }
+      { type: Size.SMALL, price: 549 },
+      { type: Size.MEDIUM, price: 849 },
+      { type: Size.LARGE, price: 1249 }
     ],
     doughs: [
-      { name: Dough.THIN, price: 0 },
-      { name: Dough.THICK, price: 50 }
+      { type: Dough.THIN, price: 0 },
+      { type: Dough.THICK, price: 50 }
     ],
     calories: 380,
     protein: '20г',
@@ -670,26 +670,26 @@ export const pizzas: Pizza[] = [
     name: 'Филадельфия',
     ingredients: [
       {
-        name: Ingredient.MOZZARELLA,
-        cost: 70,
+        type: Ingredient.MOZZARELLA,
+        price: 70,
         img: '/static/images/ingredient/mozzarella.png'
       },
       {
-        name: Ingredient.ONION,
-        cost: 50,
+        type: Ingredient.ONION,
+        price: 50,
         img: '/static/images/ingredient/onion.png'
       }
     ],
     toppings: TOPPINGS,
     description: 'Пицца с лососем, сыром филадельфия, авокадо и зеленым луком.',
     sizes: [
-      { name: Size.SMALL, price: 649 },
-      { name: Size.MEDIUM, price: 999 },
-      { name: Size.LARGE, price: 1449 }
+      { type: Size.SMALL, price: 649 },
+      { type: Size.MEDIUM, price: 999 },
+      { type: Size.LARGE, price: 1449 }
     ],
     doughs: [
-      { name: Dough.THIN, price: 0 },
-      { name: Dough.THICK, price: 50 }
+      { type: Dough.THIN, price: 0 },
+      { type: Dough.THICK, price: 50 }
     ],
     calories: 420,
     protein: '22г',
@@ -708,23 +708,23 @@ export const pizzas: Pizza[] = [
     name: 'Пикантная Мексиканская',
     ingredients: [
       {
-        name: Ingredient.MOZZARELLA,
-        cost: 70,
+        type: Ingredient.MOZZARELLA,
+        price: 70,
         img: '/static/images/ingredient/mozzarella.png'
       },
       {
-        name: Ingredient.CHILE,
-        cost: 80,
+        type: Ingredient.CHILE,
+        price: 80,
         img: '/static/images/ingredient/green_pepper.png'
       },
       {
-        name: Ingredient.ONION,
-        cost: 60,
+        type: Ingredient.ONION,
+        price: 60,
         img: '/static/images/ingredient/onion.png'
       },
       {
-        name: Ingredient.CHEDDAR,
-        cost: 90,
+        type: Ingredient.CHEDDAR,
+        price: 90,
         img: '/static/images/ingredient/cheddar.png'
       }
     ],
@@ -732,13 +732,13 @@ export const pizzas: Pizza[] = [
     description:
       'Острая пицца с говядиной, перцем чили, перцем халапеньо, кукурузой, луком и топленным сыром.',
     sizes: [
-      { name: Size.SMALL, price: 599 },
-      { name: Size.MEDIUM, price: 899 },
-      { name: Size.LARGE, price: 1299 }
+      { type: Size.SMALL, price: 599 },
+      { type: Size.MEDIUM, price: 899 },
+      { type: Size.LARGE, price: 1299 }
     ],
     doughs: [
-      { name: Dough.THIN, price: 0 },
-      { name: Dough.THICK, price: 50 }
+      { type: Dough.THIN, price: 0 },
+      { type: Dough.THICK, price: 50 }
     ],
     calories: 400,
     protein: '22г',
@@ -757,31 +757,31 @@ export const pizzas: Pizza[] = [
     name: 'Карбонара',
     ingredients: [
       {
-        name: Ingredient.MOZZARELLA,
-        cost: 70,
+        type: Ingredient.MOZZARELLA,
+        price: 70,
         img: '/static/images/ingredient/mozzarella.png'
       },
       {
-        name: Ingredient.BACON,
-        cost: 160,
+        type: Ingredient.BACON,
+        price: 160,
         img: '/static/images/ingredient/bacon.png'
       },
       {
-        name: Ingredient.PARMESAN,
-        cost: 100,
+        type: Ingredient.PARMESAN,
+        price: 100,
         img: '/static/images/ingredient/green_pepper.png'
       }
     ],
     toppings: TOPPINGS,
     description: 'Пицца с беконом, сыром пармезан и яйцом в сливочном соусе.',
     sizes: [
-      { name: Size.SMALL, price: 649 },
-      { name: Size.MEDIUM, price: 999 },
-      { name: Size.LARGE, price: 1449 }
+      { type: Size.SMALL, price: 649 },
+      { type: Size.MEDIUM, price: 999 },
+      { type: Size.LARGE, price: 1449 }
     ],
     doughs: [
-      { name: Dough.THIN, price: 0 },
-      { name: Dough.THICK, price: 50 }
+      { type: Dough.THIN, price: 0 },
+      { type: Dough.THICK, price: 50 }
     ],
     calories: 450,
     protein: '24г',
@@ -800,19 +800,19 @@ export const pizzas: Pizza[] = [
     name: 'Греческая',
     ingredients: [
       {
-        name: Ingredient.MOZZARELLA,
-        cost: 70,
+        type: Ingredient.MOZZARELLA,
+        price: 70,
         img: '/static/images/ingredient/mozzarella.png'
       },
       {
-        name: Ingredient.TOMATO,
-        cost: 60,
+        type: Ingredient.TOMATO,
+        price: 60,
         img: '/static/images/ingredient/tomato.png'
       },
 
       {
-        name: Ingredient.GREEN_PEPPER,
-        cost: 60,
+        type: Ingredient.GREEN_PEPPER,
+        price: 60,
         img: '/static/images/ingredient/green_pepper.png'
       }
     ],
@@ -820,13 +820,13 @@ export const pizzas: Pizza[] = [
     description:
       'Пицца с томатным соусом, моцареллой, помидорами, оливками, перцем, фетой и орегано.',
     sizes: [
-      { name: Size.SMALL, price: 549 },
-      { name: Size.MEDIUM, price: 849 },
-      { name: Size.LARGE, price: 1249 }
+      { type: Size.SMALL, price: 549 },
+      { type: Size.MEDIUM, price: 849 },
+      { type: Size.LARGE, price: 1249 }
     ],
     doughs: [
-      { name: Dough.THIN, price: 0 },
-      { name: Dough.THICK, price: 50 }
+      { type: Dough.THIN, price: 0 },
+      { type: Dough.THICK, price: 50 }
     ],
     calories: 320,
     protein: '16г',
@@ -845,31 +845,31 @@ export const pizzas: Pizza[] = [
     name: 'Шпинатная',
     ingredients: [
       {
-        name: Ingredient.MOZZARELLA,
-        cost: 70,
+        type: Ingredient.MOZZARELLA,
+        price: 70,
         img: '/static/images/ingredient/mozzarella.png'
       },
       {
-        name: Ingredient.PINEAPPLE,
-        cost: 100,
+        type: Ingredient.PINEAPPLE,
+        price: 100,
         img: '/static/images/ingredient/pineapple.png'
       },
       {
-        name: Ingredient.PARMESAN,
-        cost: 100,
+        type: Ingredient.PARMESAN,
+        price: 100,
         img: '/static/images/ingredient/green_pepper.png'
       }
     ],
     toppings: TOPPINGS,
     description: 'Пицца с томатным соусом, моцареллой, шпинатом, фетой, чесноком и орегано.',
     sizes: [
-      { name: Size.SMALL, price: 549 },
-      { name: Size.MEDIUM, price: 849 },
-      { name: Size.LARGE, price: 1249 }
+      { type: Size.SMALL, price: 549 },
+      { type: Size.MEDIUM, price: 849 },
+      { type: Size.LARGE, price: 1249 }
     ],
     doughs: [
-      { name: Dough.THIN, price: 0 },
-      { name: Dough.THICK, price: 50 }
+      { type: Dough.THIN, price: 0 },
+      { type: Dough.THICK, price: 50 }
     ],
     calories: 300,
     protein: '14г',

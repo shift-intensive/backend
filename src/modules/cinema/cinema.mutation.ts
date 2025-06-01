@@ -9,17 +9,22 @@ import { BaseResolver, BaseResponse } from '@/utils/services';
 import { PaymentResponse } from './cinema.model';
 import { CinemaService } from './cinema.service';
 import { CancelCinemaOrderDto, CreateCinemaPaymentDto } from './dto';
-import { FilmTicketStatus, Ticket } from './entities';
-import { CinemaOrderService, CinemaOrderStatus } from './modules';
+import {
+  CinemaOrderService,
+  CinemaOrderStatus,
+  CinemaTicketService,
+  CinemaTicketStatus
+} from './modules';
 
-@Resolver('📦 cinema mutation')
+@Resolver('🍿 cinema mutation')
 @DescribeContext('CinemaMutation')
-@Resolver(() => Ticket)
+@Resolver()
 export class CinemaMutation extends BaseResolver {
   constructor(
     private readonly cinemaService: CinemaService,
     private readonly cinemaOrderService: CinemaOrderService,
-    private readonly usersService: UsersService
+    private readonly usersService: UsersService,
+    private readonly cinemaTicketService: CinemaTicketService
   ) {
     super();
   }
@@ -39,12 +44,12 @@ export class CinemaMutation extends BaseResolver {
       throw new BadRequestException(this.wrapFail('Заказ нельзя отменить'));
     }
 
-    await this.cinemaService.updateMany(
+    await this.cinemaTicketService.updateMany(
       { _id: { $in: order.tickets.map((ticket) => ticket._id) } },
-      { $set: { status: FilmTicketStatus.CANCELED } }
+      { $set: { status: CinemaTicketStatus.CANCELED } }
     );
 
-    const updatedTickets = await this.cinemaService.find({
+    const updatedTickets = await this.cinemaTicketService.find({
       _id: { $in: order.tickets.map((ticket) => ticket._id) }
     });
 
@@ -68,18 +73,17 @@ export class CinemaMutation extends BaseResolver {
       phone: createCinemaPaymentDto.person.phone,
       row: ticket.row,
       column: ticket.column,
-      status: FilmTicketStatus.PAYED
+      status: CinemaTicketStatus.PAYED
     }));
 
     const existedTickets = [];
     await Promise.all(
       formattedTickets.map(async (ticket) => {
-        const existedTicket = await this.cinemaService.findOne({
+        const existedTicket = await this.cinemaTicketService.findOne({
           'seance.date': ticket.seance.date,
           'seance.time': ticket.seance.time,
           row: ticket.row,
-          column: ticket.column,
-          status: ticket.status
+          column: ticket.column
         });
 
         if (existedTicket) {
@@ -111,17 +115,25 @@ export class CinemaMutation extends BaseResolver {
       );
     }
 
-    const tickets = await this.cinemaService.insertMany(formattedTickets);
-    const filmName = this.cinemaService.getFilmName(createCinemaPaymentDto.filmId);
+    const film = this.cinemaService.getFilm(createCinemaPaymentDto.filmId);
 
     const orderNumber = Math.floor(Math.random() * 10 ** 6);
     const order = await this.cinemaOrderService.create({
-      filmName,
+      film,
       orderNumber,
-      tickets,
+      tickets: [],
       person,
       status: CinemaOrderStatus.PAYED
     });
+
+    const tickets = await this.cinemaTicketService.insertMany(
+      formattedTickets.map((ticket) => ({
+        ...ticket,
+        orderId: order._id.toString()
+      }))
+    );
+
+    await this.cinemaOrderService.updateOne({ _id: order._id }, { $set: { tickets } });
 
     let user = await this.usersService.findOne({ phone: person.phone });
 

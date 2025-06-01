@@ -5,7 +5,8 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Schema as MongooseSchema } from 'mongoose';
 
-import { FilmPerson, Ticket } from '../../entities';
+import { Film, FilmPerson } from '../../entities';
+import { CinemaTicket } from '../cinema-ticket';
 
 export enum CinemaOrderStatus {
   PAYED = 'PAYED',
@@ -28,20 +29,20 @@ export class CinemaOrder {
   @Field(() => String)
   _id: MongooseSchema.Types.ObjectId;
 
-  @Field(() => String)
+  @Field(() => Film)
   @Prop({ required: true })
-  @ApiProperty({ description: 'Название фильма' })
-  filmName: string;
+  @ApiProperty({ description: 'Название фильма', type: Film })
+  film: Film;
 
   @Field(() => Number)
   @Prop({ required: true })
   @ApiProperty({ description: 'Номер заказа' })
   orderNumber: number;
 
-  @Field(() => [Ticket])
+  @Field(() => [CinemaTicket])
   @Prop({ required: true })
-  @ApiProperty({ description: 'Билеты', type: [Ticket] })
-  tickets: Ticket[];
+  @ApiProperty({ description: 'Билеты', type: [CinemaTicket] })
+  tickets: CinemaTicket[];
 
   @Field(() => FilmPerson)
   @Prop({ required: true })

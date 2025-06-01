@@ -17,8 +17,8 @@ registerEnumType(Size, {
 export class PizzaSize {
   @IsEnum(Size)
   @Field(() => Size)
-  @ApiProperty({ enum: Size, description: 'Размер пиццы' })
-  name: Size;
+  @ApiProperty({ enum: Size, description: 'Идентификатор размера пиццы' })
+  type: Size;
 
   @IsNumber()
   @Field(() => Number)

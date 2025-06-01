@@ -6,6 +6,8 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Schema as MongooseSchema } from 'mongoose';
 
 import {
+  DeliveryOptionType,
+  DeliveryPackageType,
   DeliveryPerson,
   DeliveryPoint,
   DeliveryReceiverAddress,
@@ -42,6 +44,21 @@ registerEnumType(DeliveryStatus, {
 export class DeliveryOrder {
   @Field(() => String)
   _id: MongooseSchema.Types.ObjectId;
+
+  @Field(() => Number)
+  @Prop({ required: true })
+  @ApiProperty({ description: 'Цена доставки', type: Number })
+  price: number;
+
+  @Field(() => DeliveryPackageType)
+  @Prop({ required: true })
+  @ApiProperty({ description: 'Тип посылки', type: DeliveryPackageType })
+  package: DeliveryPackageType;
+
+  @Field(() => DeliveryOptionType)
+  @Prop({ required: true })
+  @ApiProperty({ description: 'Тип доставки', enum: DeliveryOptionType })
+  option: DeliveryOptionType;
 
   @Field(() => DeliveryPoint)
   @Prop({ required: true })

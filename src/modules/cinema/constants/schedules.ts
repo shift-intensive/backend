@@ -1,6 +1,6 @@
 import { halls } from './halls';
 
-export const schedules = [
+export const SCHEDULES = [
   {
     filmId: '1',
     schedule: [
