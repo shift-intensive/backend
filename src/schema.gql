@@ -60,6 +60,45 @@ type CarsPaginatedResponse {
   success: Boolean!
 }
 
+type CarsRent {
+  _id: String!
+  birthDate: String!
+  carId: String!
+  comment: String
+  email: String!
+  endDate: String!
+  fullName: String!
+  name: String!
+  phone: String!
+  pickupLocation: String!
+  returnLocation: String!
+  startDate: String!
+  status: CarsRentStatus!
+  totalPrice: Float!
+}
+
+input CarsRentInput {
+  _id: String!
+  birthDate: String!
+  carId: String!
+  comment: String
+  email: String!
+  endDate: String!
+  fullName: String!
+  name: String!
+  phone: String!
+  pickupLocation: String!
+  returnLocation: String!
+  startDate: String!
+  status: CarsRentStatus!
+  totalPrice: Float!
+}
+
+enum CarsRentStatus {
+  BOOKED
+  CANCELLED
+}
+
 type CinemaOrder {
   _id: String!
   filmName: String!

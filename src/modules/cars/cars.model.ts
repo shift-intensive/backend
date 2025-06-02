@@ -4,6 +4,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { BaseResponse } from '@/utils/services';
 
 import { Car, PaginationMeta } from './entities';
+import { CarsRent } from './modules';
 
 @ObjectType()
 export class CarsPaginatedResponse extends BaseResponse {
@@ -17,4 +18,11 @@ export class CarsPaginatedResponse extends BaseResponse {
     type: PaginationMeta
   })
   meta: PaginationMeta;
+}
+
+@ObjectType()
+export class CarsRentsResponse extends BaseResponse {
+  @Field(() => [CarsRent])
+  @ApiProperty({ description: 'Аренды', type: [CarsRent] })
+  carsRents: CarsRent[];
 }
