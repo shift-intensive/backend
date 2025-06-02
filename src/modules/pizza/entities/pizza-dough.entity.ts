@@ -16,8 +16,8 @@ registerEnumType(Dough, {
 export class PizzaDough {
   @IsEnum(Dough)
   @Field(() => Dough)
-  @ApiProperty({ enum: Dough, description: 'Тип теста' })
-  name: Dough;
+  @ApiProperty({ enum: Dough, description: 'Идентификатор типа теста' })
+  type: Dough;
 
   @IsNotEmpty()
   @IsNumber()

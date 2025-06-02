@@ -1,7 +1,7 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { ApiProperty } from '@nestjs/swagger';
 
-import { FilmHallCell } from './film-hall-cell.entity';
+import { FilmHallCell, FilmHallCellType } from './film-hall-cell.entity';
 
 @InputType('FilmHallInput')
 @ObjectType()
@@ -12,14 +12,9 @@ export class FilmHall {
 
   @Field(() => [[FilmHallCell]])
   @ApiProperty({
+    example: [[{ type: FilmHallCellType.ECONOM, price: 100 }]],
     description: 'Места в зале',
-    type: 'array',
-    items: {
-      type: 'array',
-      items: {
-        type: typeof FilmHallCell
-      }
-    }
+    type: [[FilmHallCell]]
   })
   places: FilmHallCell[][];
 }

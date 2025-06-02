@@ -9,7 +9,6 @@ import { UsersService } from '@/modules/users';
 import { ApiAuthorizedOnly } from '@/utils/guards';
 import { AuthService, BaseResolver, BaseResponse } from '@/utils/services';
 
-import { pizzas } from './constants/pizzas';
 import { CancelPizzaOrderDto, CreatePizzaPaymentDto, GetPizzaOrderDto } from './dto';
 import { PizzaOrderService, PizzaStatus } from './modules/pizza-order';
 import {
@@ -18,11 +17,13 @@ import {
   PizzaPaymentResponse,
   PizzasResponse
 } from './pizza.model';
+import { PizzaService } from './pizza.service';
 
 @ApiTags('🍕 pizza')
 @Controller('/pizza')
 export class PizzaController extends BaseResolver {
   constructor(
+    private readonly pizzaService: PizzaService,
     private readonly pizzaOrderService: PizzaOrderService,
     private readonly authService: AuthService,
     private readonly usersService: UsersService
@@ -38,7 +39,7 @@ export class PizzaController extends BaseResolver {
     type: PizzasResponse
   })
   getPizzasCatalog(): PizzasResponse {
-    return this.wrapSuccess({ catalog: pizzas });
+    return this.wrapSuccess({ catalog: this.pizzaService.getPizzas() });
   }
 
   @Post('/payment')
@@ -51,12 +52,33 @@ export class PizzaController extends BaseResolver {
   async createPizzaPayment(
     @Args() createPizzaPaymentDto: CreatePizzaPaymentDto
   ): Promise<PizzaPaymentResponse> {
-    const { person } = createPizzaPaymentDto;
+    const { person, receiverAddress } = createPizzaPaymentDto;
+
+    const { pizzas, totalPrice } = createPizzaPaymentDto.pizzas.reduce(
+      (acc, orderedPizza) => {
+        const pizza = this.pizzaService.getPizza(orderedPizza.id);
+
+        const toppingPrice = pizza.toppings.reduce((acc, topping) => acc + topping.price, 0);
+        const doughPrice = pizza.doughs.find((dough) => dough.type === orderedPizza.dough).price;
+        const sizePrice = pizza.sizes.find((size) => size.type === orderedPizza.size).price;
+
+        const totalPrice = toppingPrice + doughPrice + sizePrice;
+
+        acc.pizzas.push({ ...pizza, totalPrice });
+        acc.totalPrice += totalPrice;
+
+        return acc;
+      },
+      { pizzas: [], totalPrice: 0 }
+    );
 
     const order = await this.pizzaOrderService.create({
-      ...createPizzaPaymentDto,
+      pizzas,
+      person,
+      receiverAddress,
       status: PizzaStatus.IN_PROCESSING,
-      cancellable: true
+      cancellable: true,
+      totalPrice
     });
 
     let user = await this.usersService.findOne({ phone: person.phone });

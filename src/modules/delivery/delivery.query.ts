@@ -9,7 +9,7 @@ import { AuthService, BaseResolver } from '@/utils/services';
 
 import type { User } from '../users';
 
-import { packages, points } from './constants';
+import { PACKAGE_TYPES, POINTS } from './constants';
 import {
   DeliveryOrderResponse,
   DeliveryOrdersResponse,
@@ -32,12 +32,12 @@ export class DeliveryQuery extends BaseResolver {
 
   @Query(() => DeliveryPointsResponse)
   getDeliveryPoints(): DeliveryPointsResponse {
-    return this.wrapSuccess({ points });
+    return this.wrapSuccess({ points: POINTS });
   }
 
   @Query(() => DeliveryPackageTypesResponse)
   getDeliveryPackageTypes(): DeliveryPackageTypesResponse {
-    return this.wrapSuccess({ packages });
+    return this.wrapSuccess({ packages: PACKAGE_TYPES });
   }
 
   @GqlAuthorizedOnly()

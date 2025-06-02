@@ -101,20 +101,20 @@ enum CarsRentStatus {
 
 type CinemaOrder {
   _id: String!
-  filmName: String!
+  film: Film!
   orderNumber: Float!
   person: FilmPerson!
   status: CinemaOrderStatus!
-  tickets: [Ticket!]!
+  tickets: [CinemaTicket!]!
 }
 
 input CinemaOrderInput {
   _id: String!
-  filmName: String!
+  film: FilmInput!
   orderNumber: Float!
   person: FilmPersonInput!
   status: CinemaOrderStatus!
-  tickets: [TicketInput!]!
+  tickets: [CinemaTicketInput!]!
 }
 
 enum CinemaOrderStatus {
@@ -126,6 +126,43 @@ type CinemaOrdersResponse {
   orders: [CinemaOrder!]!
   reason: String
   success: Boolean!
+}
+
+type CinemaTicket {
+  _id: String!
+  column: Float!
+  filmId: String!
+  orderId: String!
+  phone: String!
+  row: Float!
+  seance: CinemaTicketSeance!
+  status: CinemaTicketStatus!
+}
+
+input CinemaTicketInput {
+  _id: String!
+  column: Float!
+  filmId: String!
+  orderId: String!
+  phone: String!
+  row: Float!
+  seance: CinemaTicketSeanceInput!
+  status: CinemaTicketStatus!
+}
+
+type CinemaTicketSeance {
+  date: String!
+  time: String!
+}
+
+input CinemaTicketSeanceInput {
+  date: String!
+  time: String!
+}
+
+enum CinemaTicketStatus {
+  CANCELED
+  PAYED
 }
 
 enum Color {
@@ -150,26 +187,11 @@ input CountryInput {
   name: String!
 }
 
-input CreateDeliveryOrderDeliveryOptionDto {
-  days: Float!
-  id: String!
-  name: String!
-  price: Float!
-  type: DeliveryOptionType!
-}
-
 input CreateDeliveryOrderPersonDto {
   firstname: String!
   lastname: String!
   middlename: String
   phone: String!
-}
-
-input CreateDeliveryOrderPointDto {
-  id: String!
-  latitude: Float!
-  longitude: Float!
-  name: String!
 }
 
 input CreateDeliveryOrderReceiverAddressDto {
@@ -260,7 +282,10 @@ input DeliveryOpttionInput {
 type DeliveryOrder {
   _id: String!
   cancellable: Boolean!
+  option: DeliveryOptionType!
+  package: DeliveryPackageType!
   payer: Payer!
+  price: Float!
   receiver: DeliveryPerson!
   receiverAddress: DeliveryReceiverAddress!
   receiverPoint: DeliveryPoint!
@@ -273,7 +298,10 @@ type DeliveryOrder {
 input DeliveryOrderInput {
   _id: String!
   cancellable: Boolean!
+  option: DeliveryOptionType!
+  package: DeliveryPackageTypeInput!
   payer: Payer!
+  price: Float!
   receiver: DeliveryPersonInput!
   receiverAddress: DeliveryReceiverAddressInput!
   receiverPoint: DeliveryPointInput!
@@ -475,13 +503,13 @@ type FilmResponse {
   success: Boolean!
 }
 
-type FilmSeance {
-  hall: FilmHall!
-  time: String!
+type FilmSchedule {
+  date: String!
+  seances: [FilmScheduleSeance!]!
 }
 
-input FilmSeanceInput {
-  hall: FilmHallInput!
+type FilmScheduleSeance {
+  hall: FilmHall!
   time: String!
 }
 
@@ -495,21 +523,6 @@ input FilmStaffInput {
   fullName: String!
   id: String!
   professions: [Profession!]!
-}
-
-type FilmTicketSeance {
-  date: String!
-  time: String!
-}
-
-input FilmTicketSeanceInput {
-  date: String!
-  time: String!
-}
-
-enum FilmTicketStatus {
-  CANCELED
-  PAYED
 }
 
 type FilmUserRating {
@@ -550,42 +563,48 @@ enum Ingredient {
 }
 
 type Mutation {
-  calculateDelivery(package: CalculateDeliveryPackageDto!, receiverPoint: CalculateDeliveryPointDto!, senderPoint: CalculateDeliveryPointDto!): CalculateDeliveryResponse!
+  calculateDelivery(
+    package: CalculateDeliveryPackageDto!
+    receiverPoint: CalculateDeliveryPointDto!
+    senderPoint: CalculateDeliveryPointDto!
+  ): CalculateDeliveryResponse!
   cancelCinemaOrder(orderId: String!): BaseResponse!
   cancelDeliveryOrder(orderId: String!): BaseResponse!
   cancelPizzaOrder(orderId: String!): BaseResponse!
-  createCinemaPayment(debitCard: CreatePaymentDebitCardDto!, filmId: String!, person: CreatePaymentPersonDto!, seance: CreatePaymentSeanceDto!, tickets: [CreatePaymentTicketsDto!]!): PaymentResponse!
-  createDeliveryOrder(option: CreateDeliveryOrderDeliveryOptionDto!, payer: Payer!, receiver: CreateDeliveryOrderPersonDto!, receiverAddress: CreateDeliveryOrderReceiverAddressDto!, receiverPoint: CreateDeliveryOrderPointDto!, sender: CreateDeliveryOrderPersonDto!, senderAddress: CreateDeliveryOrderSenderAddressDto!, senderPoint: CreateDeliveryOrderPointDto!): DeliverResponse!
+  createCinemaPayment(
+    debitCard: CreatePaymentDebitCardDto!
+    filmId: String!
+    person: CreatePaymentPersonDto!
+    seance: CreatePaymentSeanceDto!
+    tickets: [CreatePaymentTicketsDto!]!
+  ): PaymentResponse!
+  createDeliveryOrder(
+    optionType: DeliveryOptionType!
+    packageId: String!
+    payer: Payer!
+    receiver: CreateDeliveryOrderPersonDto!
+    receiverAddress: CreateDeliveryOrderReceiverAddressDto!
+    receiverPointId: String!
+    sender: CreateDeliveryOrderPersonDto!
+    senderAddress: CreateDeliveryOrderSenderAddressDto!
+    senderPointId: String!
+  ): DeliverResponse!
   createOtp(phone: String!): OtpResponse!
-  createPizzaPayment(debitCard: CreatePizzaPaymentDebitCardDto!, person: CreatePizzaPaymentPersonDto!, pizzas: [OrderedPizzaInput!]!, receiverAddress: CreatePizzaPaymentAddressDto!): PizzaPaymentResponse!
+  createPizzaPayment(
+    debitCard: CreatePizzaPaymentDebitCardDto!
+    person: CreatePizzaPaymentPersonDto!
+    pizzas: [OrderedPizzaInput!]!
+    receiverAddress: CreatePizzaPaymentAddressDto!
+  ): PizzaPaymentResponse!
   signin(code: Float!, phone: String!): SignInResponse!
   updateProfile(phone: String!, profile: UpdateProfileProfileDto!): UpdateProfileResponse!
 }
 
-type OrderedPizza {
-  doughs: PizzaDough!
-  id: String!
-  name: String!
-  size: PizzaSize!
-  toppings: [OrderedPizzaIngredient!]!
-}
-
-type OrderedPizzaIngredient {
-  cost: Float!
-  name: Ingredient!
-}
-
-input OrderedPizzaIngredientInput {
-  cost: Float!
-  name: Ingredient!
-}
-
 input OrderedPizzaInput {
-  doughs: PizzaDoughInput!
+  dough: Dough!
   id: String!
-  name: String!
-  size: PizzaSizeInput!
-  toppings: [OrderedPizzaIngredientInput!]!
+  size: Size!
+  toppings: [Ingredient!]!
 }
 
 type Otp {
@@ -664,25 +683,25 @@ input PizzaAddressInput {
 }
 
 type PizzaDough {
-  name: Dough!
   price: Float!
+  type: Dough!
 }
 
 input PizzaDoughInput {
-  name: Dough!
   price: Float!
+  type: Dough!
 }
 
 type PizzaIngredient {
-  cost: Float!
   img: String!
-  name: Ingredient!
+  price: Float!
+  type: Ingredient!
 }
 
 input PizzaIngredientInput {
-  cost: Float!
   img: String!
-  name: Ingredient!
+  price: Float!
+  type: Ingredient!
 }
 
 input PizzaInput {
@@ -710,18 +729,20 @@ type PizzaOrder {
   _id: String!
   cancellable: Boolean!
   person: PizzaPerson!
-  pizzas: [OrderedPizza!]!
+  pizzas: [Pizza!]!
   receiverAddress: PizzaAddress!
   status: PizzaStatus!
+  totalPrice: Float!
 }
 
 input PizzaOrderInput {
   _id: String!
   cancellable: Boolean!
   person: PizzaPersonInput!
-  pizzas: [OrderedPizzaInput!]!
+  pizzas: [PizzaInput!]!
   receiverAddress: PizzaAddressInput!
   status: PizzaStatus!
+  totalPrice: Float!
 }
 
 type PizzaOrderResponse {
@@ -757,13 +778,13 @@ input PizzaPersonInput {
 }
 
 type PizzaSize {
-  name: Size!
   price: Float!
+  type: Size!
 }
 
 input PizzaSizeInput {
-  name: Size!
   price: Float!
+  type: Size!
 }
 
 enum PizzaStatus {
@@ -786,8 +807,17 @@ enum Profession {
 }
 
 type Query {
-  getCars(bodyType: BodyType, brand: Brand, limit: Int = 10, maxPrice: Int, minPrice: Int, page: Int = 1, search: String, transmission: Transmission): CarsPaginatedResponse!
-  getCinemaOrders: CinemaOrdersResponse!
+  getCars(
+    bodyType: BodyType
+    brand: Brand
+    limit: Int = 10
+    maxPrice: Int
+    minPrice: Int
+    page: Int = 1
+    search: String
+    transmission: Transmission
+  ): CarsPaginatedResponse!
+  getCinemaOrders(token: String!): CinemaOrdersResponse!
   getCinemaToday: FilmsResponse!
   getDeliveryOrder(orderId: String!): DeliveryOrderResponse!
   getDeliveryOrders: DeliveryOrdersResponse!
@@ -809,14 +839,9 @@ enum Rating {
   R
 }
 
-type Schedule {
-  date: String!
-  seances: [FilmSeance!]!
-}
-
 type ScheduleResponse {
   reason: String
-  schedules: [Schedule!]!
+  schedules: FilmSchedule!
   success: Boolean!
 }
 

@@ -2,7 +2,7 @@ import type { Film } from '../entities';
 
 import { Profession, Rating } from '../entities';
 
-export const films: Film[] = [
+export const FILMS: Film[] = [
   {
     id: '1',
     name: 'Зеленая миля',

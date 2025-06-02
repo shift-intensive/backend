@@ -3,7 +3,6 @@ import type { Request } from 'express';
 import { BadRequestException } from '@nestjs/common';
 import { Args, Context, Query, Resolver } from '@nestjs/graphql';
 
-import { pizzas } from '@/modules/pizza/constants/pizzas';
 import { DescribeContext } from '@/utils/decorators';
 import { GqlAuthorizedOnly } from '@/utils/guards';
 import { AuthService, BaseResolver } from '@/utils/services';
@@ -13,12 +12,14 @@ import type { User } from '../users';
 import { GetPizzaOrderDto } from './dto';
 import { PizzaOrderService } from './modules/pizza-order';
 import { PizzaOrderResponse, PizzaOrdersResponse, PizzasResponse } from './pizza.model';
+import { PizzaService } from './pizza.service';
 
 @Resolver('🍕 pizza query')
 @DescribeContext('PizzaQuery')
 @Resolver()
 export class PizzaQuery extends BaseResolver {
   constructor(
+    private readonly pizzaService: PizzaService,
     private readonly authService: AuthService,
     private readonly pizzaOrderService: PizzaOrderService
   ) {
@@ -27,7 +28,7 @@ export class PizzaQuery extends BaseResolver {
 
   @Query(() => PizzasResponse)
   getPizzasCatalog(): PizzasResponse {
-    return this.wrapSuccess({ catalog: pizzas });
+    return this.wrapSuccess({ catalog: this.pizzaService.getPizzas() });
   }
 
   @GqlAuthorizedOnly()

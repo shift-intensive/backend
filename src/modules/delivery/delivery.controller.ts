@@ -4,14 +4,12 @@ import { Request } from 'express';
 import { randomUUID } from 'node:crypto';
 
 import { ApiAuthorizedOnly } from '@/utils/guards';
-import { getDistance } from '@/utils/helpers';
 import { AuthService, BaseResolver, BaseResponse } from '@/utils/services';
 
 import type { User } from '../users';
 import type { DeliveryOption } from './entities';
 
 import { UsersService } from '../users';
-import { packages, points } from './constants';
 import {
   CalculateDeliveryResponse,
   DeliverResponse,
@@ -20,6 +18,7 @@ import {
   DeliveryPackageTypesResponse,
   DeliveryPointsResponse
 } from './delivery.model';
+import { DeliveryService } from './delivery.service';
 import {
   CalculateDeliveryDto,
   CancelDeliveryOrderDto,
@@ -27,12 +26,14 @@ import {
   GetDeliveryOrderDto
 } from './dto';
 import { DeliveryOptionType } from './entities';
+import { calculateDelivery } from './helpers';
 import { DeliveryOrderService, DeliveryStatus } from './modules';
 
 @ApiTags('📦 delivery')
 @Controller('/delivery')
 export class DeliveryController extends BaseResolver {
   constructor(
+    private readonly deliveryService: DeliveryService,
     private readonly deliveryOrderService: DeliveryOrderService,
     private readonly authService: AuthService,
     private readonly usersService: UsersService
@@ -41,29 +42,29 @@ export class DeliveryController extends BaseResolver {
   }
 
   @Get('/points')
-  @ApiOperation({ summary: 'получить пункты выдачи' })
+  @ApiOperation({ summary: 'Получить пункты выдачи' })
   @ApiResponse({
     status: 200,
     description: 'points',
     type: DeliveryPointsResponse
   })
   getPoints(): DeliveryPointsResponse {
-    return this.wrapSuccess({ points });
+    return this.wrapSuccess({ points: this.deliveryService.getDeliveryPoints() });
   }
 
   @Get('/package/types')
-  @ApiOperation({ summary: 'получить типы посылок' })
+  @ApiOperation({ summary: 'Получить типы посылок' })
   @ApiResponse({
     status: 200,
     description: 'package types',
     type: DeliveryPackageTypesResponse
   })
   getPackageTypes(): DeliveryPackageTypesResponse {
-    return this.wrapSuccess({ packages });
+    return this.wrapSuccess({ packages: this.deliveryService.getDeliveryPackageTypes() });
   }
 
   @Post('/calc')
-  @ApiOperation({ summary: 'расчет доставки' })
+  @ApiOperation({ summary: 'Расчет доставки' })
   @ApiResponse({
     status: 200,
     description: 'calc',
@@ -72,35 +73,27 @@ export class DeliveryController extends BaseResolver {
   async calculateDelivery(
     @Body() calculateDeliveryDto: CalculateDeliveryDto
   ): Promise<CalculateDeliveryResponse> {
-    const distancePrice = getDistance(
-      calculateDeliveryDto.receiverPoint.latitude,
-      calculateDeliveryDto.receiverPoint.longitude,
-      calculateDeliveryDto.senderPoint.latitude,
-      calculateDeliveryDto.senderPoint.longitude
-    );
+    const price = calculateDelivery({
+      senderPointCoordinates: calculateDeliveryDto.senderPoint,
+      receiverPointCoordinates: calculateDeliveryDto.receiverPoint,
+      packageData: calculateDeliveryDto.package
+    });
 
-    const sizeWeightPrice =
-      (calculateDeliveryDto.package.length *
-        calculateDeliveryDto.package.weight *
-        calculateDeliveryDto.package.height *
-        calculateDeliveryDto.package.width) /
-      10000;
-
-    const price = Math.round((distancePrice + sizeWeightPrice) * 100);
     const days = Math.floor(Math.random() * 7) + 2;
+
     const options: DeliveryOption[] = [
       {
         id: randomUUID(),
         days,
         price,
-        name: 'стандартная доставка',
+        name: 'Стандартная доставка',
         type: DeliveryOptionType.DEFAULT
       },
       {
         id: randomUUID(),
         price: price * 2,
         days: Math.floor(days / 2),
-        name: 'эксперсс доставка',
+        name: 'Эксперсс доставка',
         type: DeliveryOptionType.EXPRESS
       }
     ];
@@ -109,7 +102,7 @@ export class DeliveryController extends BaseResolver {
   }
 
   @Post('/order')
-  @ApiOperation({ summary: 'создание заявки доставки' })
+  @ApiOperation({ summary: 'Создание заявки доставки' })
   @ApiResponse({
     status: 200,
     description: 'order',
@@ -118,10 +111,36 @@ export class DeliveryController extends BaseResolver {
   async createOrder(
     @Body() createDeliveryOrderDto: CreateDeliveryOrderDto
   ): Promise<DeliverResponse> {
-    const { sender } = createDeliveryOrderDto;
+    const { sender, senderPointId, receiverPointId, receiver, optionType } = createDeliveryOrderDto;
+
+    const senderPoint = this.deliveryService.getDeliveryPoint(senderPointId);
+    const receiverPoint = this.deliveryService.getDeliveryPoint(receiverPointId);
+    const packageType = this.deliveryService.getDeliveryPackageType(
+      createDeliveryOrderDto.packageId
+    );
+
+    if (!senderPoint || !receiverPoint || !packageType) {
+      throw new BadRequestException(this.wrapFail('Некорректные данные'));
+    }
+
+    let price = calculateDelivery({
+      senderPointCoordinates: senderPoint,
+      receiverPointCoordinates: receiverPoint,
+      packageData: packageType
+    });
+
+    if (createDeliveryOrderDto.optionType === DeliveryOptionType.EXPRESS) {
+      price *= 2;
+    }
 
     const order = await this.deliveryOrderService.create({
-      ...createDeliveryOrderDto,
+      price,
+      option: optionType,
+      package: packageType,
+      senderPoint,
+      receiverPoint,
+      sender,
+      receiver,
       status: DeliveryStatus.IN_PROCESSING,
       cancellable: true
     });
@@ -148,7 +167,7 @@ export class DeliveryController extends BaseResolver {
 
   @ApiAuthorizedOnly()
   @Get('/orders')
-  @ApiOperation({ summary: 'получить все заявки на доставку' })
+  @ApiOperation({ summary: 'Получить все заявки на доставку' })
   @ApiResponse({
     status: 200,
     description: 'orders',
@@ -178,7 +197,7 @@ export class DeliveryController extends BaseResolver {
 
   @ApiAuthorizedOnly()
   @Get('/orders/:orderId')
-  @ApiOperation({ summary: 'получить заявку на доставку' })
+  @ApiOperation({ summary: 'Получить заявку на доставку' })
   @ApiResponse({
     status: 200,
     description: 'order',
@@ -216,7 +235,7 @@ export class DeliveryController extends BaseResolver {
 
   @ApiAuthorizedOnly()
   @Put('/orders/cancel')
-  @ApiOperation({ summary: 'отменить доставку' })
+  @ApiOperation({ summary: 'Отменить доставку' })
   @ApiResponse({
     status: 200,
     description: 'order cancel',

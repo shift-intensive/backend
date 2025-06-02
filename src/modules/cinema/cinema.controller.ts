@@ -19,8 +19,13 @@ import {
 } from './cinema.model';
 import { CinemaService } from './cinema.service';
 import { CancelCinemaOrderDto, CreateCinemaPaymentDto, GetFilmDto, GetScheduleDto } from './dto';
-import { FilmHallCellType, FilmTicketStatus } from './entities';
-import { CinemaOrderService, CinemaOrderStatus } from './modules';
+import { FilmHallCellType } from './entities';
+import {
+  CinemaOrderService,
+  CinemaOrderStatus,
+  CinemaTicketService,
+  CinemaTicketStatus
+} from './modules';
 
 @ApiTags('🍿 cinema')
 @Controller('/cinema')
@@ -29,16 +34,17 @@ export class CinemaController extends BaseResolver {
     private readonly authService: AuthService,
     private readonly cinemaService: CinemaService,
     private readonly cinemaOrderService: CinemaOrderService,
+    private readonly cinemaTicketService: CinemaTicketService,
     private readonly usersService: UsersService
   ) {
     super();
   }
 
-  @Get('/today')
-  @ApiOperation({ summary: 'получить афишу фильмов' })
+  @Get('/films')
+  @ApiOperation({ summary: 'Получить список фильмов' })
   @ApiResponse({
     status: 200,
-    description: 'cinema today',
+    description: 'films',
     type: FilmsResponse
   })
   getCinemaToday(): FilmsResponse {
@@ -47,62 +53,15 @@ export class CinemaController extends BaseResolver {
   }
 
   @Get('/film/:filmId')
-  @ApiOperation({ summary: 'получить фильм' })
+  @ApiOperation({ summary: 'Получить фильм' })
   @ApiResponse({
     status: 200,
     description: 'film',
     type: FilmResponse
   })
-  getFilm(@Param() params: GetFilmDto): FilmResponse {
-    const film = this.cinemaService.getFilm(params.filmId);
-
-    if (!film) {
-      throw new BadRequestException(this.wrapFail('Фильм не найден'));
-    }
-
+  getFilm(@Param() getFilmDto: GetFilmDto): FilmResponse {
+    const film = this.cinemaService.getFilm(getFilmDto.filmId);
     return this.wrapSuccess({ film });
-  }
-
-  @ApiAuthorizedOnly()
-  @Put('/orders/cancel')
-  @ApiOperation({ summary: 'отменить заказ' })
-  @ApiResponse({
-    status: 200,
-    description: 'order cancel',
-    type: BaseResponse
-  })
-  @ApiHeader({
-    name: 'authorization'
-  })
-  @ApiBearerAuth()
-  async cancelCinemaOrder(
-    @Body() cancelCinemaOrderDto: CancelCinemaOrderDto
-  ): Promise<BaseResponse> {
-    const order = await this.cinemaOrderService.findOne({ _id: cancelCinemaOrderDto.orderId });
-
-    if (!order) {
-      throw new BadRequestException(this.wrapFail('Заказ не найден'));
-    }
-
-    if (order.status !== CinemaOrderStatus.PAYED) {
-      throw new BadRequestException(this.wrapFail('Заказ нельзя отменить'));
-    }
-
-    await this.cinemaService.updateMany(
-      { _id: { $in: order.tickets.map((ticket) => ticket._id) } },
-      { $set: { status: FilmTicketStatus.CANCELED } }
-    );
-
-    const updatedTickets = await this.cinemaService.find({
-      _id: { $in: order.tickets.map((ticket) => ticket._id) }
-    });
-
-    await this.cinemaOrderService.updateOne(
-      { _id: cancelCinemaOrderDto.orderId },
-      { $set: { status: CinemaOrderStatus.CANCELED, tickets: updatedTickets } }
-    );
-
-    return this.wrapSuccess();
   }
 
   @Get('/film/:filmId/schedule')
@@ -114,9 +73,7 @@ export class CinemaController extends BaseResolver {
   })
   async getFilmSchedule(@Param() getScheduleDto: GetScheduleDto): Promise<ScheduleResponse> {
     const filmSchedule = this.cinemaService.getFilmSchedule(getScheduleDto.filmId);
-    const tickets = await this.cinemaService.find({
-      filmId: getScheduleDto.filmId
-    });
+    const tickets = await this.cinemaTicketService.find({ filmId: getScheduleDto.filmId });
 
     const updatedFilmSchedule = filmSchedule.reduce(
       (acc, schedule, index) => {
@@ -168,18 +125,17 @@ export class CinemaController extends BaseResolver {
       phone: createCinemaPaymentDto.person.phone,
       row: ticket.row,
       column: ticket.column,
-      status: FilmTicketStatus.PAYED
+      status: CinemaTicketStatus.PAYED
     }));
 
     const existedTickets = [];
     await Promise.all(
       formattedTickets.map(async (ticket) => {
-        const existedTicket = await this.cinemaService.findOne({
+        const existedTicket = await this.cinemaTicketService.findOne({
           'seance.date': ticket.seance.date,
           'seance.time': ticket.seance.time,
           row: ticket.row,
-          column: ticket.column,
-          status: ticket.status
+          column: ticket.column
         });
 
         if (existedTicket) {
@@ -211,17 +167,25 @@ export class CinemaController extends BaseResolver {
       );
     }
 
-    const tickets = await this.cinemaService.insertMany(formattedTickets);
-    const filmName = this.cinemaService.getFilmName(createCinemaPaymentDto.filmId);
+    const film = this.cinemaService.getFilm(createCinemaPaymentDto.filmId);
 
     const orderNumber = Math.floor(Math.random() * 10 ** 6);
     const order = await this.cinemaOrderService.create({
-      filmName,
+      film,
       orderNumber,
-      tickets,
+      tickets: [],
       person,
       status: CinemaOrderStatus.PAYED
     });
+
+    const tickets = await this.cinemaTicketService.insertMany(
+      formattedTickets.map((ticket) => ({
+        ...ticket,
+        orderId: order._id.toString()
+      }))
+    );
+
+    await this.cinemaOrderService.updateOne({ _id: order._id }, { $set: { tickets } });
 
     let user = await this.usersService.findOne({ phone: person.phone });
 
@@ -245,7 +209,7 @@ export class CinemaController extends BaseResolver {
 
   @ApiAuthorizedOnly()
   @Get('/orders')
-  @ApiOperation({ summary: 'получить все заказы билетов' })
+  @ApiOperation({ summary: 'Получить заказы' })
   @ApiResponse({
     status: 200,
     description: 'orders',
@@ -255,8 +219,8 @@ export class CinemaController extends BaseResolver {
     name: 'authorization'
   })
   @ApiBearerAuth()
-  async getCinemaOrders(@Req() request: Request): Promise<CinemaOrdersResponse> {
-    const token = request.headers.authorization.split(' ')[1];
+  async getCinemaOrders(@Req() req: Request): Promise<CinemaOrdersResponse> {
+    const token = req.headers.authorization?.split(' ')[1];
     const decodedJwtAccessToken = (await this.authService.decode(token)) as User;
 
     if (!decodedJwtAccessToken) {
@@ -268,5 +232,47 @@ export class CinemaController extends BaseResolver {
     });
 
     return this.wrapSuccess({ orders });
+  }
+
+  @ApiAuthorizedOnly()
+  @Put('/orders/cancel')
+  @ApiOperation({ summary: 'Отменить заказ' })
+  @ApiResponse({
+    status: 200,
+    description: 'order cancel',
+    type: BaseResponse
+  })
+  @ApiHeader({
+    name: 'authorization'
+  })
+  @ApiBearerAuth()
+  async cancelCinemaOrder(
+    @Body() cancelCinemaOrderDto: CancelCinemaOrderDto
+  ): Promise<BaseResponse> {
+    const order = await this.cinemaOrderService.findOne({ _id: cancelCinemaOrderDto.orderId });
+
+    if (!order) {
+      throw new BadRequestException(this.wrapFail('Заказ не найден'));
+    }
+
+    if (order.status !== CinemaOrderStatus.PAYED) {
+      throw new BadRequestException(this.wrapFail('Заказ нельзя отменить'));
+    }
+
+    await this.cinemaTicketService.updateMany(
+      { _id: { $in: order.tickets.map((ticket) => ticket._id) } },
+      { $set: { status: CinemaTicketStatus.CANCELED } }
+    );
+
+    const updatedTickets = await this.cinemaTicketService.find({
+      _id: { $in: order.tickets.map((ticket) => ticket._id) }
+    });
+
+    await this.cinemaOrderService.updateOne(
+      { _id: cancelCinemaOrderDto.orderId },
+      { $set: { status: CinemaOrderStatus.CANCELED, tickets: updatedTickets } }
+    );
+
+    return this.wrapSuccess();
   }
 }

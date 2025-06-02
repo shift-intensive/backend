@@ -25,7 +25,11 @@ registerEnumType(FilmHallCellType, {
 @ObjectType()
 export class FilmHallCell {
   @Field(() => FilmHallCellType)
-  @ApiProperty({ description: 'Тип места в зале', enum: FilmHallCellType })
+  @ApiProperty({
+    example: FilmHallCellType.ECONOM,
+    description: 'Тип места в зале',
+    enum: FilmHallCellType
+  })
   type: FilmHallCellType;
 
   @ApiProperty()

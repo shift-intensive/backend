@@ -9,12 +9,14 @@ import { BaseResolver, BaseResponse } from '@/utils/services';
 import { CancelPizzaOrderDto, CreatePizzaPaymentDto } from './dto';
 import { PizzaOrderService, PizzaStatus } from './modules/pizza-order';
 import { PizzaPaymentResponse } from './pizza.model';
+import { PizzaService } from './pizza.service';
 
 @Resolver('🍕 pizza mutation')
 @DescribeContext('PizzaMutation')
 @Resolver()
 export class PizzaMutation extends BaseResolver {
   constructor(
+    private readonly pizzaService: PizzaService,
     private readonly pizzaOrderService: PizzaOrderService,
     private readonly usersService: UsersService
   ) {
@@ -46,12 +48,33 @@ export class PizzaMutation extends BaseResolver {
   async createPizzaPayment(
     @Args() createPizzaPaymentDto: CreatePizzaPaymentDto
   ): Promise<PizzaPaymentResponse> {
-    const { person } = createPizzaPaymentDto;
+    const { person, receiverAddress } = createPizzaPaymentDto;
+
+    const { pizzas, totalPrice } = createPizzaPaymentDto.pizzas.reduce(
+      (acc, orderedPizza) => {
+        const pizza = this.pizzaService.getPizza(orderedPizza.id);
+
+        const toppingPrice = pizza.toppings.reduce((acc, topping) => acc + topping.price, 0);
+        const doughPrice = pizza.doughs.find((dough) => dough.type === orderedPizza.dough).price;
+        const sizePrice = pizza.sizes.find((size) => size.type === orderedPizza.size).price;
+
+        const totalPrice = toppingPrice + doughPrice + sizePrice;
+
+        acc.pizzas.push({ ...pizza, totalPrice });
+        acc.totalPrice += totalPrice;
+
+        return acc;
+      },
+      { pizzas: [], totalPrice: 0 }
+    );
 
     const order = await this.pizzaOrderService.create({
-      ...createPizzaPaymentDto,
+      pizzas,
+      person,
+      receiverAddress,
       status: PizzaStatus.IN_PROCESSING,
-      cancellable: true
+      cancellable: true,
+      totalPrice
     });
 
     let user = await this.usersService.findOne({ phone: person.phone });

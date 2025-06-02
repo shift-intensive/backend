@@ -5,7 +5,7 @@ import { ApiProperty } from '@nestjs/swagger';
 @ObjectType()
 export class DeliveryPackageType {
   @Field(() => String)
-  @ApiProperty({ example: '1', description: 'Индентификатор типа посылки' })
+  @ApiProperty({ example: 'envelope', description: 'Индентификатор типа посылки' })
   id: string;
 
   @Field(() => String)

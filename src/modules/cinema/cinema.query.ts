@@ -1,7 +1,5 @@
-import type { Request } from 'express';
-
-import { Args, Context, Query, Resolver } from '@nestjs/graphql';
-import { GraphQLError } from 'graphql';
+import { BadRequestException } from '@nestjs/common';
+import { Args, Query, Resolver } from '@nestjs/graphql';
 
 import { DescribeContext } from '@/utils/decorators';
 import { GqlAuthorizedOnly } from '@/utils/guards';
@@ -19,16 +17,16 @@ import {
 import { CinemaService } from './cinema.service';
 import { GetFilmDto, GetScheduleDto } from './dto';
 import { FilmHallCellType } from './entities';
-import { CinemaOrderService } from './modules';
+import { CinemaOrderService, CinemaTicketService } from './modules';
 
 @Resolver('🍿 cinema query')
 @DescribeContext('CinemaQuery')
-@Resolver()
 export class CinemaQuery extends BaseResolver {
   constructor(
     private readonly authService: AuthService,
     private readonly cinemaService: CinemaService,
-    private readonly cinemaOrderService: CinemaOrderService
+    private readonly cinemaOrderService: CinemaOrderService,
+    private readonly cinemaTicketService: CinemaTicketService
   ) {
     super();
   }
@@ -48,9 +46,7 @@ export class CinemaQuery extends BaseResolver {
   @Query(() => ScheduleResponse)
   async getFilmSchedule(@Args() getScheduleDto: GetScheduleDto): Promise<ScheduleResponse> {
     const filmSchedule = this.cinemaService.getFilmSchedule(getScheduleDto.filmId);
-    const tickets = await this.cinemaService.find({
-      filmId: getScheduleDto.filmId
-    });
+    const tickets = await this.cinemaTicketService.find({ filmId: getScheduleDto.filmId });
 
     const updatedFilmSchedule = filmSchedule.reduce(
       (acc, schedule, index) => {
@@ -86,12 +82,11 @@ export class CinemaQuery extends BaseResolver {
 
   @GqlAuthorizedOnly()
   @Query(() => CinemaOrdersResponse)
-  async getCinemaOrders(@Context() context: { req: Request }): Promise<CinemaOrdersResponse> {
-    const token = context.req.headers.authorization.split(' ')[1];
+  async getCinemaOrders(@Args('token') token: string): Promise<CinemaOrdersResponse> {
     const decodedJwtAccessToken = (await this.authService.decode(token)) as User;
 
     if (!decodedJwtAccessToken) {
-      throw new GraphQLError('Некорректный токен авторизации');
+      throw new BadRequestException(this.wrapFail('Некорректный токен авторизации'));
     }
 
     const orders = await this.cinemaOrderService.find({

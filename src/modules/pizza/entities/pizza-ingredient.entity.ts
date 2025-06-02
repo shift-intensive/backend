@@ -30,12 +30,12 @@ registerEnumType(Ingredient, {
 @ObjectType()
 export class PizzaIngredient {
   @Field(() => Ingredient)
-  @ApiProperty({ enum: Ingredient, description: 'Название ингредиента' })
-  name: Ingredient;
+  @ApiProperty({ enum: Ingredient, description: 'Идентификатор ингредиента' })
+  type: Ingredient;
 
   @Field(() => Number)
   @ApiProperty({ description: 'Цена ингредиента' })
-  cost: number;
+  price: number;
 
   @Field(() => String)
   @ApiProperty({ description: 'Изображение ингредиента' })
