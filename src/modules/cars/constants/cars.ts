@@ -1,7 +1,7 @@
 import { Car } from '../entities';
 import { BodyType, Brand, Color, Steering, Transmission } from './enums';
 
-export const cars: Car[] = [
+export const CARS: Car[] = [
   {
     id: '1',
     name: 'Haval Jolion',
@@ -120,10 +120,10 @@ export const cars: Car[] = [
     brand: Brand.HYUNDAI,
     img: '/static/images/cars/hyundai-palisade.webp',
     transmission: Transmission.AUTOMATIC,
-    price: 5000, // примерная цена, при необходимости скорректируй
+    price: 5000,
     location: 'Новосибирск, ул. Ленина, 5',
     minRentalDays: 2,
-    color: Color.WHITE, // выбери актуальный цвет из enum Color
+    color: Color.WHITE,
     bodyType: BodyType.HATCHBACK,
     steering: Steering.LEFT,
     available: true
@@ -136,7 +136,7 @@ export const cars: Car[] = [
     transmission: Transmission.AUTOMATIC,
     price: 4200,
     location: 'Екатеринбург, ул. Малышева, 15',
-    minRentalDays: 2,
+    minRentalDays: 1,
     color: Color.BLACK,
     bodyType: BodyType.SEDAN,
     steering: Steering.LEFT,
@@ -150,7 +150,7 @@ export const cars: Car[] = [
     transmission: Transmission.AUTOMATIC,
     price: 4000,
     location: 'Екатеринбург, ул. Мира, 45',
-    minRentalDays: 2,
+    minRentalDays: 3,
     color: Color.SILVER,
     bodyType: BodyType.SEDAN,
     steering: Steering.LEFT,
@@ -164,7 +164,7 @@ export const cars: Car[] = [
     transmission: Transmission.AUTOMATIC,
     price: 3100,
     location: 'Новосибирск, ул. Ленина, 5',
-    minRentalDays: 2,
+    minRentalDays: 5,
     color: Color.BLACK,
     bodyType: BodyType.SEDAN,
     steering: Steering.LEFT,

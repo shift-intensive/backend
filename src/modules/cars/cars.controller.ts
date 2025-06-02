@@ -17,8 +17,6 @@ import {
   ApiResponse,
   ApiTags
 } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
-import { IsArray, IsNumber, IsOptional, IsString } from 'class-validator';
 import { Request } from 'express';
 
 import { ApiAuthorizedOnly } from '@/utils/guards';
@@ -28,77 +26,12 @@ import type { User } from '../users';
 
 import { UsersService } from '../users';
 import { CarsPaginatedResponse, CarsRentsResponse } from './cars.model';
-import { cars } from './constants';
+import { CARS } from './constants';
 import { BodyType, Brand, Color, Transmission } from './constants/enums';
-import { CancelCarsRentDto, GetCarDto } from './dto';
+import { CancelCarsRentDto, CarFilters, GetCarDto } from './dto';
 import { Car, CreateRent } from './entities';
 import { getFilteredCars } from './helpers';
 import { CarsRent, CarsRentService, CarsRentStatus } from './modules';
-
-export class CarFilters {
-  @IsOptional()
-  @Transform(({ value }) => value?.map?.((v) => v.toLowerCase()) || [value.toLowerCase()])
-  @IsArray()
-  @IsString({ each: true })
-  brand?: Brand[];
-
-  @IsOptional()
-  @Transform(({ value }) => value?.map?.((v) => v.toLowerCase()) || [value.toLowerCase()])
-  @IsArray()
-  @IsString({ each: true })
-  bodyType?: BodyType[];
-
-  @IsOptional()
-  @Transform(({ value }) => value?.map?.((v) => v.toLowerCase()) || [value.toLowerCase()])
-  @IsArray()
-  @IsString({ each: true })
-  color?: Color[];
-
-  @IsOptional()
-  @IsString()
-  transmission?: string;
-
-  @IsOptional()
-  @Transform(({ value }) => Number.parseInt(value, 10))
-  @IsNumber()
-  minPrice?: number;
-
-  @IsOptional()
-  @Transform(({ value }) => Number.parseInt(value, 10))
-  @IsNumber()
-  maxPrice?: number;
-
-  @IsOptional()
-  @Transform(({ value }) => Number.parseInt(value, 10))
-  @IsNumber()
-  page?: number;
-
-  @IsOptional()
-  @Transform(({ value }) => Number.parseInt(value, 10))
-  @IsNumber()
-  limit?: number;
-
-  @IsOptional()
-  @IsString()
-  search?: string;
-
-  // сомневаюсь насчет дат аренды
-}
-
-// export interface CarFilters {
-//   bodyType?: BodyType;
-//   brand?: Brand;
-//   color: Color;
-//   endDate?: string;
-//   limit?: number;
-//   maxPrice?: number;
-//   minPrice?: number;
-//   page?: number;
-//   search?: string;
-//   startDate?: string;
-//   steering?: 'left' | 'right';
-//   transmission?: Transmission;
-// }
 
 @ApiTags('🏎️ cars')
 @Controller('/cars')
@@ -177,7 +110,7 @@ export class CarsController extends BaseResolver {
     const limit = getCarsQuery.limit || 10;
 
     // Фильтрация
-    const filteredCars = getFilteredCars({ filters: getCarsQuery, cars });
+    const filteredCars = getFilteredCars({ filters: getCarsQuery, cars: CARS });
 
     // Пагинация
     const total = filteredCars.length;
@@ -233,7 +166,7 @@ export class CarsController extends BaseResolver {
     type: Car
   })
   getCar(@Param() params: GetCarDto): Car {
-    const car = cars.find((car) => car.id === params.carId);
+    const car = CARS.find((car) => car.id === params.carId);
 
     if (!car) {
       throw new BadRequestException(this.wrapFail('Автомобиль не найден'));

@@ -1,4 +1,4 @@
-import { CarFilters } from '../cars.controller';
+import { CarFilters } from '../dto';
 import { Car } from '../entities';
 
 export const getFilteredCars = ({ filters, cars }: { filters: CarFilters; cars: Car[] }) => {
