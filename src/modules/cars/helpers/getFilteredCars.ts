@@ -5,19 +5,23 @@ export const getFilteredCars = ({ filters, cars }: { filters: CarFilters; cars: 
   let filteredCars = [...cars];
 
   if (filters.brand?.length) {
-    filteredCars = filteredCars.filter((car) => filters.brand.includes(car.brand));
+    const brandSet = filters.brand.map((b) => b.toLowerCase());
+    filteredCars = filteredCars.filter((car) => brandSet.includes(car.brand.toLowerCase()));
   }
 
   if (filters.bodyType?.length) {
-    filteredCars = filteredCars.filter((car) => filters.bodyType.includes(car.bodyType));
+    const bodyTypeSet = filters.bodyType.map((b) => b.toLowerCase());
+    filteredCars = filteredCars.filter((car) => bodyTypeSet.includes(car.bodyType.toLowerCase()));
   }
 
   if (filters.color?.length) {
-    filteredCars = filteredCars.filter((car) => filters.color.includes(car.color));
+    const colorSet = filters.color.map((c) => c.toLowerCase());
+    filteredCars = filteredCars.filter((car) => colorSet.includes(car.color.toLowerCase()));
   }
 
   if (filters.transmission) {
-    filteredCars = filteredCars.filter((car) => car.transmission === filters.transmission);
+    const transmission = filters.transmission.toLowerCase();
+    filteredCars = filteredCars.filter((car) => car.transmission.toLowerCase() === transmission);
   }
 
   if (filters.minPrice !== undefined) {

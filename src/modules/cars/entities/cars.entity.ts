@@ -28,7 +28,7 @@ export class Car {
 
   @Field(() => String)
   @ApiProperty({ example: 'https://example.com/car.jpg', description: 'URL изображения' })
-  imageUrl: string;
+  img: string;
 
   @Field(() => Transmission)
   @ApiProperty({

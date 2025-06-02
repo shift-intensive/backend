@@ -44,7 +44,7 @@ type Car {
   brand: Brand!
   color: Color!
   id: String!
-  imageUrl: String!
+  img: String!
   location: String!
   minRentalDays: Float
   name: String!

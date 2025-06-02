@@ -1,6 +1,9 @@
 export enum Brand {
-  BMW = 'BMW',
-  AUDI = 'Audi',
+  HAVAL = 'Haval',
+  HYUNDAI = 'Hyundai',
+  VOLKSWAGEN = 'Volkswagen',
+  KIA = 'Kia',
+  GEELY = 'Geely',
   MERCEDES = 'Mercedes'
 }
 
@@ -25,6 +28,7 @@ export enum Color {
   BLACK = 'black',
   WHITE = 'white',
   RED = 'red',
+  SILVER = 'silver',
   BLUE = 'blue',
-  SILVER = 'silver'
+  GREY = 'grey'
 }
