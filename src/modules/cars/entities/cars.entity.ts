@@ -1,7 +1,7 @@
 import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { ApiProperty } from '@nestjs/swagger';
 
-import { BodyType, Brand, Color, Transmission } from '../constants/enums';
+import { BodyType, Brand, Color, Steering, Transmission } from '../constants/enums';
 
 // Регистрируем enum'ы для GraphQL
 registerEnumType(Brand, { name: 'Brand' });
@@ -22,7 +22,7 @@ export class Car {
   @Field(() => Brand)
   @ApiProperty({
     enum: Object.values(Brand),
-    description: 'Марка автомобиля '
+    description: 'Марка автомобиля'
   })
   brand: Brand;
 
@@ -33,7 +33,7 @@ export class Car {
   @Field(() => Transmission)
   @ApiProperty({
     enum: Object.values(Transmission),
-    description: 'Тип коробки передач (исключая "any")'
+    description: 'Тип коробки передач'
   })
   transmission: Transmission;
 
@@ -63,10 +63,10 @@ export class Car {
 
   @Field(() => String)
   @ApiProperty({
-    enum: ['left', 'right'],
+    enum: Steering,
     description: 'Расположение руля'
   })
-  steering: 'left' | 'right';
+  steering: Steering;
 
   @Field(() => Boolean)
   @ApiProperty({
@@ -89,7 +89,7 @@ export class PaginationMeta {
   @Field(() => Number)
   @ApiProperty({
     example: 1,
-    description: 'Текущий номер страницы (начинается с 1)',
+    description: 'Текущий номер страницы (по умолчанию 1)',
     type: Number
   })
   page: number;
@@ -97,7 +97,7 @@ export class PaginationMeta {
   @Field(() => Number)
   @ApiProperty({
     example: 10,
-    description: 'Количество элементов на странице',
+    description: 'Количество элементов на странице (по умолчанию 10)',
     type: Number
   })
   limit: number;

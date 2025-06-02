@@ -27,14 +27,16 @@ import type { User } from '../users';
 import { UsersService } from '../users';
 import { CarsPaginatedResponse, CarsRentsResponse } from './cars.model';
 import { cars } from './constants';
-import { BodyType, Brand, Transmission } from './constants/enums';
+import { BodyType, Brand, Color, Transmission } from './constants/enums';
 import { CancelCarsRentDto, GetCarDto } from './dto';
 import { Car, CreateRent } from './entities';
+import { getFilteredCars } from './helpers';
 import { CarsRent, CarsRentService, CarsRentStatus } from './modules';
 
-interface CarFilters {
+export interface CarFilters {
   bodyType?: BodyType;
   brand?: Brand;
+  color: Color;
   endDate?: string;
   limit?: number;
   maxPrice?: number;
@@ -44,6 +46,7 @@ interface CarFilters {
   startDate?: string;
   steering?: 'left' | 'right';
   transmission?: Transmission;
+  // сомневаюсь насчет дат аренды
 }
 
 @ApiTags('🏎️ cars')
@@ -63,53 +66,67 @@ export class CarsController extends BaseResolver {
     status: 200,
     type: CarsPaginatedResponse
   })
-  @ApiQuery({ name: 'page', required: false, type: Number })
-  @ApiQuery({ name: 'limit', required: false, type: Number })
-  @ApiQuery({ name: 'brand', required: false, enum: Brand })
-  @ApiQuery({ name: 'bodyType', required: false, enum: BodyType })
-  @ApiQuery({ name: 'transmission', required: false, enum: Transmission })
-  @ApiQuery({ name: 'minPrice', required: false, type: Number })
-  @ApiQuery({ name: 'maxPrice', required: false, type: Number })
-  @ApiQuery({ name: 'search', required: false, type: String })
-  getCars(@Query() filters: CarFilters): CarsPaginatedResponse {
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    type: Number,
+    description: 'Номер текущей страницы (по умолчанию 1)'
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+    description: 'Количество элементов на странице (по умолчанию 10)'
+  })
+  @ApiQuery({
+    name: 'color',
+    required: false,
+    enum: Color,
+    description: 'Цвет автомобиля'
+  })
+  @ApiQuery({
+    name: 'brand',
+    required: false,
+    enum: Brand,
+    description: 'Марка автомобиля'
+  })
+  @ApiQuery({
+    name: 'bodyType',
+    required: false,
+    enum: BodyType,
+    description: 'Тип кузова автомобиля'
+  })
+  @ApiQuery({
+    name: 'transmission',
+    required: false,
+    enum: Transmission,
+    description: 'Тип трансмиссии'
+  })
+  @ApiQuery({
+    name: 'minPrice',
+    required: false,
+    type: Number,
+    description: 'Минимальная цена аренды'
+  })
+  @ApiQuery({
+    name: 'maxPrice',
+    required: false,
+    type: Number,
+    description: 'Максимальная цена аренды'
+  })
+  @ApiQuery({
+    name: 'search',
+    required: false,
+    type: String,
+    description: 'Поиск'
+  })
+  getCars(@Query() getCarsQuery: CarFilters): CarsPaginatedResponse {
     // Значения по умолчанию
-    const page = filters.page || 1;
-    const limit = filters.limit || 10;
+    const page = getCarsQuery.page || 1;
+    const limit = getCarsQuery.limit || 10;
 
     // Фильтрация
-    let filteredCars = [...cars];
-
-    if (filters.brand) {
-      filteredCars = filteredCars.filter((car) => car.brand === filters.brand);
-    }
-
-    if (filters.bodyType) {
-      filteredCars = filteredCars.filter((car) => car.bodyType === filters.bodyType);
-    }
-
-    if (filters.transmission) {
-      filteredCars = filteredCars.filter((car) => car.transmission === filters.transmission);
-    }
-
-    if (filters.minPrice) {
-      filteredCars = filteredCars.filter((car) => car.price >= filters.minPrice);
-    }
-
-    if (filters.maxPrice) {
-      filteredCars = filteredCars.filter((car) => car.price <= filters.maxPrice);
-    }
-
-    if (filters.search) {
-      const searchTerm = filters.search.toLowerCase();
-      filteredCars = filteredCars.filter(
-        (car) =>
-          car.name.toLowerCase().includes(searchTerm) ||
-          car.location.toLowerCase().includes(searchTerm)
-      );
-    }
-
-    // Сортировка (если нужно)
-    // filteredCars = filteredCars.sort(...);
+    const filteredCars = getFilteredCars({ filters: getCarsQuery, cars });
 
     // Пагинация
     const total = filteredCars.length;
@@ -129,23 +146,12 @@ export class CarsController extends BaseResolver {
     });
   }
 
-  // @Get('rent')
-  // @ApiOperation({ summary: 'Получить все аренды' })
-  // @ApiResponse({
-  //   status: 200,
-  //   type: [CarsRent]
-  // })
-  // getRents() {
-  //   return carsRents;
-  //   // return this.carsRentService.getRents();
-  // }
-
   @ApiAuthorizedOnly()
   @Get('/rent')
   @ApiOperation({ summary: 'Получить все аренды' })
   @ApiResponse({
     status: 200,
-    description: 'orders',
+    description: 'rents',
     type: CarsRentsResponse
   })
   @ApiHeader({
@@ -160,6 +166,7 @@ export class CarsController extends BaseResolver {
       throw new BadRequestException(this.wrapFail('Некорректный токен авторизации'));
     }
 
+    // Находит аренды для авторизованного юзера по номеру телефона
     const carsRents = await this.carsRentService.find({
       phone: decodedJwtAccessToken.phone
     });
@@ -185,16 +192,14 @@ export class CarsController extends BaseResolver {
   }
 
   @Post('rent')
-  @ApiOperation({ summary: 'Аренда автомобиля' })
+  @ApiOperation({ summary: 'Арендовать автомобиль' })
   @ApiResponse({
     status: 200,
-    description: 'order',
+    description: 'create rent',
     type: CarsRent
   })
   async createCarRent(@Body() createCarRentDto: CreateRent) /*: Promise<CarsRent>*/ {
-    // return this.carsService.createRent(dto);
-
-    const { phone } = createCarRentDto;
+    // const { phone } = createCarRentDto;
 
     const carsRent = await this.carsRentService.create({
       ...createCarRentDto,
@@ -202,11 +207,11 @@ export class CarsController extends BaseResolver {
       cancellable: true
     });
 
-    let user = await this.usersService.findOne({ phone });
+    // let user = await this.usersService.findOne({ phone });
 
-    if (!user) {
-      user = await this.usersService.create({ phone });
-    }
+    // if (!user) {
+    //   user = await this.usersService.create({ phone });
+    // }
 
     // await this.usersService.findOneAndUpdate(
     //   { phone: user.phone },
@@ -224,7 +229,7 @@ export class CarsController extends BaseResolver {
 
   @ApiAuthorizedOnly()
   @Put('/rent/cancel')
-  @ApiOperation({ summary: 'отменить аренду' })
+  @ApiOperation({ summary: 'Отменить аренду' })
   @ApiResponse({
     status: 200,
     description: 'rent cancel',

@@ -11,6 +11,11 @@ export enum BodyType {
   HATCHBACK = 'hatchback'
 }
 
+export enum Steering {
+  LEFT = 'left',
+  RIGHT = 'right'
+}
+
 export enum Transmission {
   AUTOMATIC = 'automatic',
   MANUAL = 'manual'
