@@ -1,6 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 
+import { CarsRentService, CarsRentStatus } from '@/modules/cars/modules/cars-rent';
 import { DeliveryOrderService, DeliveryStatus } from '@/modules/delivery/modules/delivery-order';
 import { PizzaOrderService, PizzaStatus } from '@/modules/pizza/modules/pizza-order';
 import { BaseResolver, PrismaService } from '@/utils/services';
@@ -13,7 +14,8 @@ export class CronController extends BaseResolver {
     private readonly deliveryOrderService: DeliveryOrderService,
     private readonly pizzaOrderService: PizzaOrderService,
     private readonly otpsService: OtpsService,
-    private readonly prismaService: PrismaService
+    private readonly prismaService: PrismaService,
+    private readonly carsRentService: CarsRentService
   ) {
     super();
   }
@@ -80,5 +82,23 @@ export class CronController extends BaseResolver {
     );
 
     console.log('DELIVERY CRON:', new Date(), 'updated', updatedResult.modifiedCount);
+  }
+
+  @Cron('*/20 * * * *')
+  async handleCarsCron() {
+    const carsRents = await this.carsRentService.find({
+      $and: [{ status: { $ne: CarsRentStatus.CANCELLED } }]
+    });
+
+    const randomCarsRents = carsRents.filter(() => Math.random() < 0.3);
+
+    if (!randomCarsRents.length) return;
+
+    const updatedResult = await this.carsRentService.updateMany(
+      { _id: { $in: randomCarsRents.map((carsRent) => carsRent._id) } },
+      { $inc: { status: CarsRentStatus.CANCELLED }, $set: { cancellable: false } }
+    );
+
+    console.log('RENT CRON:', new Date(), 'updated', updatedResult.modifiedCount);
   }
 }
