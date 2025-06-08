@@ -28,7 +28,7 @@ import { UsersService } from '../users';
 import { CarsPaginatedResponse, CarsRentsResponse } from './cars.model';
 import { CARS } from './constants';
 import { BodyType, Brand, Color, Transmission } from './constants/enums';
-import { CancelCarsRentDto, CarFilters, GetCarDto } from './dto';
+import { CancelCarsRentDto, CarFilters, GetCarDto, GetCarsRentDto } from './dto';
 import { Car, CreateRent } from './entities';
 import { getFilteredCars } from './helpers';
 import { CarsRent, CarsRentService, CarsRentStatus } from './modules';
@@ -105,14 +105,11 @@ export class CarsController extends BaseResolver {
     description: 'Поиск'
   })
   getCars(@Query() getCarsQuery: CarFilters): CarsPaginatedResponse {
-    // Значения по умолчанию
-    const page = getCarsQuery.page || 1;
-    const limit = getCarsQuery.limit || 10;
+    const page = getCarsQuery.page ?? 1;
+    const limit = getCarsQuery.limit ?? 10;
 
-    // Фильтрация
     const filteredCars = getFilteredCars({ filters: getCarsQuery, cars: CARS });
 
-    // Пагинация
     const total = filteredCars.length;
     const totalPages = Math.ceil(total / limit);
     const startIndex = (page - 1) * limit;
@@ -128,34 +125,6 @@ export class CarsController extends BaseResolver {
         totalPages
       }
     });
-  }
-
-  @ApiAuthorizedOnly()
-  @Get('/rent')
-  @ApiOperation({ summary: 'Получить все аренды' })
-  @ApiResponse({
-    status: 200,
-    description: 'rents',
-    type: CarsRentsResponse
-  })
-  @ApiHeader({
-    name: 'authorization'
-  })
-  @ApiBearerAuth()
-  async getCarRents(@Req() request: Request): Promise<CarsRentsResponse> {
-    const token = request.headers.authorization.split(' ')[1];
-    const decodedJwtAccessToken = (await this.authService.decode(token)) as User;
-
-    if (!decodedJwtAccessToken) {
-      throw new BadRequestException(this.wrapFail('Некорректный токен авторизации'));
-    }
-
-    // Находит аренды для авторизованного юзера по номеру телефона
-    const carsRents = await this.carsRentService.find({
-      phone: decodedJwtAccessToken.phone
-    });
-
-    return this.wrapSuccess({ carsRents });
   }
 
   @Get(':id')
@@ -209,6 +178,63 @@ export class CarsController extends BaseResolver {
     // );
 
     return this.wrapSuccess({ carsRent });
+  }
+
+  @ApiAuthorizedOnly()
+  @Get('/rent')
+  @ApiOperation({ summary: 'Получить все аренды' })
+  @ApiResponse({
+    status: 200,
+    description: 'rents',
+    type: CarsRentsResponse
+  })
+  @ApiHeader({
+    name: 'authorization'
+  })
+  @ApiBearerAuth()
+  async getCarRents(@Req() request: Request): Promise<CarsRentsResponse> {
+    const token = request.headers.authorization.split(' ')[1];
+    const decodedJwtAccessToken = (await this.authService.decode(token)) as User;
+
+    if (!decodedJwtAccessToken) {
+      throw new BadRequestException(this.wrapFail('Некорректный токен авторизации'));
+    }
+
+    const carsRents = await this.carsRentService.find({
+      phone: decodedJwtAccessToken.phone
+    });
+
+    return this.wrapSuccess({ carsRents });
+  }
+
+  @ApiAuthorizedOnly()
+  @Get(':id')
+  @ApiOperation({ summary: 'Получить аренду' })
+  @ApiResponse({
+    status: 200,
+    description: 'rent',
+    type: CarsRent
+  })
+  @ApiHeader({
+    name: 'authorization'
+  })
+  @ApiBearerAuth()
+  async getCarRent(@Param() params: GetCarsRentDto, @Req() request: Request): Promise<CarsRent> {
+    const token = request.headers.authorization.split(' ')[1];
+    const decodedJwtAccessToken = (await this.authService.decode(token)) as User;
+
+    if (!decodedJwtAccessToken) {
+      throw new BadRequestException(this.wrapFail('Некорректный токен авторизации'));
+    }
+
+    const carsRent = await this.carsRentService.findOne({
+      _id: params.carsRentId
+    });
+    if (!carsRent) {
+      throw new BadRequestException(this.wrapFail('Аренда не найдена'));
+    }
+
+    return carsRent;
   }
 
   @ApiAuthorizedOnly()

@@ -17,17 +17,14 @@ export class CarsQuery extends BaseResolver {
 
   @Query(() => CarsPaginatedResponse)
   getCars(getCarsQuery: CarFilters): CarsPaginatedResponse {
-    // Значения по умолчанию
-    const page = getCarsQuery.page || 1;
-    const limit = getCarsQuery.limit || 10;
+    const page = getCarsQuery.page ?? 1;
+    const limit = getCarsQuery.limit ?? 10;
 
-    // Фильтрация
     const filteredCars = getFilteredCars({
       filters: getCarsQuery,
       cars: CARS
     });
 
-    // Пагинация
     const total = filteredCars.length;
     const totalPages = Math.ceil(total / limit);
     const startIndex = (page - 1) * limit;

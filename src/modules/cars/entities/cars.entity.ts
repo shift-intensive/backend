@@ -3,7 +3,6 @@ import { ApiProperty } from '@nestjs/swagger';
 
 import { BodyType, Brand, Color, Steering, Transmission } from '../constants/enums';
 
-// Регистрируем enum'ы для GraphQL
 registerEnumType(Brand, { name: 'Brand' });
 registerEnumType(Transmission, { name: 'Transmission' });
 registerEnumType(Color, { name: 'Color' });

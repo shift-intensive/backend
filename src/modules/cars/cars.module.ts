@@ -10,7 +10,6 @@ import { CarsRentModule } from './modules';
 
 @Module({
   controllers: [CarsController],
-
   imports: [AuthModule, UsersModule, CarsRentModule, ScheduleModule.forRoot()],
   providers: [CarsQuery],
   exports: []
