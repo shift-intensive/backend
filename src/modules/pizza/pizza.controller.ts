@@ -61,7 +61,6 @@ export class PizzaController extends BaseResolver {
         const toppingPrice = pizza.toppings.reduce((acc, topping) => acc + topping.price, 0);
         const doughPrice = pizza.doughs.find((dough) => dough.type === orderedPizza.dough).price;
         const sizePrice = pizza.sizes.find((size) => size.type === orderedPizza.size).price;
-
         const totalPrice = toppingPrice + doughPrice + sizePrice;
 
         acc.pizzas.push({ ...pizza, totalPrice });
