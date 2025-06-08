@@ -45,9 +45,20 @@ export class CreateRent {
   totalPrice: number;
 
   @Field(() => String)
-  @ApiProperty({ example: 'Иван Иванов', description: 'ФИО арендатора' })
+  @ApiProperty({ example: 'Иван', description: 'Имя арендатора' })
   @IsString()
-  fullName: string;
+  firstName: string;
+
+  @Field(() => String)
+  @ApiProperty({ example: 'Иванов', description: 'Фамилия арендатора' })
+  @IsString()
+  lastName: string;
+
+  @Field(() => String)
+  @ApiProperty({ example: 'Иванович', description: 'Отчество арендатора', required: false })
+  @IsString()
+  @IsOptional()
+  middleName?: string;
 
   @Field(() => String)
   @ApiProperty({ example: '1990-01-01', description: 'Дата рождения арендатора (ISO формат)' })

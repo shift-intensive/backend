@@ -44,7 +44,7 @@ export class CarsController extends BaseResolver {
     super();
   }
 
-  @Get('/')
+  @Get('/info')
   @ApiOperation({ summary: 'Получить все автомобили' })
   @ApiResponse({
     status: 200,
@@ -127,7 +127,7 @@ export class CarsController extends BaseResolver {
     });
   }
 
-  @Get(':id')
+  @Get('info/:carId')
   @ApiOperation({ summary: 'Получить автомобиль' })
   @ApiResponse({
     status: 200,
@@ -144,6 +144,7 @@ export class CarsController extends BaseResolver {
     return car;
   }
 
+  @ApiAuthorizedOnly()
   @Post('rent')
   @ApiOperation({ summary: 'Арендовать автомобиль' })
   @ApiResponse({
@@ -151,8 +152,19 @@ export class CarsController extends BaseResolver {
     description: 'create rent',
     type: CarsRent
   })
-  async createCarRent(@Body() createCarRentDto: CreateRent) /*: Promise<CarsRent>*/ {
-    // const { phone } = createCarRentDto;
+  @ApiHeader({
+    name: 'authorization'
+  })
+  @ApiBearerAuth()
+  async createCarRent(@Body() createCarRentDto: CreateRent, @Req() request: Request) {
+    const token = request.headers.authorization.split(' ')[1];
+    const decodedJwtAccessToken = (await this.authService.decode(token)) as User;
+
+    if (!decodedJwtAccessToken) {
+      throw new BadRequestException(this.wrapFail('Некорректный токен авторизации'));
+    }
+
+    const { phone } = createCarRentDto;
 
     const carsRent = await this.carsRentService.create({
       ...createCarRentDto,
@@ -160,22 +172,22 @@ export class CarsController extends BaseResolver {
       cancellable: true
     });
 
-    // let user = await this.usersService.findOne({ phone });
+    let user = await this.usersService.findOne({ phone });
 
-    // if (!user) {
-    //   user = await this.usersService.create({ phone });
-    // }
+    if (!user) {
+      user = await this.usersService.create({ phone });
+    }
 
-    // await this.usersService.findOneAndUpdate(
-    //   { phone: user.phone },
-    //   {
-    //     $set: {
-    //       firstname: sender.firstname,
-    //       lastname: sender.lastname,
-    //       middlename: sender.middlename
-    //     }
-    //   }
-    // );
+    await this.usersService.findOneAndUpdate(
+      { phone: user.phone },
+      {
+        $set: {
+          firstname: createCarRentDto.firstName,
+          lastname: createCarRentDto.lastName,
+          middlename: createCarRentDto.middleName
+        }
+      }
+    );
 
     return this.wrapSuccess({ carsRent });
   }
@@ -208,7 +220,7 @@ export class CarsController extends BaseResolver {
   }
 
   @ApiAuthorizedOnly()
-  @Get(':id')
+  @Get('/rent/:carsRentId')
   @ApiOperation({ summary: 'Получить аренду' })
   @ApiResponse({
     status: 200,
