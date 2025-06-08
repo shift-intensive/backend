@@ -86,17 +86,17 @@ export class CronController extends BaseResolver {
 
   @Cron('*/20 * * * *')
   async handleCarsCron() {
+    const dateNow = new Date();
+
     const carsRents = await this.carsRentService.find({
-      $and: [{ status: { $ne: CarsRentStatus.CANCELLED } }]
+      $and: [{ status: { $ne: CarsRentStatus.CANCELLED }, endDate: { $gt: dateNow.toISOString() } }]
     });
 
-    const randomCarsRents = carsRents.filter(() => Math.random() < 0.3);
-
-    if (!randomCarsRents.length) return;
+    if (!carsRents.length) return;
 
     const updatedResult = await this.carsRentService.updateMany(
-      { _id: { $in: randomCarsRents.map((carsRent) => carsRent._id) } },
-      { $inc: { status: CarsRentStatus.CANCELLED }, $set: { cancellable: false } }
+      { _id: { $in: carsRents.map((carsRent) => carsRent._id) } },
+      { $inc: { status: CarsRentStatus.CANCELLED } }
     );
 
     console.log('RENT CRON:', new Date(), 'updated', updatedResult.modifiedCount);

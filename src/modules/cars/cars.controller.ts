@@ -168,8 +168,7 @@ export class CarsController extends BaseResolver {
 
     const carsRent = await this.carsRentService.create({
       ...createCarRentDto,
-      status: CarsRentStatus.BOOKED,
-      cancellable: true
+      status: CarsRentStatus.BOOKED
     });
 
     let user = await this.usersService.findOne({ phone });
