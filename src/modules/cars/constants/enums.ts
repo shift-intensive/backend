@@ -1,3 +1,5 @@
+import { registerEnumType } from '@nestjs/graphql';
+
 export enum Brand {
   HAVAL = 'Haval',
   HYUNDAI = 'Hyundai',
@@ -32,3 +34,8 @@ export enum Color {
   BLUE = 'blue',
   GREY = 'grey'
 }
+
+registerEnumType(Brand, { name: 'Brand' });
+registerEnumType(Transmission, { name: 'Transmission' });
+registerEnumType(Color, { name: 'Color' });
+registerEnumType(BodyType, { name: 'BodyType' });

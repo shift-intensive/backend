@@ -1,9 +1,9 @@
 import { Transform } from 'class-transformer';
 import { IsArray, IsNumber, IsOptional, IsString } from 'class-validator';
 
-import { BodyType, Brand, Color } from '../constants/enums';
+import { BodyType, Brand, Color, Steering, Transmission } from '../constants/enums';
 
-export class CarFilters {
+export class GetCarsFilterDto {
   @IsOptional()
   @Transform(({ value }) =>
     Array.isArray(value) ? value?.map?.((value) => value.toLowerCase()) : [value.toLowerCase()]
@@ -29,8 +29,20 @@ export class CarFilters {
   color?: Color[];
 
   @IsOptional()
-  @IsString()
-  transmission?: string;
+  @Transform(({ value }) =>
+    Array.isArray(value) ? value?.map?.((value) => value.toLowerCase()) : [value.toLowerCase()]
+  )
+  @IsArray()
+  @IsString({ each: true })
+  steering?: Steering;
+
+  @IsOptional()
+  @Transform(({ value }) =>
+    Array.isArray(value) ? value?.map?.((value) => value.toLowerCase()) : [value.toLowerCase()]
+  )
+  @IsArray()
+  @IsString({ each: true })
+  transmission?: Transmission;
 
   @IsOptional()
   @Transform(({ value }) => Number.parseInt(value, 10))

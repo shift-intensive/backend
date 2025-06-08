@@ -1,22 +1,18 @@
 import { Query, Resolver } from '@nestjs/graphql';
 
 import { DescribeContext } from '@/utils/decorators';
-import { AuthService, BaseResolver } from '@/utils/services';
+import { BaseResolver } from '@/utils/services';
 
 import { CarsPaginatedResponse } from './cars.model';
 import { CARS } from './constants';
-import { CarFilters } from './dto/get-cars-filters.dto';
+import { GetCarsFilterDto } from './dto/get-cars-filters.dto';
 import { getFilteredCars } from './helpers';
 
 @Resolver('🏎️ cars query')
 @DescribeContext('CarsQuery')
 export class CarsQuery extends BaseResolver {
-  constructor(private readonly authService: AuthService) {
-    super();
-  }
-
   @Query(() => CarsPaginatedResponse)
-  getCars(getCarsQuery: CarFilters): CarsPaginatedResponse {
+  getCars(getCarsQuery: GetCarsFilterDto): CarsPaginatedResponse {
     const page = getCarsQuery.page ?? 1;
     const limit = getCarsQuery.limit ?? 10;
 

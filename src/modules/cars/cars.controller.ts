@@ -28,7 +28,7 @@ import { UsersService } from '../users';
 import { CarsPaginatedResponse, CarsRentsResponse } from './cars.model';
 import { CARS } from './constants';
 import { BodyType, Brand, Color, Transmission } from './constants/enums';
-import { CancelCarsRentDto, CarFilters, GetCarDto, GetCarsRentDto } from './dto';
+import { CancelCarsRentDto, GetCarDto, GetCarsFilterDto, GetCarsRentDto } from './dto';
 import { Car, CreateRent } from './entities';
 import { getFilteredCars } from './helpers';
 import { CarsRent, CarsRentService, CarsRentStatus } from './modules';
@@ -104,7 +104,7 @@ export class CarsController extends BaseResolver {
     type: String,
     description: 'Поиск'
   })
-  getCars(@Query() getCarsQuery: CarFilters): CarsPaginatedResponse {
+  getCars(@Query() getCarsQuery: GetCarsFilterDto): CarsPaginatedResponse {
     const page = getCarsQuery.page ?? 1;
     const limit = getCarsQuery.limit ?? 10;
 

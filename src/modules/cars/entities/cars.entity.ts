@@ -1,12 +1,7 @@
-import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { ApiProperty } from '@nestjs/swagger';
 
 import { BodyType, Brand, Color, Steering, Transmission } from '../constants/enums';
-
-registerEnumType(Brand, { name: 'Brand' });
-registerEnumType(Transmission, { name: 'Transmission' });
-registerEnumType(Color, { name: 'Color' });
-registerEnumType(BodyType, { name: 'BodyType' });
 
 @ObjectType('Car')
 export class Car {
