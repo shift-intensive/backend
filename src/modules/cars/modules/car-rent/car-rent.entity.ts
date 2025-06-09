@@ -46,15 +46,21 @@ export class CarRent {
   @ApiProperty({ example: 'Москва, ул. Тверская, 10', description: 'Место возврата автомобиля' })
   returnLocation: string;
 
-  @Field(() => String)
+  @Field(() => Number)
   @Prop({ required: true })
-  @ApiProperty({ example: '2025-06-01T10:00:00Z', description: 'Дата начала аренды (ISO)' })
-  startDate: string;
+  @ApiProperty({
+    example: 1717236000000,
+    description: 'Дата начала аренды (timestamp в миллисекундах)'
+  })
+  startDate: number;
 
-  @Field(() => String)
+  @Field(() => Number)
   @Prop({ required: true })
-  @ApiProperty({ example: '2025-06-10T18:00:00Z', description: 'Дата окончания аренды (ISO)' })
-  endDate: string;
+  @ApiProperty({
+    example: 1717610400000,
+    description: 'Дата окончания аренды (timestamp в миллисекундах)'
+  })
+  endDate: number;
 
   @Field(() => Number)
   @Prop({ required: true })

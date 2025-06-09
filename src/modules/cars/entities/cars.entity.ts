@@ -61,13 +61,6 @@ export class Car {
     description: 'Расположение руля'
   })
   steering: Steering;
-
-  @Field(() => Boolean)
-  @ApiProperty({
-    example: true,
-    description: 'Доступен ли автомобиль для аренды'
-  })
-  available: boolean;
 }
 
 @ObjectType('PaginationMeta')

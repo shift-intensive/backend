@@ -25,12 +25,12 @@ import { AuthService, BaseResolver, BaseResponse } from '@/utils/services';
 import type { User } from '../users';
 
 import { UsersService } from '../users';
-import { CarRentsResponse, CarsPaginatedResponse } from './cars.model';
+import { CarRentsResponse, CarResponse, CarsPaginatedResponse } from './cars.model';
 import { CarsService } from './cars.service';
 import { CARS } from './constants';
 import { BodyType, Brand, Color, Transmission } from './constants/enums';
 import { CancelCarRentDto, GetCarDto, GetCarRentDto, GetCarsFilterDto } from './dto';
-import { Car, CreateRent } from './entities';
+import { CreateRent } from './entities';
 import { CarRent, CarRentService, CarRentStatus } from './modules';
 
 @ApiTags('🏎️ cars')
@@ -116,21 +116,38 @@ export class CarsController extends BaseResolver {
     return this.wrapSuccess(paginatedCars);
   }
 
+  @ApiAuthorizedOnly()
   @Get('info/:carId')
   @ApiOperation({ summary: 'Получить автомобиль' })
   @ApiResponse({
     status: 200,
-    description: 'car',
-    type: Car
+    description: 'car with bookedDates',
+    type: CarResponse
   })
-  getCar(@Param() params: GetCarDto): Car {
+  @ApiHeader({
+    name: 'authorization'
+  })
+  @ApiBearerAuth()
+  async getCar(@Param() params: GetCarDto): Promise<any> {
     const car = CARS.find((car) => car.id === params.carId);
 
     if (!car) {
       throw new BadRequestException(this.wrapFail('Автомобиль не найден'));
     }
 
-    return car;
+    const carRents = await this.carRentService.find({
+      carId: params.carId,
+      status: CarRentStatus.BOOKED
+    });
+
+    const bookedDates = carRents.map((rent) => ({
+      startDate: new Date(rent.startDate).getTime(),
+      endDate: new Date(rent.endDate).getTime()
+    }));
+
+    return this.wrapSuccess({
+      data: { ...car, bookedDates }
+    });
   }
 
   @ApiAuthorizedOnly()
@@ -154,6 +171,62 @@ export class CarsController extends BaseResolver {
     }
 
     const { phone } = createCarRentDto;
+
+    const startDate = new Date(Number(createCarRentDto.startDate));
+    const endDate = new Date(Number(createCarRentDto.endDate));
+
+    if (Number.isNaN(startDate.getTime()) || Number.isNaN(endDate.getTime())) {
+      throw new BadRequestException(
+        this.wrapFail('Даты должна быть переданы в формате timestamp (миллисекунды)')
+      );
+    }
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (startDate < today) {
+      throw new BadRequestException(
+        this.wrapFail('Дата начала аренды не может быть раньше сегодняшнего дня')
+      );
+    }
+
+    const rentalDurationMs = endDate.getTime() - startDate.getTime();
+    const oneDayMs = 24 * 60 * 60 * 1000;
+
+    // Проверка что аренда полными днями - не знаю насколько актуально,
+    // или же ниже проверка на кол-во дней покрывеат уже
+    if (rentalDurationMs % oneDayMs !== 0) {
+      throw new BadRequestException(this.wrapFail('Аренда может быть только полными днями'));
+    }
+
+    const rentalDays = rentalDurationMs / oneDayMs;
+
+    const car = CARS.find((car) => car.id === createCarRentDto.carId);
+
+    if (!car) {
+      throw new BadRequestException(this.wrapFail('Автомобиль не найден'));
+    }
+
+    if (rentalDays < car.minRentalDays) {
+      throw new BadRequestException(
+        this.wrapFail(
+          `Минимальное количество дней аренды для данного автомобиля — ${car.minRentalDays}`
+        )
+      );
+    }
+
+    const overlappingRents = await this.carRentService.find({
+      carId: createCarRentDto.carId,
+      status: CarRentStatus.BOOKED,
+      startDate: { $lte: endDate },
+      endDate: { $gte: startDate }
+    });
+
+    if (overlappingRents.length) {
+      throw new BadRequestException(
+        this.wrapFail('Выбранные даты пересекаются с уже существующей арендой')
+      );
+    }
 
     const carRent = await this.carRentService.create({
       ...createCarRentDto,

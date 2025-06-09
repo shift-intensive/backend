@@ -39,7 +39,6 @@ type CalculateDeliveryResponse {
 }
 
 type Car {
-  available: Boolean!
   bodyType: BodyType!
   brand: Brand!
   color: Color!
@@ -60,7 +59,7 @@ type CarsPaginatedResponse {
   success: Boolean!
 }
 
-type CarsRent {
+type CarRent {
   _id: String!
   birthDate: String!
   carId: String!
@@ -73,11 +72,11 @@ type CarsRent {
   pickupLocation: String!
   returnLocation: String!
   startDate: String!
-  status: CarsRentStatus!
+  status: CarRentStatus!
   totalPrice: Float!
 }
 
-input CarsRentInput {
+input CarRentInput {
   _id: String!
   birthDate: String!
   carId: String!
@@ -90,11 +89,11 @@ input CarsRentInput {
   pickupLocation: String!
   returnLocation: String!
   startDate: String!
-  status: CarsRentStatus!
+  status: CarRentStatus!
   totalPrice: Float!
 }
 
-enum CarsRentStatus {
+enum CarRentStatus {
   BOOKED
   CANCELLED
 }

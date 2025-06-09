@@ -13,8 +13,7 @@ export const CARS: Car[] = [
     minRentalDays: 3,
     color: Color.SILVER,
     bodyType: BodyType.SUV,
-    steering: Steering.LEFT,
-    available: true
+    steering: Steering.LEFT
   },
   {
     id: '2',
@@ -27,8 +26,7 @@ export const CARS: Car[] = [
     minRentalDays: 2,
     color: Color.WHITE,
     bodyType: BodyType.SEDAN,
-    steering: Steering.LEFT,
-    available: true
+    steering: Steering.LEFT
   },
   {
     id: '3',
@@ -41,8 +39,7 @@ export const CARS: Car[] = [
     minRentalDays: 2,
     color: Color.WHITE,
     bodyType: BodyType.SEDAN,
-    steering: Steering.LEFT,
-    available: true
+    steering: Steering.LEFT
   },
   {
     id: '4',
@@ -55,8 +52,7 @@ export const CARS: Car[] = [
     minRentalDays: 2,
     color: Color.WHITE,
     bodyType: BodyType.SEDAN,
-    steering: Steering.LEFT,
-    available: true
+    steering: Steering.LEFT
   },
   {
     id: '5',
@@ -69,8 +65,7 @@ export const CARS: Car[] = [
     minRentalDays: 2,
     color: Color.BLACK,
     bodyType: BodyType.SEDAN,
-    steering: Steering.LEFT,
-    available: true
+    steering: Steering.LEFT
   },
   {
     id: '6',
@@ -83,8 +78,7 @@ export const CARS: Car[] = [
     minRentalDays: 2,
     color: Color.RED,
     bodyType: BodyType.SEDAN,
-    steering: Steering.LEFT,
-    available: false
+    steering: Steering.LEFT
   },
   {
     id: '7',
@@ -97,8 +91,7 @@ export const CARS: Car[] = [
     minRentalDays: 2,
     color: Color.GREY,
     bodyType: BodyType.SUV,
-    steering: Steering.LEFT,
-    available: true
+    steering: Steering.LEFT
   },
   {
     id: '8',
@@ -111,8 +104,7 @@ export const CARS: Car[] = [
     minRentalDays: 2,
     color: Color.BLUE,
     bodyType: BodyType.SUV,
-    steering: Steering.LEFT,
-    available: false
+    steering: Steering.LEFT
   },
   {
     id: '9',
@@ -125,8 +117,7 @@ export const CARS: Car[] = [
     minRentalDays: 2,
     color: Color.WHITE,
     bodyType: BodyType.HATCHBACK,
-    steering: Steering.LEFT,
-    available: true
+    steering: Steering.LEFT
   },
   {
     id: '10',
@@ -139,8 +130,7 @@ export const CARS: Car[] = [
     minRentalDays: 1,
     color: Color.BLACK,
     bodyType: BodyType.SEDAN,
-    steering: Steering.LEFT,
-    available: true
+    steering: Steering.LEFT
   },
   {
     id: '11',
@@ -153,8 +143,7 @@ export const CARS: Car[] = [
     minRentalDays: 3,
     color: Color.SILVER,
     bodyType: BodyType.SEDAN,
-    steering: Steering.LEFT,
-    available: true
+    steering: Steering.LEFT
   },
   {
     id: '12',
@@ -167,7 +156,6 @@ export const CARS: Car[] = [
     minRentalDays: 5,
     color: Color.BLACK,
     bodyType: BodyType.SEDAN,
-    steering: Steering.LEFT,
-    available: false
+    steering: Steering.LEFT
   }
 ];

@@ -26,18 +26,21 @@ export class CreateRent {
   @IsString()
   returnLocation: string;
 
-  @Field(() => String)
-  @ApiProperty({ example: '2025-06-01T10:00:00Z', description: 'Дата начала аренды (ISO формат)' })
-  @IsDateString()
-  startDate: string;
-
-  @Field(() => String)
+  @Field(() => Number)
   @ApiProperty({
-    example: '2025-06-05T18:00:00Z',
-    description: 'Дата окончания аренды (ISO формат)'
+    example: 1717236000000,
+    description: 'Дата начала аренды (timestamp в миллисекундах)'
   })
-  @IsDateString()
-  endDate: string;
+  @IsNumber()
+  startDate: number;
+
+  @Field(() => Number)
+  @ApiProperty({
+    example: 1717610400000,
+    description: 'Дата окончания аренды (timestamp в миллисекундах)'
+  })
+  @IsNumber()
+  endDate: number;
 
   @Field(() => Number)
   @ApiProperty({ example: 15000, description: 'Итоговая стоимость аренды' })
