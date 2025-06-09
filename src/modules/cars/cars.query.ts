@@ -1,33 +1,111 @@
-import { Resolver } from '@nestjs/graphql';
+import { BadRequestException } from '@nestjs/common';
+import { Args, Context, Query, Resolver } from '@nestjs/graphql';
+import { Request } from 'express';
 
-import { DescribeContext } from '@/utils/decorators';
-import { BaseResolver } from '@/utils/services';
+import { GqlAuthorizedOnly } from '@/utils/guards';
+import { AuthService, BaseResolver } from '@/utils/services';
 
+import type { User } from '../users';
+
+import { UsersService } from '../users';
+import { CarRentsResponse, CarResponse, CarsPaginatedResponse } from './cars.model';
+import { CarsService } from './cars.service';
+import { CARS } from './constants';
+import { GetCarDto, GetCarRentDto, GetCarsFilterDto } from './dto';
+import { CarRentService, CarRentStatus } from './modules';
 
 @Resolver('🏎️ cars query')
-@DescribeContext('CarsQuery')
 export class CarsQuery extends BaseResolver {
-  // @Query(() => CarsPaginatedResponse)
-  // getCars(getCarsQuery: GetCarsFilterDto): CarsPaginatedResponse {
-  //   const page = getCarsQuery.page ?? 1;
-  //   const limit = getCarsQuery.limit ?? 10;
-  //   const filteredCars = getFilteredCars({
-  //     filters: getCarsQuery,
-  //     cars: CARS
-  //   });
-  //   const total = filteredCars.length;
-  //   const totalPages = Math.ceil(total / limit);
-  //   const startIndex = (page - 1) * limit;
-  //   const endIndex = Math.min(startIndex + limit, total);
-  //   const paginatedCars = filteredCars.slice(startIndex, endIndex);
-  //   return this.wrapSuccess({
-  //     data: paginatedCars,
-  //     meta: {
-  //       total,
-  //       page,
-  //       limit,
-  //       totalPages
-  //     }
-  //   });
-  // }
+  constructor(
+    private readonly authService: AuthService,
+    private readonly usersService: UsersService,
+    private readonly carRentService: CarRentService,
+    private readonly carsService: CarsService
+  ) {
+    super();
+  }
+
+  @Query(() => CarsPaginatedResponse)
+  getCars(@Args() getCarsQuery: GetCarsFilterDto): CarsPaginatedResponse {
+    const filteredCars = this.carsService.getFilteredCars({ filters: getCarsQuery });
+    const paginatedCars = this.carsService.getPagination({
+      items: filteredCars,
+      page: getCarsQuery.page,
+      limit: getCarsQuery.limit
+    });
+
+    return this.wrapSuccess(paginatedCars);
+  }
+
+  @GqlAuthorizedOnly()
+  @Query(() => CarResponse)
+  async getCar(
+    @Args() getCarDto: GetCarDto,
+    @Context() context: { req: Request }
+  ): Promise<CarResponse> {
+    const token = context.req.headers.authorization.split(' ')[1];
+    const decodedJwtAccessToken = (await this.authService.decode(token)) as User;
+
+    if (!decodedJwtAccessToken) {
+      throw new BadRequestException(this.wrapFail('Некорректный токен авторизации'));
+    }
+
+    const car = CARS.find((car) => car.id === getCarDto.carId);
+
+    if (!car) {
+      throw new BadRequestException(this.wrapFail('Автомобиль не найден'));
+    }
+
+    const carRents = await this.carRentService.find({
+      carId: getCarDto.carId,
+      status: CarRentStatus.BOOKED
+    });
+
+    const bookedDates = carRents.map((rent) => ({
+      startDate: new Date(rent.startDate).getTime(),
+      endDate: new Date(rent.endDate).getTime()
+    }));
+
+    return this.wrapSuccess({
+      data: { ...car, bookedDates }
+    });
+  }
+
+  @GqlAuthorizedOnly()
+  @Query(() => CarRentsResponse)
+  async getCarRents(@Context() context: { req: Request }): Promise<CarRentsResponse> {
+    const token = context.req.headers.authorization.split(' ')[1];
+    const decodedJwtAccessToken = (await this.authService.decode(token)) as User;
+
+    if (!decodedJwtAccessToken) {
+      throw new BadRequestException(this.wrapFail('Некорректный токен авторизации'));
+    }
+
+    const carRents = await this.carRentService.find({
+      phone: decodedJwtAccessToken.phone
+    });
+
+    return this.wrapSuccess({ carRents });
+  }
+
+  @GqlAuthorizedOnly()
+  @Query(() => CarResponse)
+  async getCarRent(@Args() getCarRentDto: GetCarRentDto, @Context() context: { req: Request }) {
+    const token = context.req.headers.authorization.split(' ')[1];
+    const decodedJwtAccessToken = (await this.authService.decode(token)) as User;
+
+    if (!decodedJwtAccessToken) {
+      throw new BadRequestException(this.wrapFail('Некорректный токен авторизации'));
+    }
+
+    const carRent = await this.carRentService.findOne({
+      _id: getCarRentDto.carRentId
+    });
+
+    if (!carRent) {
+      throw new BadRequestException(this.wrapFail('Аренда не найдена'));
+    }
+
+    return this.wrapSuccess({ carRent });
+  }
 }

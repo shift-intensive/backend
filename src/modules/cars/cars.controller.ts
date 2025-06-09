@@ -29,8 +29,7 @@ import { CarRentsResponse, CarResponse, CarsPaginatedResponse } from './cars.mod
 import { CarsService } from './cars.service';
 import { CARS } from './constants';
 import { BodyType, Brand, Color, Transmission } from './constants/enums';
-import { CancelCarRentDto, GetCarDto, GetCarRentDto, GetCarsFilterDto } from './dto';
-import { CreateRent } from './entities';
+import { CancelCarRentDto, CreateRentDto, GetCarDto, GetCarRentDto, GetCarsFilterDto } from './dto';
 import { CarRent, CarRentService, CarRentStatus } from './modules';
 
 @ApiTags('🏎️ cars')
@@ -128,7 +127,14 @@ export class CarsController extends BaseResolver {
     name: 'authorization'
   })
   @ApiBearerAuth()
-  async getCar(@Param() params: GetCarDto): Promise<any> {
+  async getCar(@Param() params: GetCarDto, @Req() request: Request): Promise<CarResponse> {
+    const token = request.headers.authorization.split(' ')[1];
+    const decodedJwtAccessToken = (await this.authService.decode(token)) as User;
+
+    if (!decodedJwtAccessToken) {
+      throw new BadRequestException(this.wrapFail('Некорректный токен авторизации'));
+    }
+
     const car = CARS.find((car) => car.id === params.carId);
 
     if (!car) {
@@ -162,7 +168,7 @@ export class CarsController extends BaseResolver {
     name: 'authorization'
   })
   @ApiBearerAuth()
-  async createCarRent(@Body() createCarRentDto: CreateRent, @Req() request: Request) {
+  async createCarRent(@Body() createCarRentDto: CreateRentDto, @Req() request: Request) {
     const token = request.headers.authorization.split(' ')[1];
     const decodedJwtAccessToken = (await this.authService.decode(token)) as User;
 

@@ -39,3 +39,4 @@ registerEnumType(Brand, { name: 'Brand' });
 registerEnumType(Transmission, { name: 'Transmission' });
 registerEnumType(Color, { name: 'Color' });
 registerEnumType(BodyType, { name: 'BodyType' });
+registerEnumType(Steering, { name: 'Steering' });

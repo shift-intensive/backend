@@ -1,4 +1,4 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { ArgsType, Field, InputType } from '@nestjs/graphql';
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsDateString,
@@ -9,8 +9,9 @@ import {
   IsString
 } from 'class-validator';
 
-@InputType()
-export class CreateRent {
+@InputType() //??
+@ArgsType()
+export class CreateRentDto {
   @Field(() => String)
   @ApiProperty({ example: 'car123', description: 'Идентификатор автомобиля' })
   @IsString()
