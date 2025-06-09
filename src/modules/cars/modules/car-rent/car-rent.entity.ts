@@ -5,15 +5,15 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Schema as MongooseSchema } from 'mongoose';
 
-export enum CarsRentStatus {
+export enum CarRentStatus {
   BOOKED,
   CANCELLED
 }
-registerEnumType(CarsRentStatus, {
-  name: 'CarsRentStatus'
+registerEnumType(CarRentStatus, {
+  name: 'CarRentStatus'
 });
 
-@InputType('CarsRentInput')
+@InputType('CarRentInput')
 @ObjectType()
 @Schema({
   collection: 'cars/rent',
@@ -22,7 +22,7 @@ registerEnumType(CarsRentStatus, {
   timestamps: { createdAt: 'created', updatedAt: 'updated' }
 })
 @ObjectType()
-export class CarsRent {
+export class CarRent {
   @Field(() => String)
   _id: MongooseSchema.Types.ObjectId;
 
@@ -31,10 +31,10 @@ export class CarsRent {
   @ApiProperty({ example: 'car123', description: 'Идентификатор автомобиля' })
   carId: string;
 
-  @Field(() => CarsRentStatus)
-  @Prop({ required: true, default: CarsRentStatus.BOOKED })
-  @ApiProperty({ example: '0', description: 'Статус брони', enum: CarsRentStatus })
-  status: CarsRentStatus;
+  @Field(() => CarRentStatus)
+  @Prop({ required: true, default: CarRentStatus.BOOKED })
+  @ApiProperty({ example: '0', description: 'Статус брони', enum: CarRentStatus })
+  status: CarRentStatus;
 
   @Field(() => String)
   @Prop({ required: true })
@@ -104,5 +104,5 @@ export class CarsRent {
   comment?: string;
 }
 
-export type CarsRentDocument = CarsRent & Document;
-export const CarsRentSchema = SchemaFactory.createForClass(CarsRent);
+export type CarRentDocument = CarRent & Document;
+export const CarRentSchema = SchemaFactory.createForClass(CarRent);

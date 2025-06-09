@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class GetCarsRentDto {
+export class GetCarRentDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty({ description: 'Идентификатор аренды' })
-  carsRentId: string;
+  carRentId: string;
 }

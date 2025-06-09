@@ -1,1 +1,1 @@
-export * from './cars-rent';
+export * from './car-rent';

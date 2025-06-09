@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 
-import { CarsRentService, CarsRentStatus } from '@/modules/cars/modules/cars-rent';
+import { CarRentService, CarRentStatus } from '@/modules/cars/modules/car-rent';
 import { DeliveryOrderService, DeliveryStatus } from '@/modules/delivery/modules/delivery-order';
 import { PizzaOrderService, PizzaStatus } from '@/modules/pizza/modules/pizza-order';
 import { BaseResolver, PrismaService } from '@/utils/services';
@@ -15,7 +15,7 @@ export class CronController extends BaseResolver {
     private readonly pizzaOrderService: PizzaOrderService,
     private readonly otpsService: OtpsService,
     private readonly prismaService: PrismaService,
-    private readonly carsRentService: CarsRentService
+    private readonly carRentService: CarRentService
   ) {
     super();
   }
@@ -88,15 +88,15 @@ export class CronController extends BaseResolver {
   async handleCarsCron() {
     const dateNow = new Date();
 
-    const carsRents = await this.carsRentService.find({
-      $and: [{ status: { $ne: CarsRentStatus.CANCELLED }, endDate: { $gt: dateNow.toISOString() } }]
+    const carRents = await this.carRentService.find({
+      $and: [{ status: { $ne: CarRentStatus.CANCELLED }, endDate: { $gt: dateNow.toISOString() } }]
     });
 
-    if (!carsRents.length) return;
+    if (!carRents.length) return;
 
-    const updatedResult = await this.carsRentService.updateMany(
-      { _id: { $in: carsRents.map((carsRent) => carsRent._id) } },
-      { $inc: { status: CarsRentStatus.CANCELLED } }
+    const updatedResult = await this.carRentService.updateMany(
+      { _id: { $in: carRents.map((carRent) => carRent._id) } },
+      { $inc: { status: CarRentStatus.CANCELLED } }
     );
 
     console.log('RENT CRON:', new Date(), 'updated', updatedResult.modifiedCount);

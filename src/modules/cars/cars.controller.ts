@@ -25,13 +25,13 @@ import { AuthService, BaseResolver, BaseResponse } from '@/utils/services';
 import type { User } from '../users';
 
 import { UsersService } from '../users';
-import { CarsPaginatedResponse, CarsRentsResponse } from './cars.model';
+import { CarRentsResponse, CarsPaginatedResponse } from './cars.model';
+import { CarsService } from './cars.service';
 import { CARS } from './constants';
 import { BodyType, Brand, Color, Transmission } from './constants/enums';
-import { CancelCarsRentDto, GetCarDto, GetCarsFilterDto, GetCarsRentDto } from './dto';
+import { CancelCarRentDto, GetCarDto, GetCarRentDto, GetCarsFilterDto } from './dto';
 import { Car, CreateRent } from './entities';
-import { getFilteredCars } from './helpers';
-import { CarsRent, CarsRentService, CarsRentStatus } from './modules';
+import { CarRent, CarRentService, CarRentStatus } from './modules';
 
 @ApiTags('🏎️ cars')
 @Controller('/cars')
@@ -39,7 +39,8 @@ export class CarsController extends BaseResolver {
   constructor(
     private readonly authService: AuthService,
     private readonly usersService: UsersService,
-    private readonly carsRentService: CarsRentService
+    private readonly carRentService: CarRentService,
+    private readonly carsService: CarsService
   ) {
     super();
   }
@@ -105,26 +106,14 @@ export class CarsController extends BaseResolver {
     description: 'Поиск'
   })
   getCars(@Query() getCarsQuery: GetCarsFilterDto): CarsPaginatedResponse {
-    const page = getCarsQuery.page ?? 1;
-    const limit = getCarsQuery.limit ?? 10;
-
-    const filteredCars = getFilteredCars({ filters: getCarsQuery, cars: CARS });
-
-    const total = filteredCars.length;
-    const totalPages = Math.ceil(total / limit);
-    const startIndex = (page - 1) * limit;
-    const endIndex = Math.min(startIndex + limit, total);
-    const paginatedCars = filteredCars.slice(startIndex, endIndex);
-
-    return this.wrapSuccess({
-      data: paginatedCars,
-      meta: {
-        total,
-        page,
-        limit,
-        totalPages
-      }
+    const filteredCars = this.carsService.getFilteredCars({ filters: getCarsQuery });
+    const paginatedCars = this.carsService.getPagination({
+      items: filteredCars,
+      page: getCarsQuery.page,
+      limit: getCarsQuery.limit
     });
+
+    return this.wrapSuccess(paginatedCars);
   }
 
   @Get('info/:carId')
@@ -150,7 +139,7 @@ export class CarsController extends BaseResolver {
   @ApiResponse({
     status: 200,
     description: 'create rent',
-    type: CarsRent
+    type: CarRent
   })
   @ApiHeader({
     name: 'authorization'
@@ -166,9 +155,9 @@ export class CarsController extends BaseResolver {
 
     const { phone } = createCarRentDto;
 
-    const carsRent = await this.carsRentService.create({
+    const carRent = await this.carRentService.create({
       ...createCarRentDto,
-      status: CarsRentStatus.BOOKED
+      status: CarRentStatus.BOOKED
     });
 
     let user = await this.usersService.findOne({ phone });
@@ -188,7 +177,7 @@ export class CarsController extends BaseResolver {
       }
     );
 
-    return this.wrapSuccess({ carsRent });
+    return this.wrapSuccess({ carRent });
   }
 
   @ApiAuthorizedOnly()
@@ -197,13 +186,13 @@ export class CarsController extends BaseResolver {
   @ApiResponse({
     status: 200,
     description: 'rents',
-    type: CarsRentsResponse
+    type: CarRentsResponse
   })
   @ApiHeader({
     name: 'authorization'
   })
   @ApiBearerAuth()
-  async getCarRents(@Req() request: Request): Promise<CarsRentsResponse> {
+  async getCarRents(@Req() request: Request): Promise<CarRentsResponse> {
     const token = request.headers.authorization.split(' ')[1];
     const decodedJwtAccessToken = (await this.authService.decode(token)) as User;
 
@@ -211,26 +200,26 @@ export class CarsController extends BaseResolver {
       throw new BadRequestException(this.wrapFail('Некорректный токен авторизации'));
     }
 
-    const carsRents = await this.carsRentService.find({
+    const carRents = await this.carRentService.find({
       phone: decodedJwtAccessToken.phone
     });
 
-    return this.wrapSuccess({ carsRents });
+    return this.wrapSuccess({ carRents });
   }
 
   @ApiAuthorizedOnly()
-  @Get('/rent/:carsRentId')
+  @Get('/rent/:carRentId')
   @ApiOperation({ summary: 'Получить аренду' })
   @ApiResponse({
     status: 200,
     description: 'rent',
-    type: CarsRent
+    type: CarRent
   })
   @ApiHeader({
     name: 'authorization'
   })
   @ApiBearerAuth()
-  async getCarRent(@Param() params: GetCarsRentDto, @Req() request: Request): Promise<CarsRent> {
+  async getCarRent(@Param() params: GetCarRentDto, @Req() request: Request): Promise<CarRent> {
     const token = request.headers.authorization.split(' ')[1];
     const decodedJwtAccessToken = (await this.authService.decode(token)) as User;
 
@@ -238,14 +227,14 @@ export class CarsController extends BaseResolver {
       throw new BadRequestException(this.wrapFail('Некорректный токен авторизации'));
     }
 
-    const carsRent = await this.carsRentService.findOne({
-      _id: params.carsRentId
+    const carRent = await this.carRentService.findOne({
+      _id: params.carRentId
     });
-    if (!carsRent) {
+    if (!carRent) {
       throw new BadRequestException(this.wrapFail('Аренда не найдена'));
     }
 
-    return carsRent;
+    return carRent;
   }
 
   @ApiAuthorizedOnly()
@@ -260,18 +249,18 @@ export class CarsController extends BaseResolver {
     name: 'authorization'
   })
   @ApiBearerAuth()
-  async cancelCarsRent(@Body() cancelCarsRentDto: CancelCarsRentDto): Promise<BaseResponse> {
-    const order = await this.carsRentService.findOne({
-      _id: cancelCarsRentDto.carsRentId
+  async cancelCarRent(@Body() cancelCarRentDto: CancelCarRentDto): Promise<BaseResponse> {
+    const order = await this.carRentService.findOne({
+      _id: cancelCarRentDto.carRentId
     });
 
     if (!order) {
       throw new BadRequestException(this.wrapFail('Аренда не найдена'));
     }
 
-    await this.carsRentService.updateOne(
-      { _id: cancelCarsRentDto.carsRentId },
-      { $set: { status: CarsRentStatus.CANCELLED } }
+    await this.carRentService.updateOne(
+      { _id: cancelCarRentDto.carRentId },
+      { $set: { status: CarRentStatus.CANCELLED } }
     );
 
     return this.wrapSuccess();
