@@ -32,28 +32,35 @@ export class BookedDateRange {
 }
 
 @ObjectType()
-export class CarWithBookedDates extends Car {
+export class CarWithRents extends Car {
   @Field(() => [BookedDateRange])
   @ApiProperty({
     description: 'Занятые промежутки дат (timestamp)',
     type: [BookedDateRange]
   })
-  bookedDates: BookedDateRange[];
+  rents: BookedDateRange[];
 }
 
 @ObjectType()
 export class CarResponse extends BaseResponse {
-  @Field(() => CarWithBookedDates)
+  @Field(() => CarWithRents)
   @ApiProperty({
     description: 'Данные автомобиля с арендованными датами',
-    type: CarWithBookedDates
+    type: CarWithRents
   })
-  data: CarWithBookedDates;
+  data: CarWithRents;
+}
+
+@ObjectType()
+export class CarRentResponse extends BaseResponse {
+  @Field(() => CarRent)
+  @ApiProperty({ description: 'Аренда', type: CarRent })
+  rent: CarRent;
 }
 
 @ObjectType()
 export class CarRentsResponse extends BaseResponse {
   @Field(() => [CarRent])
   @ApiProperty({ description: 'Аренды', type: [CarRent] })
-  carRents: CarRent[];
+  rents: CarRent[];
 }

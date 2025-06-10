@@ -61,13 +61,13 @@ export class CarsQuery extends BaseResolver {
       status: CarRentStatus.BOOKED
     });
 
-    const bookedDates = carRents.map((rent) => ({
+    const rents = carRents.map((rent) => ({
       startDate: new Date(rent.startDate).getTime(),
       endDate: new Date(rent.endDate).getTime()
     }));
 
     return this.wrapSuccess({
-      data: { ...car, bookedDates }
+      data: { ...car, rents }
     });
   }
 
@@ -81,11 +81,11 @@ export class CarsQuery extends BaseResolver {
       throw new BadRequestException(this.wrapFail('Некорректный токен авторизации'));
     }
 
-    const carRents = await this.carRentService.find({
+    const rents = await this.carRentService.find({
       phone: decodedJwtAccessToken.phone
     });
 
-    return this.wrapSuccess({ carRents });
+    return this.wrapSuccess({ rents });
   }
 
   @GqlAuthorizedOnly()
@@ -98,14 +98,14 @@ export class CarsQuery extends BaseResolver {
       throw new BadRequestException(this.wrapFail('Некорректный токен авторизации'));
     }
 
-    const carRent = await this.carRentService.findOne({
+    const rent = await this.carRentService.findOne({
       _id: getCarRentDto.carRentId
     });
 
-    if (!carRent) {
+    if (!rent) {
       throw new BadRequestException(this.wrapFail('Аренда не найдена'));
     }
 
-    return this.wrapSuccess({ carRent });
+    return this.wrapSuccess({ rent });
   }
 }

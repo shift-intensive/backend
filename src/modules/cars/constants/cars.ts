@@ -10,7 +10,6 @@ export const CARS: Car[] = [
     transmission: Transmission.AUTOMATIC,
     price: 4200,
     location: 'Москва, ул. Садовая, 5',
-    minRentalDays: 3,
     color: Color.SILVER,
     bodyType: BodyType.SUV,
     steering: Steering.LEFT
@@ -23,7 +22,6 @@ export const CARS: Car[] = [
     transmission: Transmission.AUTOMATIC,
     price: 3900,
     location: 'Санкт-Петербург, Невский проспект, 22',
-    minRentalDays: 2,
     color: Color.WHITE,
     bodyType: BodyType.SEDAN,
     steering: Steering.LEFT
@@ -36,7 +34,6 @@ export const CARS: Car[] = [
     transmission: Transmission.AUTOMATIC,
     price: 3100,
     location: 'Новосибирск, ул. Ленина, 5',
-    minRentalDays: 2,
     color: Color.WHITE,
     bodyType: BodyType.SEDAN,
     steering: Steering.LEFT
@@ -49,7 +46,6 @@ export const CARS: Car[] = [
     transmission: Transmission.AUTOMATIC,
     price: 3100,
     location: 'Новосибирск, ул. Ленина, 5',
-    minRentalDays: 2,
     color: Color.WHITE,
     bodyType: BodyType.SEDAN,
     steering: Steering.LEFT
@@ -62,7 +58,6 @@ export const CARS: Car[] = [
     transmission: Transmission.MANUAL,
     price: 3200,
     location: 'Екатеринбург, ул. Мира, 45',
-    minRentalDays: 2,
     color: Color.BLACK,
     bodyType: BodyType.SEDAN,
     steering: Steering.LEFT
@@ -75,7 +70,6 @@ export const CARS: Car[] = [
     transmission: Transmission.AUTOMATIC,
     price: 2500,
     location: 'Екатеринбург, ул. Мира, 45',
-    minRentalDays: 2,
     color: Color.RED,
     bodyType: BodyType.SEDAN,
     steering: Steering.LEFT
@@ -88,7 +82,6 @@ export const CARS: Car[] = [
     transmission: Transmission.MANUAL,
     price: 3500,
     location: 'Екатеринбург, ул. Малышева, 15',
-    minRentalDays: 2,
     color: Color.GREY,
     bodyType: BodyType.SUV,
     steering: Steering.LEFT
@@ -101,7 +94,6 @@ export const CARS: Car[] = [
     transmission: Transmission.AUTOMATIC,
     price: 4500,
     location: 'Новосибирск, ул. Ленина, 5',
-    minRentalDays: 2,
     color: Color.BLUE,
     bodyType: BodyType.SUV,
     steering: Steering.LEFT
@@ -114,7 +106,6 @@ export const CARS: Car[] = [
     transmission: Transmission.AUTOMATIC,
     price: 5000,
     location: 'Новосибирск, ул. Ленина, 5',
-    minRentalDays: 2,
     color: Color.WHITE,
     bodyType: BodyType.HATCHBACK,
     steering: Steering.LEFT
@@ -127,7 +118,6 @@ export const CARS: Car[] = [
     transmission: Transmission.MANUAL,
     price: 4200,
     location: 'Екатеринбург, ул. Малышева, 15',
-    minRentalDays: 1,
     color: Color.BLACK,
     bodyType: BodyType.SEDAN,
     steering: Steering.LEFT
@@ -140,7 +130,6 @@ export const CARS: Car[] = [
     transmission: Transmission.AUTOMATIC,
     price: 4000,
     location: 'Екатеринбург, ул. Мира, 45',
-    minRentalDays: 3,
     color: Color.SILVER,
     bodyType: BodyType.SEDAN,
     steering: Steering.LEFT
@@ -153,7 +142,6 @@ export const CARS: Car[] = [
     transmission: Transmission.MANUAL,
     price: 3100,
     location: 'Новосибирск, ул. Ленина, 5',
-    minRentalDays: 5,
     color: Color.BLACK,
     bodyType: BodyType.SEDAN,
     steering: Steering.LEFT

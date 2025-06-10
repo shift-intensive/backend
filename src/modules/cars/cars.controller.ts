@@ -25,7 +25,12 @@ import { AuthService, BaseResolver, BaseResponse } from '@/utils/services';
 import type { User } from '../users';
 
 import { UsersService } from '../users';
-import { CarRentsResponse, CarResponse, CarsPaginatedResponse } from './cars.model';
+import {
+  CarRentResponse,
+  CarRentsResponse,
+  CarResponse,
+  CarsPaginatedResponse
+} from './cars.model';
 import { CarsService } from './cars.service';
 import { CARS } from './constants';
 import { BodyType, Brand, Color, Transmission } from './constants/enums';
@@ -120,7 +125,7 @@ export class CarsController extends BaseResolver {
   @ApiOperation({ summary: 'Получить автомобиль' })
   @ApiResponse({
     status: 200,
-    description: 'car with bookedDates',
+    description: 'car with rents',
     type: CarResponse
   })
   @ApiHeader({
@@ -146,13 +151,13 @@ export class CarsController extends BaseResolver {
       status: CarRentStatus.BOOKED
     });
 
-    const bookedDates = carRents.map((rent) => ({
+    const rents = carRents.map((rent) => ({
       startDate: new Date(rent.startDate).getTime(),
       endDate: new Date(rent.endDate).getTime()
     }));
 
     return this.wrapSuccess({
-      data: { ...car, bookedDates }
+      data: { ...car, rents }
     });
   }
 
@@ -162,7 +167,7 @@ export class CarsController extends BaseResolver {
   @ApiResponse({
     status: 200,
     description: 'create rent',
-    type: CarRent
+    type: CarRentResponse
   })
   @ApiHeader({
     name: 'authorization'
@@ -187,10 +192,9 @@ export class CarsController extends BaseResolver {
       );
     }
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const today = new Date().setHours(0, 0, 0, 0);
 
-    if (startDate < today) {
+    if (startDate.getTime() < today) {
       throw new BadRequestException(
         this.wrapFail('Дата начала аренды не может быть раньше сегодняшнего дня')
       );
@@ -205,20 +209,10 @@ export class CarsController extends BaseResolver {
       throw new BadRequestException(this.wrapFail('Аренда может быть только полными днями'));
     }
 
-    const rentalDays = rentalDurationMs / oneDayMs;
-
     const car = CARS.find((car) => car.id === createCarRentDto.carId);
 
     if (!car) {
       throw new BadRequestException(this.wrapFail('Автомобиль не найден'));
-    }
-
-    if (rentalDays < car.minRentalDays) {
-      throw new BadRequestException(
-        this.wrapFail(
-          `Минимальное количество дней аренды для данного автомобиля — ${car.minRentalDays}`
-        )
-      );
     }
 
     const overlappingRents = await this.carRentService.find({
@@ -234,7 +228,7 @@ export class CarsController extends BaseResolver {
       );
     }
 
-    const carRent = await this.carRentService.create({
+    const rent = await this.carRentService.create({
       ...createCarRentDto,
       status: CarRentStatus.BOOKED
     });
@@ -256,7 +250,7 @@ export class CarsController extends BaseResolver {
       }
     );
 
-    return this.wrapSuccess({ carRent });
+    return this.wrapSuccess({ rent });
   }
 
   @ApiAuthorizedOnly()
@@ -279,11 +273,11 @@ export class CarsController extends BaseResolver {
       throw new BadRequestException(this.wrapFail('Некорректный токен авторизации'));
     }
 
-    const carRents = await this.carRentService.find({
+    const rents = await this.carRentService.find({
       phone: decodedJwtAccessToken.phone
     });
 
-    return this.wrapSuccess({ carRents });
+    return this.wrapSuccess({ rents });
   }
 
   @ApiAuthorizedOnly()
@@ -306,14 +300,14 @@ export class CarsController extends BaseResolver {
       throw new BadRequestException(this.wrapFail('Некорректный токен авторизации'));
     }
 
-    const carRent = await this.carRentService.findOne({
+    const rent = await this.carRentService.findOne({
       _id: params.carRentId
     });
-    if (!carRent) {
+    if (!rent) {
       throw new BadRequestException(this.wrapFail('Аренда не найдена'));
     }
 
-    return carRent;
+    return rent;
   }
 
   @ApiAuthorizedOnly()

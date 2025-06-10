@@ -39,14 +39,6 @@ export class Car {
   @ApiProperty({ example: 'Москва, ул. Пушкина 10', description: 'Местоположение' })
   location: string;
 
-  @Field(() => Number, { nullable: true })
-  @ApiProperty({
-    example: 2,
-    description: 'Минимальное количество дней аренды',
-    required: false
-  })
-  minRentalDays?: number;
-
   @Field(() => Color)
   @ApiProperty({ enum: Color, description: 'Цвет автомобиля' })
   color: Color;

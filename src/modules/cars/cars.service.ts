@@ -8,8 +8,8 @@ interface GetFilteredCarsParams {
   filters: GetCarsFilterDto;
 }
 
-interface GetPaginationParams<T> {
-  items: T[];
+interface GetPaginationParams<Car> {
+  items: Car[];
   limit?: number;
   page?: number;
 }
@@ -21,8 +21,8 @@ interface PaginationMeta {
   totalPages: number;
 }
 
-interface PaginationResult<T> {
-  data: T[];
+interface PaginationResult<Car> {
+  data: Car[];
   meta: PaginationMeta;
 }
 
@@ -86,7 +86,11 @@ export class CarsService {
     return filteredCars;
   }
 
-  getPagination<T>({ items, page = 1, limit = 10 }: GetPaginationParams<T>): PaginationResult<T> {
+  getPagination<Car>({
+    items,
+    page = 1,
+    limit = 10
+  }: GetPaginationParams<Car>): PaginationResult<Car> {
     const total = items.length;
     const totalPages = Math.ceil(total / limit);
     const startIndex = (page - 1) * limit;
@@ -103,18 +107,4 @@ export class CarsService {
       }
     };
   }
-  // getFilteredCars;
-  // и;
-  // getPagination;
-  // getFilm(id: string) {
-  //   const films = this.getFilms();
-  //   return films.find((film) => film.id === id);
-  // }
-  // getFilmSchedule(filmId: string) {
-  //   const currentDay = new Date().getDay();
-  //   const schedules = this.getSchedules();
-  //   const { schedule } = schedules.find((scheduleDataItem) => scheduleDataItem.filmId === filmId);
-  //   if (currentDay === 0) return schedule;
-  //   return schedule.slice(currentDay, schedule.length).concat(schedule.slice(0, currentDay));
-  // }
 }

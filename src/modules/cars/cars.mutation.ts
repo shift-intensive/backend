@@ -8,9 +8,10 @@ import { AuthService, BaseResolver, BaseResponse } from '@/utils/services';
 import type { User } from '../users';
 
 import { UsersService } from '../users';
+import { CarRentResponse } from './cars.model';
 import { CARS } from './constants';
 import { CancelCarRentDto, CreateRentDto } from './dto';
-import { CarRent, CarRentService, CarRentStatus } from './modules';
+import { CarRentService, CarRentStatus } from './modules';
 
 @Resolver('🏎️ cars mutation')
 export class CarsMutation extends BaseResolver {
@@ -23,11 +24,11 @@ export class CarsMutation extends BaseResolver {
   }
 
   @GqlAuthorizedOnly()
-  @Mutation(() => CarRent)
+  @Mutation(() => CarRentResponse)
   async createCarRent(
     @Args() createCarRentDto: CreateRentDto,
     @Context() context: { req: Request }
-  ): Promise<CarRent> {
+  ): Promise<CarRentResponse> {
     const token = context.req.headers.authorization.split(' ')[1];
     const decodedJwtAccessToken = (await this.authService.decode(token)) as User;
 
@@ -46,10 +47,9 @@ export class CarsMutation extends BaseResolver {
       );
     }
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const today = new Date().setHours(0, 0, 0, 0);
 
-    if (startDate < today) {
+    if (startDate.getTime() < today) {
       throw new BadRequestException(
         this.wrapFail('Дата начала аренды не может быть раньше сегодняшнего дня')
       );
@@ -62,20 +62,10 @@ export class CarsMutation extends BaseResolver {
       throw new BadRequestException(this.wrapFail('Аренда может быть только полными днями'));
     }
 
-    const rentalDays = rentalDurationMs / oneDayMs;
-
     const car = CARS.find((car) => car.id === createCarRentDto.carId);
 
     if (!car) {
       throw new BadRequestException(this.wrapFail('Автомобиль не найден'));
-    }
-
-    if (rentalDays < car.minRentalDays) {
-      throw new BadRequestException(
-        this.wrapFail(
-          `Минимальное количество дней аренды для данного автомобиля — ${car.minRentalDays}`
-        )
-      );
     }
 
     const overlappingRents = await this.carRentService.find({
@@ -91,7 +81,7 @@ export class CarsMutation extends BaseResolver {
       );
     }
 
-    const carRent = await this.carRentService.create({
+    const rent = await this.carRentService.create({
       ...createCarRentDto,
       status: CarRentStatus.BOOKED
     });
@@ -113,7 +103,7 @@ export class CarsMutation extends BaseResolver {
       }
     );
 
-    return carRent;
+    return this.wrapSuccess({ rent });
   }
 
   @GqlAuthorizedOnly()

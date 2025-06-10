@@ -1,4 +1,4 @@
-import { ArgsType, Field, InputType } from '@nestjs/graphql';
+import { ArgsType, Field } from '@nestjs/graphql';
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsDateString,
@@ -9,7 +9,6 @@ import {
   IsString
 } from 'class-validator';
 
-@InputType() //??
 @ArgsType()
 export class CreateRentDto {
   @Field(() => String)
