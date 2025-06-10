@@ -7,6 +7,19 @@ type BaseResponse {
   success: Boolean!
 }
 
+enum BodyType {
+  COUPE
+  HATCHBACK
+  SEDAN
+  SUV
+}
+
+enum Brand {
+  AUDI
+  BMW
+  MERCEDES
+}
+
 input CalculateDeliveryPackageDto {
   height: Float!
   length: Float!
@@ -23,6 +36,66 @@ type CalculateDeliveryResponse {
   options: [DeliveryOption!]!
   reason: String
   success: Boolean!
+}
+
+type Car {
+  bodyType: BodyType!
+  brand: Brand!
+  color: Color!
+  id: String!
+  img: String!
+  location: String!
+  minRentalDays: Float
+  name: String!
+  price: Float!
+  steering: String!
+  transmission: Transmission!
+}
+
+type CarsPaginatedResponse {
+  data: [Car!]!
+  meta: PaginationMeta!
+  reason: String
+  success: Boolean!
+}
+
+type CarRent {
+  _id: String!
+  birthDate: String!
+  carId: String!
+  comment: String
+  email: String!
+  endDate: String!
+  fullName: String!
+  name: String!
+  phone: String!
+  pickupLocation: String!
+  returnLocation: String!
+  startDate: String!
+  status: CarRentStatus!
+  totalPrice: Float!
+}
+
+input CarRentInput {
+  _id: String!
+  birthDate: String!
+  carId: String!
+  comment: String
+  email: String!
+  endDate: String!
+  fullName: String!
+  name: String!
+  phone: String!
+  pickupLocation: String!
+  returnLocation: String!
+  startDate: String!
+  status: CarRentStatus!
+  totalPrice: Float!
+}
+
+enum CarRentStatus {
+  BOOKED
+  CANCELLED
 }
 
 type CinemaOrder {
@@ -89,6 +162,14 @@ input CinemaTicketSeanceInput {
 enum CinemaTicketStatus {
   CANCELED
   PAYED
+}
+
+enum Color {
+  BLACK
+  BLUE
+  RED
+  SILVER
+  WHITE
 }
 
 type Country {
@@ -481,14 +562,39 @@ enum Ingredient {
 }
 
 type Mutation {
-  calculateDelivery(package: CalculateDeliveryPackageDto!, receiverPoint: CalculateDeliveryPointDto!, senderPoint: CalculateDeliveryPointDto!): CalculateDeliveryResponse!
+  calculateDelivery(
+    package: CalculateDeliveryPackageDto!
+    receiverPoint: CalculateDeliveryPointDto!
+    senderPoint: CalculateDeliveryPointDto!
+  ): CalculateDeliveryResponse!
   cancelCinemaOrder(orderId: String!): BaseResponse!
   cancelDeliveryOrder(orderId: String!): BaseResponse!
   cancelPizzaOrder(orderId: String!): BaseResponse!
-  createCinemaPayment(debitCard: CreatePaymentDebitCardDto!, filmId: String!, person: CreatePaymentPersonDto!, seance: CreatePaymentSeanceDto!, tickets: [CreatePaymentTicketsDto!]!): PaymentResponse!
-  createDeliveryOrder(optionType: DeliveryOptionType!, packageId: String!, payer: Payer!, receiver: CreateDeliveryOrderPersonDto!, receiverAddress: CreateDeliveryOrderReceiverAddressDto!, receiverPointId: String!, sender: CreateDeliveryOrderPersonDto!, senderAddress: CreateDeliveryOrderSenderAddressDto!, senderPointId: String!): DeliverResponse!
+  createCinemaPayment(
+    debitCard: CreatePaymentDebitCardDto!
+    filmId: String!
+    person: CreatePaymentPersonDto!
+    seance: CreatePaymentSeanceDto!
+    tickets: [CreatePaymentTicketsDto!]!
+  ): PaymentResponse!
+  createDeliveryOrder(
+    optionType: DeliveryOptionType!
+    packageId: String!
+    payer: Payer!
+    receiver: CreateDeliveryOrderPersonDto!
+    receiverAddress: CreateDeliveryOrderReceiverAddressDto!
+    receiverPointId: String!
+    sender: CreateDeliveryOrderPersonDto!
+    senderAddress: CreateDeliveryOrderSenderAddressDto!
+    senderPointId: String!
+  ): DeliverResponse!
   createOtp(phone: String!): OtpResponse!
-  createPizzaPayment(debitCard: CreatePizzaPaymentDebitCardDto!, person: CreatePizzaPaymentPersonDto!, pizzas: [OrderedPizzaInput!]!, receiverAddress: CreatePizzaPaymentAddressDto!): PizzaPaymentResponse!
+  createPizzaPayment(
+    debitCard: CreatePizzaPaymentDebitCardDto!
+    person: CreatePizzaPaymentPersonDto!
+    pizzas: [OrderedPizzaInput!]!
+    receiverAddress: CreatePizzaPaymentAddressDto!
+  ): PizzaPaymentResponse!
   signin(code: Float!, phone: String!): SignInResponse!
   updateProfile(phone: String!, profile: UpdateProfileProfileDto!): UpdateProfileResponse!
 }
@@ -520,6 +626,13 @@ type OtpResponse {
   reason: String
   retryDelay: Float!
   success: Boolean!
+}
+
+type PaginationMeta {
+  limit: Float!
+  page: Float!
+  total: Float!
+  totalPages: Float!
 }
 
 enum Payer {
@@ -693,6 +806,16 @@ enum Profession {
 }
 
 type Query {
+  getCars(
+    bodyType: BodyType
+    brand: Brand
+    limit: Int = 10
+    maxPrice: Int
+    minPrice: Int
+    page: Int = 1
+    search: String
+    transmission: Transmission
+  ): CarsPaginatedResponse!
   getCinemaOrders(token: String!): CinemaOrdersResponse!
   getCinemaToday: FilmsResponse!
   getDeliveryOrder(orderId: String!): DeliveryOrderResponse!
@@ -738,6 +861,31 @@ enum Size {
   LARGE
   MEDIUM
   SMALL
+}
+
+type Ticket {
+  _id: String!
+  column: Float!
+  filmId: String!
+  phone: String!
+  row: Float!
+  seance: FilmTicketSeance!
+  status: FilmTicketStatus!
+}
+
+input TicketInput {
+  _id: String!
+  column: Float!
+  filmId: String!
+  phone: String!
+  row: Float!
+  seance: FilmTicketSeanceInput!
+  status: FilmTicketStatus!
+}
+
+enum Transmission {
+  AUTOMATIC
+  MANUAL
 }
 
 input UpdateProfileProfileDto {
