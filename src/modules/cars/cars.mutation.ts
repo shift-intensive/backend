@@ -41,15 +41,13 @@ export class CarsMutation extends BaseResolver {
     const startDate = new Date(Number(createCarRentDto.startDate));
     const endDate = new Date(Number(createCarRentDto.endDate));
 
-    if (Number.isNaN(startDate.getTime()) || Number.isNaN(endDate.getTime())) {
-      throw new BadRequestException(
-        this.wrapFail('Даты должна быть переданы в формате timestamp (миллисекунды)')
-      );
-    }
+    startDate.setHours(0, 0, 0, 0);
+    endDate.setHours(0, 0, 0, 0);
 
-    const today = new Date().setHours(0, 0, 0, 0);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-    if (startDate.getTime() < today) {
+    if (startDate < today) {
       throw new BadRequestException(
         this.wrapFail('Дата начала аренды не может быть раньше сегодняшнего дня')
       );
@@ -57,9 +55,9 @@ export class CarsMutation extends BaseResolver {
 
     const rentalDurationMs = endDate.getTime() - startDate.getTime();
     const oneDayMs = 24 * 60 * 60 * 1000;
-
-    if (rentalDurationMs % oneDayMs !== 0) {
-      throw new BadRequestException(this.wrapFail('Аренда может быть только полными днями'));
+    const rentalDays = rentalDurationMs / oneDayMs + 1;
+    if (rentalDays < 1) {
+      throw new BadRequestException(this.wrapFail('Аренда должна быть минимум 1 день'));
     }
 
     const car = CARS.find((car) => car.id === createCarRentDto.carId);
@@ -83,7 +81,8 @@ export class CarsMutation extends BaseResolver {
 
     const rent = await this.carRentService.create({
       ...createCarRentDto,
-      status: CarRentStatus.BOOKED
+      status: CarRentStatus.BOOKED,
+      totalPrice: rentalDays * car.price
     });
 
     let user = await this.usersService.findOne({ phone });

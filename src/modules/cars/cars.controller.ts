@@ -224,11 +224,10 @@ export class CarsController extends BaseResolver {
       );
     }
 
-    const totalPrice = rentalDays * car.price;
     const rent = await this.carRentService.create({
       ...createCarRentDto,
       status: CarRentStatus.BOOKED,
-      totalPrice
+      totalPrice: rentalDays * car.price
     });
 
     let user = await this.usersService.findOne({ phone });
