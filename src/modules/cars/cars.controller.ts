@@ -120,7 +120,6 @@ export class CarsController extends BaseResolver {
     return this.wrapSuccess(paginatedCars);
   }
 
-  @ApiAuthorizedOnly()
   @Get('info/:carId')
   @ApiOperation({ summary: 'Получить автомобиль' })
   @ApiResponse({
@@ -128,18 +127,7 @@ export class CarsController extends BaseResolver {
     description: 'car with rents',
     type: CarResponse
   })
-  @ApiHeader({
-    name: 'authorization'
-  })
-  @ApiBearerAuth()
-  async getCar(@Param() params: GetCarDto, @Req() request: Request): Promise<CarResponse> {
-    const token = request.headers.authorization.split(' ')[1];
-    const decodedJwtAccessToken = (await this.authService.decode(token)) as User;
-
-    if (!decodedJwtAccessToken) {
-      throw new BadRequestException(this.wrapFail('Некорректный токен авторизации'));
-    }
-
+  async getCar(@Param() params: GetCarDto): Promise<CarResponse> {
     const car = CARS.find((car) => car.id === params.carId);
 
     if (!car) {
@@ -161,7 +149,6 @@ export class CarsController extends BaseResolver {
     });
   }
 
-  @ApiAuthorizedOnly()
   @Post('rent')
   @ApiOperation({ summary: 'Арендовать автомобиль' })
   @ApiResponse({
@@ -169,18 +156,7 @@ export class CarsController extends BaseResolver {
     description: 'create rent',
     type: CarRentResponse
   })
-  @ApiHeader({
-    name: 'authorization'
-  })
-  @ApiBearerAuth()
-  async createCarRent(@Body() createCarRentDto: CreateRentDto, @Req() request: Request) {
-    const token = request.headers.authorization.split(' ')[1];
-    const decodedJwtAccessToken = (await this.authService.decode(token)) as User;
-
-    if (!decodedJwtAccessToken) {
-      throw new BadRequestException(this.wrapFail('Некорректный токен авторизации'));
-    }
-
+  async createCarRent(@Body() createCarRentDto: CreateRentDto) {
     const { phone } = createCarRentDto;
 
     const startDate = new Date(Number(createCarRentDto.startDate));

@@ -23,19 +23,8 @@ export class CarsMutation extends BaseResolver {
     super();
   }
 
-  @GqlAuthorizedOnly()
   @Mutation(() => CarRentResponse)
-  async createCarRent(
-    @Args() createCarRentDto: CreateRentDto,
-    @Context() context: { req: Request }
-  ): Promise<CarRentResponse> {
-    const token = context.req.headers.authorization.split(' ')[1];
-    const decodedJwtAccessToken = (await this.authService.decode(token)) as User;
-
-    if (!decodedJwtAccessToken) {
-      throw new BadRequestException(this.wrapFail('Некорректный токен авторизации'));
-    }
-
+  async createCarRent(@Args() createCarRentDto: CreateRentDto): Promise<CarRentResponse> {
     const { phone } = createCarRentDto;
 
     const startDate = new Date(Number(createCarRentDto.startDate));

@@ -37,19 +37,8 @@ export class CarsQuery extends BaseResolver {
     return this.wrapSuccess(paginatedCars);
   }
 
-  @GqlAuthorizedOnly()
   @Query(() => CarResponse)
-  async getCar(
-    @Args() getCarDto: GetCarDto,
-    @Context() context: { req: Request }
-  ): Promise<CarResponse> {
-    const token = context.req.headers.authorization.split(' ')[1];
-    const decodedJwtAccessToken = (await this.authService.decode(token)) as User;
-
-    if (!decodedJwtAccessToken) {
-      throw new BadRequestException(this.wrapFail('Некорректный токен авторизации'));
-    }
-
+  async getCar(@Args() getCarDto: GetCarDto): Promise<CarResponse> {
     const car = CARS.find((car) => car.id === getCarDto.carId);
 
     if (!car) {
