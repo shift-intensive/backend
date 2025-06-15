@@ -6,8 +6,28 @@ import {
   IsNumber,
   IsOptional,
   IsPhoneNumber,
-  IsString
+  IsString,
+  Validate,
+  ValidationArguments,
+  ValidatorConstraint,
+  ValidatorConstraintInterface
 } from 'class-validator';
+
+@ValidatorConstraint({ name: 'timestamp', async: false })
+export class TimestampValidator implements ValidatorConstraintInterface {
+  public validate(value: number, _arguments: ValidationArguments): boolean {
+    if (typeof value !== 'number') return false;
+
+    if (value.toString().length !== 13) return false;
+
+    const date = new Date(value);
+    return !Number.isNaN(date.getTime());
+  }
+
+  public defaultMessage(_arguments: ValidationArguments): string {
+    return 'Дата должна быть передана в формате timestamp (миллисекунды)';
+  }
+}
 
 @ArgsType()
 export class CreateRentDto {
@@ -32,6 +52,7 @@ export class CreateRentDto {
     description: 'Дата начала аренды (timestamp в миллисекундах)'
   })
   @IsNumber()
+  @Validate(TimestampValidator)
   startDate: number;
 
   @Field(() => Number)
@@ -40,12 +61,8 @@ export class CreateRentDto {
     description: 'Дата окончания аренды (timestamp в миллисекундах)'
   })
   @IsNumber()
+  @Validate(TimestampValidator)
   endDate: number;
-
-  @Field(() => Number)
-  @ApiProperty({ example: 15000, description: 'Итоговая стоимость аренды' })
-  @IsNumber()
-  totalPrice: number;
 
   @Field(() => String)
   @ApiProperty({ example: 'Иван', description: 'Имя арендатора' })
