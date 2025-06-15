@@ -3,6 +3,17 @@ import { ApiProperty } from '@nestjs/swagger';
 
 import { BodyType, Brand, Color, Steering, Transmission } from '../constants/enums';
 
+@ObjectType()
+export class Media {
+  @Field(() => String)
+  @ApiProperty({ example: '/static/images/cars/haval-jolion.webp' })
+  url: string;
+
+  @Field(() => Boolean)
+  @ApiProperty({ example: true })
+  isCover: boolean;
+}
+
 @ObjectType('Car')
 export class Car {
   @Field(() => String)
@@ -20,9 +31,9 @@ export class Car {
   })
   brand: Brand;
 
-  @Field(() => String)
-  @ApiProperty({ example: 'https://example.com/car.jpg', description: 'URL изображения' })
-  img: string;
+  @Field(() => [Media])
+  @ApiProperty({ type: [Media] })
+  media: Media[];
 
   @Field(() => Transmission)
   @ApiProperty({
