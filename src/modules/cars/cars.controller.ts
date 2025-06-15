@@ -228,8 +228,10 @@ export class CarsController extends BaseResolver {
 
     const rent = await this.carRentService.create({
       ...createCarRentDto,
+      carId: undefined,
       status: CarRentStatus.BOOKED,
-      totalPrice: rentalDays * car.price
+      totalPrice: rentalDays * car.price,
+      carInfo: car
     });
 
     return this.wrapSuccess({ rent });

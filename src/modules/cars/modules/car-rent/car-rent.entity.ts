@@ -1,9 +1,12 @@
 import type { Document } from 'mongoose';
 
-import { Field, InputType, ObjectType, registerEnumType } from '@nestjs/graphql';
+import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Schema as MongooseSchema } from 'mongoose';
+
+import { BodyType, Brand, Color, Steering, Transmission } from '../../constants/enums';
+import { Car } from '../../entities';
 
 export enum CarRentStatus {
   BOOKED,
@@ -13,7 +16,6 @@ registerEnumType(CarRentStatus, {
   name: 'CarRentStatus'
 });
 
-@InputType('CarRentInput')
 @ObjectType()
 @Schema({
   collection: 'cars/rent',
@@ -21,15 +23,28 @@ registerEnumType(CarRentStatus, {
   minimize: false,
   timestamps: { createdAt: 'created', updatedAt: 'updated' }
 })
-@ObjectType()
 export class CarRent {
   @Field(() => String)
   _id: MongooseSchema.Types.ObjectId;
 
-  @Field(() => String)
+  @Field(() => Car)
   @Prop({ required: true })
-  @ApiProperty({ example: 'car123', description: 'Идентификатор автомобиля' })
-  carId: string;
+  @ApiProperty({
+    example: {
+      id: '12',
+      name: 'Kia Rio 1.4 AT',
+      brand: Brand.KIA,
+      img: '/static/images/cars/kia-rio-black.webp',
+      transmission: Transmission.MANUAL,
+      price: 3100,
+      location: 'Новосибирск, ул. Ленина, 5',
+      color: Color.BLACK,
+      bodyType: BodyType.SEDAN,
+      steering: Steering.LEFT
+    },
+    description: 'Информация об автомобиле'
+  })
+  carInfo: Car;
 
   @Field(() => CarRentStatus)
   @Prop({ required: true, default: CarRentStatus.BOOKED })
