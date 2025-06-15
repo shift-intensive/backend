@@ -199,17 +199,21 @@ export class CarsController extends BaseResolver {
       );
     }
 
-    const rent = await this.carRentService.create({
-      ...createCarRentDto,
-      status: CarRentStatus.BOOKED,
-      totalPrice: rentalDays * car.price
-    });
-
     let user = await this.usersService.findOne({ phone });
 
     if (!user) {
       user = await this.usersService.create({ phone });
     }
+
+    await this.carRentService.updateMany(
+      {
+        phone: user.phone,
+        status: CarRentStatus.BOOKED
+      },
+      {
+        $set: { status: CarRentStatus.CANCELLED }
+      }
+    );
 
     await this.usersService.findOneAndUpdate(
       { phone: user.phone },
@@ -221,6 +225,12 @@ export class CarsController extends BaseResolver {
         }
       }
     );
+
+    const rent = await this.carRentService.create({
+      ...createCarRentDto,
+      status: CarRentStatus.BOOKED,
+      totalPrice: rentalDays * car.price
+    });
 
     return this.wrapSuccess({ rent });
   }
