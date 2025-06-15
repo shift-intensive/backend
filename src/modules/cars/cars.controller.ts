@@ -32,7 +32,6 @@ import {
   CarsPaginatedResponse
 } from './cars.model';
 import { CarsService } from './cars.service';
-import { CARS } from './constants';
 import { BodyType, Brand, Color, Transmission } from './constants/enums';
 import { CancelCarRentDto, CreateRentDto, GetCarDto, GetCarRentDto, GetCarsFilterDto } from './dto';
 import { CarRent, CarRentService, CarRentStatus } from './modules';
@@ -128,7 +127,7 @@ export class CarsController extends BaseResolver {
     type: CarResponse
   })
   async getCar(@Param() params: GetCarDto): Promise<CarResponse> {
-    const car = CARS.find((car) => car.id === params.carId);
+    const car = this.carsService.getCar(params.carId);
 
     if (!car) {
       throw new BadRequestException(this.wrapFail('Автомобиль не найден'));
@@ -181,7 +180,7 @@ export class CarsController extends BaseResolver {
       throw new BadRequestException(this.wrapFail('Аренда должна быть минимум 1 день'));
     }
 
-    const car = CARS.find((car) => car.id === createCarRentDto.carId);
+    const car = this.carsService.getCar(createCarRentDto.carId);
 
     if (!car) {
       throw new BadRequestException(this.wrapFail('Автомобиль не найден'));

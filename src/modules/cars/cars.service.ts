@@ -28,8 +28,17 @@ interface PaginationResult<Car> {
 
 @Injectable()
 export class CarsService {
+  getCars() {
+    return CARS;
+  }
+
+  getCar(id: string) {
+    const cars = this.getCars();
+    return cars.find((car) => car.id === id);
+  }
+
   getFilteredCars({ filters }: GetFilteredCarsParams) {
-    let filteredCars = CARS;
+    let filteredCars = this.getCars();
 
     if (filters.brand?.length) {
       filteredCars = filteredCars.filter((car) =>

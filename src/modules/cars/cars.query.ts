@@ -10,7 +10,6 @@ import type { User } from '../users';
 import { UsersService } from '../users';
 import { CarRentsResponse, CarResponse, CarsPaginatedResponse } from './cars.model';
 import { CarsService } from './cars.service';
-import { CARS } from './constants';
 import { GetCarDto, GetCarRentDto, GetCarsFilterDto } from './dto';
 import { CarRentService, CarRentStatus } from './modules';
 
@@ -39,7 +38,7 @@ export class CarsQuery extends BaseResolver {
 
   @Query(() => CarResponse)
   async getCar(@Args() getCarDto: GetCarDto): Promise<CarResponse> {
-    const car = CARS.find((car) => car.id === getCarDto.carId);
+    const car = this.carsService.getCar(getCarDto.carId);
 
     if (!car) {
       throw new BadRequestException(this.wrapFail('Автомобиль не найден'));

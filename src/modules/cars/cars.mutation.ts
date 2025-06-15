@@ -9,7 +9,7 @@ import type { User } from '../users';
 
 import { UsersService } from '../users';
 import { CarRentResponse } from './cars.model';
-import { CARS } from './constants';
+import { CarsService } from './cars.service';
 import { CancelCarRentDto, CreateRentDto } from './dto';
 import { CarRentService, CarRentStatus } from './modules';
 
@@ -18,7 +18,8 @@ export class CarsMutation extends BaseResolver {
   constructor(
     private readonly authService: AuthService,
     private readonly usersService: UsersService,
-    private readonly carRentService: CarRentService
+    private readonly carRentService: CarRentService,
+    private readonly carsService: CarsService
   ) {
     super();
   }
@@ -49,7 +50,7 @@ export class CarsMutation extends BaseResolver {
       throw new BadRequestException(this.wrapFail('Аренда должна быть минимум 1 день'));
     }
 
-    const car = CARS.find((car) => car.id === createCarRentDto.carId);
+    const car = this.carsService.getCar(createCarRentDto.carId);
 
     if (!car) {
       throw new BadRequestException(this.wrapFail('Автомобиль не найден'));
